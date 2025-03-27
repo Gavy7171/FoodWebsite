@@ -1,0 +1,1526 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Recepies - Mother's Day Recipes</title>
+    <link href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.0.0/css/all.min.css" rel="stylesheet">
+    <link href="https://fonts.googleapis.com/css2?family=Poppins:wght@300;400;500;600;700&display=swap" rel="stylesheet">
+    <style>
+        /* General Reset */
+        * {
+            margin: 0;
+            padding: 0;
+            box-sizing: border-box;
+            font-family: 'Poppins', sans-serif;
+        }
+
+        body {
+            background-color: #0a1128;
+            color: #fff;
+            overflow-x: hidden;
+        }
+
+        /* Header with Background Video */
+        header {
+            position: relative;
+            width: 100%;
+            height: 60vh;
+            overflow: hidden;
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            text-align: center;
+        }
+
+        #bg-video {
+            position: absolute;
+            top: 0;
+            left: 0;
+            width: 100%;
+            height: 100%;
+            object-fit: cover;
+            z-index: -1;
+            filter: brightness(40%);
+        }
+
+        .overlay {
+            position: relative;
+            padding: 30px;
+            border-radius: 15px;
+            max-width: 90%;
+            text-align: center;
+            background: rgba(0, 0, 0, 0.4);
+            backdrop-filter: blur(5px);
+            animation: fadeIn 1.5s ease-in-out;
+        }
+
+        @keyframes fadeIn {
+            from { opacity: 0; transform: translateY(20px); }
+            to { opacity: 1; transform: translateY(0); }
+        }
+
+        .logo {
+            position: absolute;
+            top: 15px;
+            left: 15px;
+            max-width: 120px;
+            transition: transform 0.3s ease-in-out;
+            z-index: 1000;
+        }
+
+        @media (max-width: 768px) {
+            .logo {
+                max-width: 80px;
+            }
+        }
+
+        .logo:hover {
+            transform: scale(1.1);
+            filter: drop-shadow(0 0 10px rgba(252, 163, 17, 0.8));
+        }
+
+        h1 {
+            font-size: 3rem;
+            color: #f8f9fa;
+            text-shadow: 2px 2px 15px rgba(255, 255, 255, 0.6);
+            margin-bottom: 20px;
+            font-weight: 700;
+        }
+
+        .tagline {
+            font-size: 1.5rem;
+            margin-bottom: 30px;
+            color: #fca311;
+            text-shadow: 1px 1px 8px rgba(0, 0, 0, 0.8);
+        }
+
+        @media (max-width: 768px) {
+            h1 {
+                font-size: 2.2rem;
+            }
+            .tagline {
+                font-size: 1.2rem;
+            }
+            header {
+                height: 50vh;
+            }
+        }
+
+        /* Modern Navbar */
+        .navbar {
+            position: fixed;
+            top: 0;
+            left: 0;
+            width: 100%;
+            z-index: 1000;
+            transition: all 0.3s ease;
+            padding: 20px 0;
+        }
+
+        .navbar.scrolled {
+            background: rgba(10, 17, 40, 0.95);
+            backdrop-filter: blur(10px);
+            padding: 15px 0;
+            box-shadow: 0 5px 20px rgba(0, 0, 0, 0.2);
+        }
+
+        .navbar .container {
+            display: flex;
+            align-items: center;
+            justify-content: space-between;
+            padding: 0 50px;
+        }
+
+        .nav-logo {
+            max-width: 100px;
+            transition: all 0.3s ease;
+        }
+
+        .nav-logo:hover {
+            transform: scale(1.05);
+        }
+
+        .nav-links {
+            display: flex;
+            gap: 30px;
+            list-style: none;
+        }
+
+        .nav-links li {
+            position: relative;
+        }
+
+        .nav-links a {
+            color: #fff;
+            text-decoration: none;
+            font-weight: 500;
+            font-size: 1.1rem;
+            transition: all 0.3s ease;
+            padding: 8px 0;
+            position: relative;
+        }
+
+        .nav-links a:before {
+            content: '';
+            position: absolute;
+            bottom: 0;
+            left: 0;
+            width: 0;
+            height: 2px;
+            background: #fca311;
+            transition: width 0.3s ease;
+        }
+
+        .nav-links a:hover {
+            color: #fca311;
+        }
+
+        .nav-links a:hover:before {
+            width: 100%;
+        }
+
+        .dropdown-content {
+            position: absolute;
+            top: 100%;
+            left: 0;
+            background: rgba(10, 17, 40, 0.95);
+            min-width: 200px;
+            padding: 15px;
+            border-radius: 8px;
+            box-shadow: 0 10px 30px rgba(0, 0, 0, 0.2);
+            opacity: 0;
+            visibility: hidden;
+            transform: translateY(10px);
+            transition: all 0.3s ease;
+            z-index: 1;
+            backdrop-filter: blur(10px);
+            border: 1px solid rgba(255, 255, 255, 0.1);
+        }
+
+        .dropdown-content a {
+            display: block;
+            padding: 10px 15px;
+            color: #fff;
+            text-decoration: none;
+            transition: all 0.2s ease;
+            border-radius: 5px;
+        }
+
+        .dropdown-content a:hover {
+            background: rgba(252, 163, 17, 0.2);
+            transform: translateX(5px);
+        }
+
+        .dropdown:hover .dropdown-content {
+            opacity: 1;
+            visibility: visible;
+            transform: translateY(0);
+        }
+
+        .nav-toggle {
+            display: none;
+            background: none;
+            border: none;
+            cursor: pointer;
+            padding: 10px;
+            z-index: 1001;
+        }
+
+        .nav-toggle span {
+            display: block;
+            width: 30px;
+            height: 3px;
+            background-color: #fff;
+            margin: 6px 0;
+            transition: all 0.3s ease;
+        }
+
+        @media (max-width: 992px) {
+            .navbar .container {
+                padding: 0 20px;
+            }
+
+            .nav-toggle {
+                display: block;
+            }
+
+            .nav-links {
+                position: fixed;
+                top: 0;
+                right: -100%;
+                width: 80%;
+                max-width: 400px;
+                height: 100vh;
+                background: rgba(10, 17, 40, 0.98);
+                backdrop-filter: blur(10px);
+                flex-direction: column;
+                align-items: flex-start;
+                padding: 80px 40px;
+                transition: all 0.5s ease;
+                gap: 15px;
+                box-shadow: -10px 0 30px rgba(0, 0, 0, 0.3);
+            }
+
+            .nav-links.active {
+                right: 0;
+            }
+
+            .dropdown-content {
+                position: static;
+                opacity: 1;
+                visibility: visible;
+                transform: none;
+                box-shadow: none;
+                padding: 0 0 0 20px;
+                margin-top: 10px;
+                display: none;
+                background: transparent;
+                border: none;
+            }
+
+            .dropdown.active .dropdown-content {
+                display: block;
+            }
+
+            .nav-toggle.active span:nth-child(1) {
+                transform: rotate(45deg) translate(8px, 8px);
+            }
+
+            .nav-toggle.active span:nth-child(2) {
+                opacity: 0;
+            }
+
+            .nav-toggle.active span:nth-child(3) {
+                transform: rotate(-45deg) translate(8px, -8px);
+            }
+        }
+
+        /* Recipe Container */
+        .recipe-container {
+            max-width: 1200px;
+            margin: 60px auto;
+            padding: 0 20px;
+        }
+
+        .category-title {
+            font-size: 2.5rem;
+            margin-bottom: 40px;
+            color: #fca311;
+            text-align: center;
+            position: relative;
+            padding-bottom: 15px;
+        }
+
+        .category-title:after {
+            content: '';
+            position: absolute;
+            bottom: 0;
+            left: 50%;
+            transform: translateX(-50%);
+            width: 100px;
+            height: 3px;
+            background: #fca311;
+        }
+
+        .intro-text {
+            text-align: center;
+            max-width: 800px;
+            margin: 0 auto 40px;
+            line-height: 1.7;
+            color: rgba(255, 255, 255, 0.9);
+            font-size: 1.1rem;
+        }
+
+        .recipe-grid {
+            display: grid;
+            grid-template-columns: repeat(auto-fill, minmax(320px, 1fr));
+            gap: 40px;
+        }
+
+        .recipe-card {
+            background: rgba(255, 255, 255, 0.05);
+            border-radius: 15px;
+            overflow: hidden;
+            transition: all 0.3s ease;
+            cursor: pointer;
+            position: relative;
+            box-shadow: 0 10px 20px rgba(0, 0, 0, 0.1);
+            border: 1px solid rgba(255, 255, 255, 0.05);
+            height: 100%;
+        }
+
+        .recipe-card:hover {
+            transform: translateY(-10px);
+            box-shadow: 0 15px 30px rgba(0, 0, 0, 0.2);
+            border-color: rgba(252, 163, 17, 0.3);
+        }
+
+        .recipe-image {
+            width: 100%;
+            height: 220px;
+            object-fit: cover;
+            transition: all 0.3s ease;
+        }
+
+        .recipe-card:hover .recipe-image {
+            transform: scale(1.05);
+        }
+
+        .recipe-content {
+            padding: 25px;
+        }
+
+        .recipe-title {
+            font-size: 1.5rem;
+            margin-bottom: 15px;
+            color: #fca311;
+            position: relative;
+            padding-bottom: 10px;
+        }
+
+        .recipe-title:after {
+            content: '';
+            position: absolute;
+            bottom: 0;
+            left: 0;
+            width: 40px;
+            height: 2px;
+            background: rgba(252, 163, 17, 0.5);
+        }
+
+        .recipe-info {
+            display: flex;
+            justify-content: space-between;
+            margin-top: 15px;
+            color: rgba(255, 255, 255, 0.7);
+            font-size: 0.9rem;
+        }
+
+        .recipe-info span {
+            display: flex;
+            align-items: center;
+        }
+
+        .recipe-info i {
+            margin-right: 5px;
+            color: #fca311;
+        }
+
+        .recipe-details {
+            display: none;
+            background: rgba(255, 255, 255, 0.05);
+            padding: 30px;
+            border-radius: 15px;
+            margin-top: 40px;
+            box-shadow: 0 10px 30px rgba(0, 0, 0, 0.1);
+            animation: fadeIn 0.5s ease;
+            border: 1px solid rgba(252, 163, 17, 0.2);
+            position: relative;
+        }
+
+        .recipe-details h3 {
+            font-size: 2rem;
+            color: #fca311;
+            margin-bottom: 20px;
+            text-align: center;
+        }
+
+        .recipe-details h4 {
+            font-size: 1.3rem;
+            color: #f8f9fa;
+            margin: 20px 0 10px;
+            position: relative;
+            padding-left: 15px;
+        }
+
+        .recipe-details h4:before {
+            content: '';
+            position: absolute;
+            left: 0;
+            top: 50%;
+            transform: translateY(-50%);
+            width: 5px;
+            height: 20px;
+            background: #fca311;
+            border-radius: 2px;
+        }
+
+        .recipe-details ul {
+            list-style: none;
+            margin: 15px 0;
+        }
+
+        .recipe-details li {
+            margin-bottom: 8px;
+            padding-left: 20px;
+            position: relative;
+        }
+
+        .recipe-details li:before {
+            content: '•';
+            color: #fca311;
+            position: absolute;
+            left: 0;
+            font-size: 1.2rem;
+        }
+
+        .recipe-details p {
+            line-height: 1.7;
+            color: rgba(255, 255, 255, 0.9);
+            margin-bottom: 15px;
+        }
+
+        .close-btn {
+            position: absolute;
+            top: 15px;
+            right: 15px;
+            background: rgba(252, 163, 17, 0.2);
+            border: none;
+            width: 40px;
+            height: 40px;
+            border-radius: 50%;
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            cursor: pointer;
+            color: #fca311;
+            font-size: 1.2rem;
+            transition: all 0.3s ease;
+        }
+
+        .close-btn:hover {
+            background: #fca311;
+            color: #0a1128;
+        }
+
+        .recipe-grid-container {
+            position: relative;
+        }
+
+        .macros-box {
+            background: rgba(252, 163, 17, 0.1);
+            border-radius: 10px;
+            padding: 15px;
+            margin-top: 20px;
+            display: inline-block;
+        }
+
+        .macros-box p {
+            margin: 0;
+            font-weight: 500;
+        }
+
+        /* Special Mother's Day Styles */
+        .mothers-day-banner {
+            background: linear-gradient(135deg, rgba(255, 192, 203, 0.2), rgba(255, 105, 180, 0.2));
+            padding: 30px;
+            border-radius: 15px;
+            margin-bottom: 40px;
+            text-align: center;
+            border: 1px solid rgba(255, 192, 203, 0.3);
+        }
+
+        .mothers-day-banner h3 {
+            color: #fca311;
+            font-size: 1.8rem;
+            margin-bottom: 15px;
+        }
+
+        .heart-icon {
+            color: #ff69b4;
+            margin: 0 5px;
+        }
+
+        .special-tag {
+            position: absolute;
+            top: 10px;
+            right: 10px;
+            background: linear-gradient(135deg, #ff69b4, #fca311);
+            color: white;
+            padding: 5px 10px;
+            border-radius: 20px;
+            font-size: 0.8rem;
+            font-weight: 600;
+            z-index: 2;
+        }
+
+        /* Footer */
+        footer {
+            text-align: center;
+            padding: 60px 20px 30px;
+            background: linear-gradient(to bottom, transparent, rgba(255, 255, 255, 0.05));
+            margin-top: 40px;
+            position: relative;
+        }
+
+        .footer-content {
+            max-width: 1200px;
+            margin: 0 auto;
+            display: grid;
+            grid-template-columns: repeat(auto-fit, minmax(250px, 1fr));
+            gap: 40px;
+            text-align: left;
+        }
+
+        .footer-column h3 {
+            font-size: 1.5rem;
+            margin-bottom: 20px;
+            color: #fca311;
+            position: relative;
+            padding-bottom: 10px;
+        }
+
+        .footer-column h3:after {
+            content: '';
+            position: absolute;
+            bottom: 0;
+            left: 0;
+            width: 50px;
+            height: 2px;
+            background: #fca311;
+        }
+
+        .footer-links {
+            list-style: none;
+        }
+
+        .footer-links li {
+            margin-bottom: 10px;
+        }
+
+        .footer-links a {
+            color: rgba(255, 255, 255, 0.8);
+            text-decoration: none;
+            transition: all 0.3s ease;
+        }
+
+        .footer-links a:hover {
+            color: #fca311;
+            padding-left: 5px;
+        }
+
+        .social-links {
+            display: flex;
+            gap: 15px;
+            margin-top: 20px;
+        }
+
+        .social-links a {
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            width: 40px;
+            height: 40px;
+            background: rgba(255, 255, 255, 0.1);
+            border-radius: 50%;
+            color: #fff;
+            transition: all 0.3s ease;
+        }
+
+        .social-links a:hover {
+            background: #fca311;
+            transform: translateY(-5px);
+        }
+
+        .copyright {
+            margin-top: 40px;
+            padding-top: 20px;
+            border-top: 1px solid rgba(255, 255, 255, 0.1);
+        }
+
+        .copyright p {
+            margin: 10px 0;
+            color: rgba(255, 255, 255, 0.6);
+        }
+
+        .developer {
+            margin-top: 15px;
+            font-size: 0.9rem;
+            color: rgba(255, 255, 255, 0.5);
+        }
+
+        .developer a {
+            color: #fca311;
+            text-decoration: none;
+        }
+
+        .developer a:hover {
+            text-decoration: underline;
+        }
+
+        /* Animation */
+        @keyframes slideInUp {
+            from {
+                transform: translateY(50px);
+                opacity: 0;
+            }
+            to {
+                transform: translateY(0);
+                opacity: 1;
+            }
+        }
+
+        .animate {
+            animation: slideInUp 0.8s forwards;
+        }
+
+        .delay-1 {
+            animation-delay: 0.2s;
+        }
+
+        .delay-2 {
+            animation-delay: 0.4s;
+        }
+
+        .delay-3 {
+            animation-delay: 0.6s;
+        }
+
+        /* Scroll to top button */
+        .scroll-top {
+            position: fixed;
+            bottom: 30px;
+            right: 30px;
+            width: 50px;
+            height: 50px;
+            background: #fca311;
+            border-radius: 50%;
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            color: #0a1128;
+            font-size: 20px;
+            cursor: pointer;
+            opacity: 0;
+            visibility: hidden;
+            transition: all 0.3s ease;
+            z-index: 999;
+        }
+
+        .scroll-top.active {
+            opacity: 1;
+            visibility: visible;
+        }
+
+        .scroll-top:hover {
+            background: #fff;
+            transform: translateY(-5px);
+            box-shadow: 0 10px 20px rgba(252, 163, 17, 0.3);
+        }
+    </style>
+</head>
+<body>
+    <!-- Modern Fixed Navbar -->
+    <nav class="navbar">
+        <div class="container">
+            <a href="#" class="nav-logo">
+                <img src="/api/placeholder/100/80" alt="Recepies Logo">
+            </a>
+            <button class="nav-toggle">
+                <span></span>
+                <span></span>
+                <span></span>
+            </button>
+            <ul class="nav-links">
+                <li class="dropdown">
+                    <a href="#"><i class="fas fa-utensils"></i> Daily Recipes</a>
+                    <div class="dropdown-content">
+                        <a href="{% url 'recipes1:breakfast' %}"><i class="fas fa-coffee"></i> Breakfast</a>
+                        <a href="#"><i class="fas fa-home"></i> Home</a>
+                        <a href="{% url 'recipes2:lunch' %}"><i class="fas fa-hamburger"></i> Lunch</a>
+                        <a href="{% url 'recipes3:dinner' %}"><i class="fas fa-concierge-bell"></i> Dinner</a>
+                        <a href="{% url 'recipes4:dessert' %}"><i class="fas fa-ice-cream"></i> Dessert</a>
+                        <a href="{% url 'recipes5:drinks' %}"><i class="fas fa-glass-cheers"></i> Drinks</a>
+                    </div>
+                </li>
+                <li class="dropdown">
+                    <a href="#"><i class="fas fa-calendar-alt"></i> Holidays</a>
+                    <div class="dropdown-content">
+                        <a href="{% url 'recipes8:mother' %}"><i class="fas fa-heart"></i> Mother's Day</a>
+                        <a href="{% url 'recipes9:new' %}"><i class="fas fa-glass-champagne"></i> New Year</a>
+                    </div>
+                </li>
+                <li class="dropdown">
+                    <a href="#"><i class="fas fa-heartbeat"></i> Health & Diet</a>
+                    <div class="dropdown-content">
+                        <a href="{% url 'recipes6:keto' %}"><i class="fas fa-drumstick-bite"></i> Keto</a>
+                        <a href="{% url 'recipes7:vege' %}"><i class="fas fa-seedling"></i> Vegetarian</a>
+                    </div>
+                </li>
+                <li class="dropdown">
+                    <a href="#"><i class="fas fa-heartbeat"></i> Health & Diet</a>
+                    <div class="dropdown-content">
+                        <a href="#"><i class="fas fa-drumstick-bite"></i> Keto</a>
+                        <a href="vegetarian.html"><i class="fas fa-seedling"></i> Vegetarian</a>
+                    </div>
+                </li>
+                <li><a href="#"><i class="fas fa-info-circle"></i> About Us</a></li>
+                <li><a href="#"><i class="fas fa-envelope"></i> Contact</a></li>
+            </ul>
+        </div>
+    </nav>
+
+    <header>
+        <video autoplay muted loop id="bg-video">
+            <source src="/api/placeholder/1920/1080" type="video/mp4">
+        </video>
+        <div class="overlay">
+            <h1>Mother's Day Recipe Ideas</h1>
+            <p class="tagline">Delicious recipes to show Mom how much you care</p>
+        </div>
+    </header>
+
+    <div class="recipe-container">
+        <div class="mothers-day-banner">
+            <h3>Celebrate Mom with Special Homemade Treats <i class="fas fa-heart heart-icon"></i></h3>
+            <p>Express your love and appreciation with these thoughtfully crafted recipes perfect for a Mother's Day celebration. From breakfast in bed to elegant dinner options, these dishes are sure to make mom feel special.</p>
+        </div>
+        
+        <h2 class="category-title">Breakfast & Brunch Ideas</h2>
+        <p class="intro-text">Start Mom's special day with a memorable breakfast or brunch that shows how much you care. These recipes are perfect for serving in bed or at a beautifully set table.</p>
+        
+        <div class="recipe-grid-container">
+            <div class="recipe-grid">
+                <div class="recipe-card animate delay-1" onclick="showRecipe('frenchtoast')">
+                    <div class="special-tag">Mom's Favorite</div>
+                    <img src="/api/placeholder/400/300" alt="Strawberry French Toast" class="recipe-image">
+                    <div class="recipe-content">
+                        <h3 class="recipe-title">Strawberry French Toast</h3>
+                        <p>Fluffy brioche bread dipped in vanilla custard, topped with fresh strawberries and maple syrup.</p>
+                        <div class="recipe-info">
+                            <span><i class="far fa-clock"></i> 25 mins</span>
+                            <span><i class="fas fa-utensils"></i> 4 servings</span>
+                            <span><i class="fas fa-star"></i> 4.9</span>
+                        </div>
+                    </div>
+                </div>
+
+                <div class="recipe-card animate delay-2" onclick="showRecipe('quiche')">
+                    <img src="/api/placeholder/400/300" alt="Spinach & Feta Quiche" class="recipe-image">
+                    <div class="recipe-content">
+                        <h3 class="recipe-title">Spinach & Feta Quiche</h3>
+                        <p>Savory quiche with spinach, feta cheese, and caramelized onions in a buttery crust.</p>
+                        <div class="recipe-info">
+                            <span><i class="far fa-clock"></i> 60 mins</span>
+                            <span><i class="fas fa-utensils"></i> 6 servings</span>
+                            <span><i class="fas fa-star"></i> 4.8</span>
+                        </div>
+                    </div>
+                </div>
+
+                <div class="recipe-card animate delay-3" onclick="showRecipe('mimosa')">
+                    <img src="/api/placeholder/400/300" alt="Mother's Day Mimosas" class="recipe-image">
+                    <div class="recipe-content">
+                        <h3 class="recipe-title">Mother's Day Mimosas</h3>
+                        <p>Classic brunch cocktail with champagne and fresh orange juice, garnished with berries.</p>
+                        <div class="recipe-info">
+                            <span><i class="far fa-clock"></i> 5 mins</span>
+                            <span><i class="fas fa-utensils"></i> 4 servings</span>
+                            <span><i class="fas fa-star"></i> 4.9</span>
+                        </div>
+                    </div>
+                </div>
+            </div>
+
+            <div id="recipe-details" class="recipe-details">
+                <button class="close-btn" onclick="closeRecipe()">
+                    <i class="fas fa-times"></i>
+                </button>
+                <!-- Recipe details will be loaded dynamically -->
+            </div>
+        </div>
+        
+        <h2 class="category-title">Dinner Specialties</h2>
+        <p class="intro-text">Prepare a special dinner that will make Mom feel truly appreciated. These recipes are elegant yet approachable, perfect for creating a restaurant-quality experience at home.</p>
+        
+        <div class="recipe-grid">
+            <div class="recipe-card animate delay-1" onclick="showRecipe('salmon')">
+                <img src="/api/placeholder/400/300" alt="Herb-Crusted Salmon" class="recipe-image">
+                <div class="recipe-content">
+                    <h3 class="recipe-title">Herb-Crusted Salmon</h3>
+                    <p>Perfectly cooked salmon with a crunchy herb crust, served with lemon butter sauce.</p>
+                    <div class="recipe-info">
+                        <span><i class="far fa-clock"></i> 35 mins</span>
+                        <span><i class="fas fa-utensils"></i> 4 servings</span>
+                        <span><i class="fas fa-star"></i> 4.8</span>
+                    </div>
+                </div>
+            </div>
+
+            <div class="recipe-card animate delay-2" onclick="showRecipe('risotto')">
+                <div class="special-tag">Chef's Choice</div>
+                <img src="/api/placeholder/400/300" alt="Mushroom Risotto" class="recipe-image">
+                <div class="recipe-content">
+                    <h3 class="recipe-title">Mushroom Risotto</h3>
+                    <p>Creamy Arborio rice cooked with wild mushrooms, white wine, and Parmesan cheese.</p>
+                    <div class="recipe-info">
+                        <span><i class="far fa-clock"></i> 45 mins</span>
+                        <span><i class="fas fa-utensils"></i> 4 servings</span>
+                        <span><i class="fas fa-star"></i> 4.7</span>
+                    </div>
+                </div>
+            </div>
+
+            <div class="recipe-card animate delay-3" onclick="showRecipe('chicken')">
+                <img src="/api/placeholder/400/300" alt="Lemon Herb Roasted Chicken" class="recipe-image">
+                <div class="recipe-content">
+                    <h3 class="recipe-title">Lemon Herb Roasted Chicken</h3>
+                    <p>Tender roasted chicken with lemon, garlic, and fresh herbs, served with roasted vegetables.</p>
+                    <div class="recipe-info">
+                        <span><i class="far fa-clock"></i> 90 mins</span>
+                        <span><i class="fas fa-utensils"></i> 6 servings</span>
+                        <span><i class="fas fa-star"></i> 4.9</span>
+                    </div>
+                </div>
+            </div>
+        </div>
+        
+        <h2 class="category-title">Sweet Treats</h2>
+        <p class="intro-text">End Mom's special day on a sweet note with these delectable desserts. These treats are as beautiful as they are delicious, making them perfect for a Mother's Day celebration.</p>
+        
+        <div class="recipe-grid">
+            <div class="recipe-card animate delay-1" onclick="showRecipe('cheesecake')">
+                <img src="/api/placeholder/400/300" alt="Strawberry Cheesecake" class="recipe-image">
+                <div class="recipe-content">
+                    <h3 class="recipe-title">Strawberry Cheesecake</h3>
+                    <p>Creamy New York style cheesecake topped with fresh strawberry sauce and whipped cream.</p>
+                    <div class="recipe-info">
+                        <span><i class="far fa-clock"></i> 75 mins</span>
+                        <span><i class="fas fa-utensils"></i> 12 servings</span>
+                        <span><i class="fas fa-star"></i> 4.9</span>
+                    </div>
+                </div>
+            </div>
+
+            <div class="recipe-card animate delay-2" onclick="showRecipe('chocolatecake')">
+                <div class="special-tag">Mom's Favorite</div>
+                <img src="/api/placeholder/400/300" alt="Triple Chocolate Cake" class="recipe-image">
+                <div class="recipe-content">
+                    <h3 class="recipe-title">Triple Chocolate Cake</h3>
+                    <p>Decadent chocolate cake with chocolate ganache filling and chocolate buttercream frosting.</p>
+                    <div class="recipe-info">
+                        <span><i class="far fa-clock"></i> 90 mins</span>
+                        <span><i class="fas fa-utensils"></i> 16 servings</span>
+                        <span><i class="fas fa-star"></i> 4.8</span>
+                    </div>
+                </div>
+            </div>
+
+            <div class="recipe-card animate delay-3" onclick="showRecipe('macarons')">
+                <img src="/api/placeholder/400/300" alt="Raspberry Macarons" class="recipe-image">
+                <div class="recipe-content">
+                    <h3 class="recipe-title">Raspberry Macarons</h3>
+                    <p>Delicate French macarons with raspberry buttercream filling, a perfect elegant treat.</p>
+                    <div class="recipe-info">
+                        <span><i class="far fa-clock"></i> 120 mins</span>
+                        <span><i class="fas fa-utensils"></i> 24 pieces</span>
+                        <span><i class="fas fa-star"></i> 4.7</span>
+                    </div>
+                </div>
+            </div>
+        </div>
+    </div>
+
+    <footer>
+        <div class="footer-content">
+            <div class="footer-column">
+                <h3>Quick Links</h3>
+                <ul class="footer-links">
+                    <li><a href="#">Home</a></li>
+                    <li><a href="#">Recipes</a></li>
+                    <li><a href="#">About Us</a></li>
+                    <li><a href="#">Contact</a></li>
+                    <li><a href="#">Privacy Policy</a></li>
+                </ul>
+            </div>
+            <div class="footer-column">
+                <h3>Categories</h3>
+                <ul class="footer-links">
+                    <li><a href="breakfast.html">Breakfast</a></li>
+                    <li><a href="lunch.html">Lunch</a></li>
+                    <li><a href="#">Dinner</a></li>
+                    <li><a href="#">Desserts</a></li>
+                    <li><a href="vegetarian.html">Vegetarian</a></li>
+                </ul>
+            </div>
+            <div class="footer-column">
+                <h3>Contact Us</h3>
+                <ul class="footer-links">
+                    <li><i class="fas fa-envelope"></i> info@recepies.com</li>
+                    <li><i class="fas fa-phone"></i> +1 (555) 123-4567</li>
+                    <li><i class="fas fa-map-marker-alt"></i> 123 Cooking St, Food City</li>
+                </ul>
+                <div class="social-links">
+                    <a href="#"><i class="fab fa-facebook-f"></i></a>
+                    <a href="#"><i class="fab fa-instagram"></i></a>
+                    <a href="#"><i class="fab fa-twitter"></i></a>
+                    <a href="#"><i class="fab fa-youtube"></i></a>
+                </div>
+            </div>
+            <div class="footer-column">
+                <h3>Newsletter</h3>
+                <p>Subscribe to get the latest recipes and cooking tips delivered to your inbox.</p>
+                <form style="margin-top: 15px;">
+                    <input type="email" placeholder="Your Email Address" style="padding: 10px; width: 100%; border-radius: 5px; border: none; margin-bottom: 10px; background: rgba(255, 255, 255, 0.1); color: #fff;">
+                    <button type="submit" style="padding: 10px 20px; background: #fca311; border: none; border-radius: 5px; color: #0a1128; cursor: pointer; font-weight: 600; width: 100%;">Subscribe</button>
+                </form>
+            </div>
+        </div>
+        <div class="copyright">
+            <p>&copy; 2025 Recepies | Designed for Food Lovers</p>
+            <p>Follow us on: <a href="#">Facebook</a> | <a href="#">Instagram</a> | <a href="#">Twitter</a> | <a href="#">Youtube</a></p>
+            <p class="developer">Developer: Gurparteek Benipal | Email: gurparteek7171@gmail.com | GitHub: gavy7171 | LinkedIn: yourlinkedin</p>
+        </div>
+    </footer>
+
+    <div class="scroll-top" id="scrollTop">
+        <i class="fas fa-arrow-up"></i>
+    </div>
+
+    <script>
+    // Function to show recipe details
+    function showRecipe(recipeId) {
+            const detailsContainer = document.getElementById('recipe-details');
+            let content = '';
+            
+            if (recipeId === 'frenchtoast') {
+                content = `
+                    <button class="close-btn" onclick="closeRecipe()">
+                        <i class="fas fa-times"></i>
+                    </button>
+                    <h3>Strawberry French Toast</h3>
+                    <p><strong>By:</strong> Chef Maria Garcia</p>
+                    <p>Fluffy brioche bread dipped in vanilla custard, topped with fresh strawberries and maple syrup.</p>
+                    
+                    <h4>Ingredients</h4>
+                    <ul>
+                        <li>8 slices brioche bread (1-inch thick)</li>
+                        <li>4 large eggs</li>
+                        <li>1 cup whole milk</li>
+                        <li>1/4 cup heavy cream</li>
+                        <li>2 tablespoons granulated sugar</li>
+                        <li>1 tablespoon vanilla extract</li>
+                        <li>1/2 teaspoon ground cinnamon</li>
+                        <li>Pinch of salt</li>
+                        <li>2 tablespoons unsalted butter</li>
+                        <li>2 cups fresh strawberries, sliced</li>
+                        <li>1/4 cup maple syrup</li>
+                        <li>Powdered sugar for dusting</li>
+                        <li>Fresh mint leaves for garnish</li>
+                    </ul>
+                    
+                    <h4>Instructions</h4>
+                    <ul>
+                        <li>In a shallow bowl, whisk together eggs, milk, cream, sugar, vanilla, cinnamon, and salt</li>
+                        <li>Heat a large non-stick skillet or griddle over medium heat and add butter</li>
+                        <li>Dip each slice of brioche in the egg mixture, allowing it to soak for about 30 seconds on each side</li>
+                        <li>Cook the soaked bread until golden brown on both sides, about 2-3 minutes per side</li>
+                        <li>Transfer to serving plates</li>
+                        <li>Top with fresh strawberries</li>
+                        <li>Drizzle with maple syrup</li>
+                        <li>Dust with powdered sugar</li>
+                        <li>Garnish with mint leaves</li>
+                        <li>Serve immediately for a special Mother's Day breakfast</li>
+                    </ul>
+
+                    <div class="macros-box">
+                        <p>Calories: 380 per serving | Protein: 11g | Carbs: 48g | Fat: 17g</p>
+                    </div>
+                `;
+            } else if (recipeId === 'quiche') {
+                content = `
+                    <button class="close-btn" onclick="closeRecipe()">
+                        <i class="fas fa-times"></i>
+                    </button>
+                    <h3>Spinach & Feta Quiche</h3>
+                    <p><strong>By:</strong> Chef Thomas Laurent</p>
+                    <p>Savory quiche with spinach, feta cheese, and caramelized onions in a buttery crust.</p>
+                    
+                    <h4>Ingredients</h4>
+                    <ul>
+                        <li>1 prepared pie crust (homemade or store-bought)</li>
+                        <li>1 tablespoon olive oil</li>
+                        <li>1 large onion, thinly sliced</li>
+                        <li>2 cloves garlic, minced</li>
+                        <li>6 cups fresh spinach, roughly chopped</li>
+                        <li>6 large eggs</li>
+                        <li>1 cup heavy cream</li>
+                        <li>1/2 cup milk</li>
+                        <li>1 1/2 cups crumbled feta cheese</li>
+                        <li>1/4 cup grated Parmesan cheese</li>
+                        <li>1/2 teaspoon dried oregano</li>
+                        <li>1/4 teaspoon nutmeg</li>
+                        <li>Salt and pepper to taste</li>
+                        <li>Cherry tomatoes for garnish (optional)</li>
+                    </ul>
+                    
+                    <h4>Instructions</h4>
+                    <ul>
+                        <li>Preheat oven to 375°F (190°C)</li>
+                        <li>Press the pie crust into a 9-inch pie dish or tart pan</li>
+                        <li>Prick the bottom with a fork and blind bake for 10 minutes</li>
+                        <li>In a large skillet, heat olive oil over medium heat</li>
+                        <li>Add onions and cook until caramelized, about 15 minutes</li>
+                        <li>Add garlic and cook for 1 minute more</li>
+                        <li>Add spinach and cook until wilted, about 2-3 minutes</li>
+                        <li>In a large bowl, whisk together eggs, cream, and milk</li>
+                        <li>Stir in feta, Parmesan, oregano, nutmeg, salt, and pepper</li>
+                        <li>Spread the spinach and onion mixture over the pre-baked crust</li>
+                        <li>Pour the egg mixture over the spinach</li>
+                        <li>Bake for 45-50 minutes until set and golden</li>
+                        <li>Let cool for 10 minutes before slicing</li>
+                        <li>Serve warm or at room temperature</li>
+                    </ul>
+
+                    <div class="macros-box">
+                        <p>Calories: 420 per serving | Protein: 18g | Carbs: 24g | Fat: 28g</p>
+                    </div>
+                `;
+            } else if (recipeId === 'mimosa') {
+                content = `
+                    <button class="close-btn" onclick="closeRecipe()">
+                        <i class="fas fa-times"></i>
+                    </button>
+                    <h3>Mother's Day Mimosas</h3>
+                    <p><strong>By:</strong> Mixologist Emma Collins</p>
+                    <p>Classic brunch cocktail with champagne and fresh orange juice, garnished with berries.</p>
+                    
+                    <h4>Ingredients</h4>
+                    <ul>
+                        <li>1 bottle (750ml) chilled champagne or prosecco</li>
+                        <li>3 cups freshly squeezed orange juice, chilled</li>
+                        <li>1/4 cup Grand Marnier or Cointreau (optional)</li>
+                        <li>1 cup mixed berries (strawberries, raspberries, blueberries)</li>
+                        <li>Orange slices for garnish</li>
+                        <li>Fresh mint sprigs for garnish</li>
+                        <li>Sugar for rimming glasses (optional)</li>
+                    </ul>
+                    
+                    <h4>Instructions</h4>
+                    <ul>
+                        <li>If desired, moisten the rims of champagne flutes with an orange wedge and dip in sugar</li>
+                        <li>Place a few berries in the bottom of each glass</li>
+                        <li>Fill each glass about halfway with chilled champagne or prosecco</li>
+                        <li>Slowly top with orange juice to fill about 3/4 of the glass</li>
+                        <li>Add a splash of Grand Marnier or Cointreau if using</li>
+                        <li>Garnish with an orange slice and mint sprig</li>
+                        <li>Serve immediately</li>
+                        <li>For a special touch, serve on a tray with a small flower for Mom</li>
+                    </ul>
+
+                    <div class="macros-box">
+                        <p>Calories: 140 per serving | Sugar: 14g | Alcohol: 11%</p>
+                    </div>
+                `;
+            } else if (recipeId === 'salmon') {
+                content = `
+                    <button class="close-btn" onclick="closeRecipe()">
+                        <i class="fas fa-times"></i>
+                    </button>
+                    <h3>Herb-Crusted Salmon</h3>
+                    <p><strong>By:</strong> Chef Robert Williams</p>
+                    <p>Perfectly cooked salmon with a crunchy herb crust, served with lemon butter sauce.</p>
+                    
+                    <h4>Ingredients</h4>
+                    <ul>
+                        <li>4 salmon fillets (6 oz each), skin on</li>
+                        <li>2 tablespoons Dijon mustard</li>
+                        <li>1 cup fresh breadcrumbs</li>
+                        <li>1/4 cup finely chopped fresh parsley</li>
+                        <li>2 tablespoons finely chopped fresh dill</li>
+                        <li>2 tablespoons finely chopped fresh chives</li>
+                        <li>Zest of 1 lemon</li>
+                        <li>2 cloves garlic, minced</li>
+                        <li>3 tablespoons olive oil, divided</li>
+                        <li>Salt and pepper to taste</li>
+                        <li>For the sauce: 1/4 cup butter</li>
+                        <li>2 tablespoons fresh lemon juice</li>
+                        <li>1 tablespoon capers, drained</li>
+                        <li>Fresh lemon wedges for serving</li>
+                    </ul>
+                    
+                    <h4>Instructions</h4>
+                    <ul>
+                        <li>Preheat oven to 425°F (220°C)</li>
+                        <li>Line a baking sheet with parchment paper</li>
+                        <li>Pat salmon fillets dry with paper towels</li>
+                        <li>Season with salt and pepper</li>
+                        <li>In a bowl, combine breadcrumbs, herbs, lemon zest, garlic, and 2 tablespoons olive oil</li>
+                        <li>Brush the top of each salmon fillet with Dijon mustard</li>
+                        <li>Press the herb mixture onto the mustard to form a crust</li>
+                        <li>Drizzle with remaining olive oil</li>
+                        <li>Bake for 12-15 minutes until salmon is cooked through and crust is golden</li>
+                        <li>Meanwhile, make the sauce by melting butter in a small saucepan</li>
+                        <li>Add lemon juice and capers, simmer for 1 minute</li>
+                        <li>Serve the salmon with lemon butter sauce drizzled over the top</li>
+                        <li>Garnish with fresh lemon wedges</li>
+                    </ul>
+
+                    <div class="macros-box">
+                        <p>Calories: 410 per serving | Protein: 34g | Fat: 28g | Carbs: 8g</p>
+                    </div>
+                `;
+            } else if (recipeId === 'risotto') {
+                content = `
+                    <button class="close-btn" onclick="closeRecipe()">
+                        <i class="fas fa-times"></i>
+                    </button>
+                    <h3>Mushroom Risotto</h3>
+                    <p><strong>By:</strong> Chef Sophia Rossi</p>
+                    <p>Creamy Arborio rice cooked with wild mushrooms, white wine, and Parmesan cheese.</p>
+                    
+                    <h4>Ingredients</h4>
+                    <ul>
+                        <li>6 cups vegetable or chicken broth</li>
+                        <li>3 tablespoons olive oil, divided</li>
+                        <li>1 pound mixed mushrooms (cremini, shiitake, oyster), sliced</li>
+                        <li>2 shallots, finely diced</li>
+                        <li>3 cloves garlic, minced</li>
+                        <li>1 1/2 cups Arborio rice</li>
+                        <li>1/2 cup dry white wine</li>
+                        <li>1 tablespoon fresh thyme leaves</li>
+                        <li>1 cup freshly grated Parmesan cheese</li>
+                        <li>2 tablespoons unsalted butter</li>
+                        <li>2 tablespoons chopped fresh parsley</li>
+                        <li>Salt and freshly ground black pepper</li>
+                        <li>Truffle oil for drizzling (optional)</li>
+                    </ul>
+                    
+                    <h4>Instructions</h4>
+                    <ul>
+                        <li>In a medium saucepan, bring broth to a simmer, then keep warm over low heat</li>
+                        <li>In a large, heavy-bottomed pan, heat 2 tablespoons olive oil over medium-high heat</li>
+                        <li>Add mushrooms and cook until browned, about 5 minutes</li>
+                        <li>Season with salt and pepper, then remove mushrooms and set aside</li>
+                        <li>In the same pan, add remaining 1 tablespoon olive oil</li>
+                        <li>Add shallots and cook until translucent, about 3 minutes</li>
+                        <li>Add garlic and cook for 30 seconds</li>
+                        <li>Add rice and stir to coat with oil, toasting for 1-2 minutes</li>
+                        <li>Add wine and cook, stirring, until absorbed</li>
+                        <li>Add 1 cup of warm broth, stirring constantly until absorbed</li>
+                        <li>Continue adding broth, 1/2 cup at a time, stirring until absorbed before adding more</li>
+                        <li>After about 18-20 minutes, the rice should be creamy and al dente</li>
+                        <li>Stir in the cooked mushrooms and thyme</li>
+                        <li>Remove from heat and stir in Parmesan, butter, and parsley</li>
+                        <li>Season with salt and pepper</li>
+                        <li>Let stand for 2 minutes</li>
+                        <li>Serve in warm bowls, drizzled with truffle oil if using</li>
+                    </ul>
+
+                    <div class="macros-box">
+                        <p>Calories: 380 per serving | Protein: 12g | Carbs: 48g | Fat: 14g</p>
+                    </div>
+                `;
+            } else if (recipeId === 'chicken') {
+                content = `
+                    <button class="close-btn" onclick="closeRecipe()">
+                        <i class="fas fa-times"></i>
+                    </button>
+                    <h3>Lemon Herb Roasted Chicken</h3>
+                    <p><strong>By:</strong> Chef Daniel Cooper</p>
+                    <p>Tender roasted chicken with lemon, garlic, and fresh herbs, served with roasted vegetables.</p>
+                    
+                    <h4>Ingredients</h4>
+                    <ul>
+                        <li>1 whole chicken (4-5 pounds)</li>
+                        <li>2 lemons, 1 zested and juiced, 1 quartered</li>
+                        <li>1/4 cup olive oil</li>
+                        <li>6 cloves garlic, minced</li>
+                        <li>2 tablespoons fresh rosemary, chopped</li>
+                        <li>2 tablespoons fresh thyme leaves</li>
+                        <li>2 tablespoons fresh parsley, chopped</li>
+                        <li>1 tablespoon honey</li>
+                        <li>2 teaspoons salt</li>
+                        <li>1 teaspoon black pepper</li>
+                        <li>1 onion, quartered</li>
+                        <li>2 carrots, chopped into 2-inch pieces</li>
+                        <li>2 celery stalks, chopped into 2-inch pieces</li>
+                        <li>1 pound baby potatoes, halved</li>
+                        <li>1 cup chicken broth</li>
+                    </ul>
+                    
+                    <h4>Instructions</h4>
+                    <ul>
+                        <li>Preheat oven to 425°F (220°C)</li>
+                        <li>Pat chicken dry with paper towels inside and out</li>
+                        <li>In a bowl, mix olive oil, lemon zest, lemon juice, garlic, herbs, honey, salt, and pepper</li>
+                        <li>Rub the mixture all over the chicken, including under the skin</li>
+                        <li>Stuff the cavity with quartered lemon and half the onion</li>
+                        <li>Tie the legs together with kitchen twine</li>
+                        <li>In a large roasting pan, arrange the remaining onion, carrots, celery, and potatoes</li>
+                        <li>Place the chicken, breast side up, on top of the vegetables</li>
+                        <li>Pour chicken broth into the bottom of the pan</li>
+                        <li>Roast for 20 minutes, then reduce oven to 375°F (190°C)</li>
+                        <li>Continue roasting for about 1 hour more, until internal temperature reaches 165°F (74°C)</li>
+                        <li>Baste occasionally with pan juices</li>
+                        <li>If chicken browns too quickly, cover loosely with foil</li>
+                        <li>Let rest for 15 minutes before carving</li>
+                        <li>Serve chicken with roasted vegetables and pan juices</li>
+                    </ul>
+
+                    <div class="macros-box">
+                        <p>Calories: 420 per serving | Protein: 38g | Carbs: 12g | Fat: 24g</p>
+                    </div>
+                `;
+            } else if (recipeId === 'cheesecake') {
+                content = `
+                    <button class="close-btn" onclick="closeRecipe()">
+                        <i class="fas fa-times"></i>
+                    </button>
+                    <h3>Strawberry Cheesecake</h3>
+                    <p><strong>By:</strong> Pastry Chef Jennifer Kim</p>
+                    <p>Creamy New York style cheesecake topped with fresh strawberry sauce and whipped cream.</p>
+                    
+                    <h4>Ingredients</h4>
+                    <ul>
+                        <li>For the crust: 2 cups graham cracker crumbs</li>
+                        <li>1/2 cup unsalted butter, melted</li>
+                        <li>1/4 cup granulated sugar</li>
+                        <li>For the filling: 4 (8 oz) packages cream cheese, room temperature</li>
+                        <li>1 1/2 cups granulated sugar</li>
+                        <li>3/4 cup sour cream, room temperature</li>
+                        <li>2 teaspoons vanilla extract</li>
+                        <li>4 large eggs, room temperature</li>
+                        <li>For the strawberry topping: 1 pound fresh strawberries, hulled</li>
+                        <li>1/2 cup granulated sugar</li>
+                        <li>2 tablespoons lemon juice</li>
+                        <li>1 tablespoon cornstarch mixed with 1 tablespoon water</li>
+                        <li>For garnish: 1 cup heavy cream</li>
+                        <li>2 tablespoons powdered sugar</li>
+                        <li>1 teaspoon vanilla extract</li>
+                        <li>Fresh strawberries for garnish</li>
+                    </ul>
+                    
+                    <h4>Instructions</h4>
+                    <ul>
+                        <li>Preheat oven to 325°F (165°C)</li>
+                        <li>Grease a 9-inch springform pan</li>
+                        <li>In a bowl, mix graham cracker crumbs, melted butter, and sugar</li>
+                        <li>Press into the bottom and 1 inch up the sides of the pan</li>
+                        <li>Bake crust for 10 minutes, then cool</li>
+                        <li>In a large bowl, beat cream cheese until smooth</li>
+                        <li>Gradually add powdered sugar, alternating with cream</li>
+                        <li>Add vanilla and salt, beat until fluffy</li>
+                        <li>When cakes are completely cool, cut each in half horizontally</li>
+                        <li>Place one layer on a cake plate and spread with ganache</li>
+                        <li>Top with another layer and repeat until all layers are used</li>
+                        <li>Frost the top and sides with chocolate buttercream</li>
+                        <li>Decorate with chocolate shavings</li>
+                        <li>Refrigerate until ready to serve</li>
+                    </ul>
+
+                    <div class="macros-box">
+                        <p>Calories: 650 per serving | Fat: 38g | Carbs: 74g | Protein: 6g</p>
+                    </div>
+                `;
+            } else if (recipeId === 'macarons') {
+                content = `
+                    <button class="close-btn" onclick="closeRecipe()">
+                        <i class="fas fa-times"></i>
+                    </button>
+                    <h3>Raspberry Macarons</h3>
+                    <p><strong>By:</strong> Pastry Chef Claire Martin</p>
+                    <p>Delicate French macarons with raspberry buttercream filling, a perfect elegant treat.</p>
+                    
+                    <h4>Ingredients</h4>
+                    <ul>
+                        <li>For the shells: 1 3/4 cups powdered sugar</li>
+                        <li>1 cup almond flour</li>
+                        <li>3 large egg whites, room temperature</li>
+                        <li>1/4 teaspoon cream of tartar</li>
+                        <li>1/4 cup granulated sugar</li>
+                        <li>Pink gel food coloring (optional)</li>
+                        <li>For the filling: 1/2 cup unsalted butter, softened</li>
+                        <li>1 1/2 cups powdered sugar</li>
+                        <li>1/4 cup raspberry puree (strained to remove seeds)</li>
+                        <li>1 teaspoon vanilla extract</li>
+                        <li>Pinch of salt</li>
+                        <li>Fresh raspberries for garnish (optional)</li>
+                    </ul>
+                    
+                    <h4>Instructions</h4>
+                    <ul>
+                        <li>Line two baking sheets with parchment paper or silicone mats</li>
+                        <li>In a food processor, pulse powdered sugar and almond flour together</li>
+                        <li>Sift mixture twice to ensure no lumps</li>
+                        <li>In a clean, dry bowl, beat egg whites until foamy</li>
+                        <li>Add cream of tartar and continue beating</li>
+                        <li>Gradually add granulated sugar while beating</li>
+                        <li>Beat until stiff peaks form</li>
+                        <li>Add food coloring if desired</li>
+                        <li>Gently fold dry ingredients into egg whites in three additions</li>
+                        <li>Continue folding until batter flows like lava</li>
+                        <li>Transfer batter to a piping bag with a round tip</li>
+                        <li>Pipe 1.5-inch rounds onto prepared sheets</li>
+                        <li>Tap sheets against counter to remove air bubbles</li>
+                        <li>Let macarons rest for 30-60 minutes until a skin forms</li>
+                        <li>Preheat oven to 300°F (150°C)</li>
+                        <li>Bake for 15-18 minutes</li>
+                        <li>Cool completely on the sheets</li>
+                        <li>For filling, beat butter until creamy</li>
+                        <li>Gradually add powdered sugar</li>
+                        <li>Add raspberry puree, vanilla, and salt</li>
+                        <li>Beat until light and fluffy</li>
+                        <li>Pipe filling onto half of the macaron shells</li>
+                        <li>Top with remaining shells</li>
+                        <li>Refrigerate for 24 hours to mature</li>
+                        <li>Bring to room temperature before serving</li>
+                    </ul>
+
+                    <div class="macros-box">
+                        <p>Calories: 120 per macaron | Fat: 6g | Carbs: 16g | Sugar: 14g</p>
+                    </div>
+                `;
+            }
+            
+            detailsContainer.innerHTML = content;
+            detailsContainer.style.display = 'block';
+            
+            // Scroll to recipe details
+            detailsContainer.scrollIntoView({ behavior: 'smooth', block: 'start' });
+        }
+
+        // Function to close recipe details
+        function closeRecipe() {
+            document.getElementById('recipe-details').style.display = 'none';
+        }
+
+        // Navbar scroll effect
+        const navbar = document.querySelector('.navbar');
+        window.addEventListener('scroll', function() {
+            if (window.scrollY > 50) {
+                navbar.classList.add('scrolled');
+            } else {
+                navbar.classList.remove('scrolled');
+            }
+        });
+
+        // Mobile menu toggle
+        const navToggle = document.querySelector('.nav-toggle');
+        const navLinks = document.querySelector('.nav-links');
+
+        navToggle.addEventListener('click', function() {
+            navToggle.classList.toggle('active');
+            navLinks.classList.toggle('active');
+        });
+
+        // Handle mobile dropdown clicks
+        document.querySelectorAll('.nav-links .dropdown').forEach(dropdown => {
+            if (window.innerWidth <= 992) {
+                dropdown.addEventListener('click', function(e) {
+                    this.classList.toggle('active');
+                    e.stopPropagation();
+                });
+            }
+        });
+
+        // Animation on scroll
+        function checkVisible() {
+            const elements = document.querySelectorAll('.animate');
+            elements.forEach(element => {
+                const position = element.getBoundingClientRect();
+                // If element is in viewport
+                if(position.top < window.innerHeight && position.bottom >= 0) {
+                    element.style.visibility = 'visible';
+                }
+            });
+        }
+
+        // Initialize animations
+        window.addEventListener('load', checkVisible);
+        window.addEventListener('scroll', checkVisible);
+        window.addEventListener('resize', checkVisible);
+
+        // Scroll to top button
+        const scrollTop = document.getElementById('scrollTop');
+
+        window.addEventListener('scroll', function() {
+            if (window.scrollY > 300) {
+                scrollTop.classList.add('active');
+            } else {
+                scrollTop.classList.remove('active');
+            }
+        });
+
+        scrollTop.addEventListener('click', function() {
+            window.scrollTo({
+                top: 0,
+                behavior: 'smooth'
+            });
+        });
+    </script>
+</body>
+</html>d sugar and beat until creamy</li>
+                        <li>Add sour cream and vanilla, beat until combined</li>
+                        <li>Add eggs one at a time, beating just until combined</li>
+                        <li>Pour filling over the crust</li>
+                        <li>Bake for 55-60 minutes until center is almost set</li>
+                        <li>Turn off oven, crack the door, and let cheesecake cool in oven for 1 hour</li>
+                        <li>Remove from oven and cool completely</li>
+                        <li>Refrigerate for at least 4 hours or overnight</li>
+                        <li>For the topping, puree half the strawberries</li>
+                        <li>Slice the remaining strawberries</li>
+                        <li>In a saucepan, combine puree, sugar, and lemon juice</li>
+                        <li>Bring to a simmer, then add cornstarch mixture</li>
+                        <li>Cook until thickened, then cool</li>
+                        <li>Fold in sliced strawberries</li>
+                        <li>Whip heavy cream with powdered sugar and vanilla</li>
+                        <li>Top cheesecake with strawberry sauce and whipped cream</li>
+                        <li>Garnish with fresh strawberries</li>
+                    </ul>
+
+                    <div class="macros-box">
+                        <p>Calories: 420 per serving | Fat: 28g | Carbs: 38g | Protein: 7g</p>
+                    </div>
+                `;
+            } else if (recipeId === 'chocolatecake') {
+                content = `
+                    <button class="close-btn" onclick="closeRecipe()">
+                        <i class="fas fa-times"></i>
+                    </button>
+                    <h3>Triple Chocolate Cake</h3>
+                    <p><strong>By:</strong> Pastry Chef Michael Brown</p>
+                    <p>Decadent chocolate cake with chocolate ganache filling and chocolate buttercream frosting.</p>
+                    
+                    <h4>Ingredients</h4>
+                    <ul>
+                        <li>For the cake: 2 cups all-purpose flour</li>
+                        <li>2 cups granulated sugar</li>
+                        <li>3/4 cup unsweetened cocoa powder</li>
+                        <li>2 teaspoons baking soda</li>
+                        <li>1 teaspoon baking powder</li>
+                        <li>1 teaspoon salt</li>
+                        <li>2 large eggs</li>
+                        <li>1 cup buttermilk</li>
+                        <li>1/2 cup vegetable oil</li>
+                        <li>2 teaspoons vanilla extract</li>
+                        <li>1 cup hot coffee</li>
+                        <li>For the ganache: 8 oz semi-sweet chocolate, chopped</li>
+                        <li>1 cup heavy cream</li>
+                        <li>For the frosting: 1 1/2 cups unsalted butter, softened</li>
+                        <li>1 cup unsweetened cocoa powder</li>
+                        <li>5 cups powdered sugar</li>
+                        <li>1/2 cup heavy cream</li>
+                        <li>2 teaspoons vanilla extract</li>
+                        <li>1/4 teaspoon salt</li>
+                        <li>Chocolate shavings for decoration</li>
+                    </ul>
+                    
+                    <h4>Instructions</h4>
+                    <ul>
+                        <li>Preheat oven to 350°F (175°C)</li>
+                        <li>Grease and flour two 9-inch round cake pans</li>
+                        <li>In a large bowl, whisk together flour, sugar, cocoa, baking soda, baking powder, and salt</li>
+                        <li>Add eggs, buttermilk, oil, and vanilla</li>
+                        <li>Beat with mixer for 2 minutes</li>
+                        <li>Stir in hot coffee (batter will be thin)</li>
+                        <li>Pour into prepared pans</li>
+                        <li>Bake for 30-35 minutes until a toothpick comes out clean</li>
+                        <li>Cool in pans for 10 minutes, then remove to wire racks</li>
+                        <li>For ganache, heat cream until just simmering</li>
+                        <li>Pour over chocolate and let stand 5 minutes</li>
+                        <li>Stir until smooth and cool until spreadable</li>
+                        <li>For frosting, beat butter until creamy</li>
+                        <li>Add cocoa powder and beat well</li>
+                        <li>Gradually ad

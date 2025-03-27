@@ -1,0 +1,1466 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Recepies - The Ultimate Cooking Guide</title>
+    <link href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.0.0/css/all.min.css" rel="stylesheet">
+    <link href="https://fonts.googleapis.com/css2?family=Poppins:wght@300;400;500;600;700&display=swap" rel="stylesheet">
+    <style>
+        /* General Reset */
+        * {
+            margin: 0;
+            padding: 0;
+            box-sizing: border-box;
+            font-family: 'Poppins', sans-serif;
+        }
+
+        body {
+            background-color: #0a1128;
+            color: #fff;
+            overflow-x: hidden;
+        }
+
+        /* Header with Background Video */
+        header {
+            position: relative;
+            width: 100%;
+            height: 80vh;
+            overflow: hidden;
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            text-align: center;
+        }
+
+        #bg-video {
+            position: absolute;
+            top: 0;
+            left: 0;
+            width: 100%;
+            height: 100%;
+            object-fit: cover;
+            z-index: -1;
+            filter: brightness(40%);
+        }
+
+        .overlay {
+            position: relative;
+            padding: 30px;
+            border-radius: 15px;
+            max-width: 90%;
+            text-align: center;
+            background: rgba(0, 0, 0, 0.4);
+            backdrop-filter: blur(5px);
+            animation: fadeIn 1.5s ease-in-out;
+        }
+
+        @keyframes fadeIn {
+            from { opacity: 0; transform: translateY(20px); }
+            to { opacity: 1; transform: translateY(0); }
+        }
+
+        .logo {
+            position: absolute;
+            top: 4px;
+            left: 4px;
+            max-width: 10px;
+            transition: transform 0.3s ease-in-out;
+            z-index: 5;
+        }
+
+        @media (max-width: 10px) {
+            .logo {
+                max-width: 20px;
+            }
+        }
+
+        .logo:hover {
+            transform: scale(1.1);
+            filter: drop-shadow(0 0 10px rgba(252, 163, 17, 0.8));
+        }
+
+        h1 {
+            font-size: 3.5rem;
+            color: #f8f9fa;
+            text-shadow: 2px 2px 15px rgba(255, 255, 255, 0.6);
+            margin-bottom: 20px;
+            font-weight: 700;
+        }
+
+        .tagline {
+            font-size: 1.5rem;
+            margin-bottom: 30px;
+            color: #fca311;
+            text-shadow: 1px 1px 8px rgba(0, 0, 0, 0.8);
+        }
+
+        .cta-button {
+            display: inline-block;
+            background: #fca311;
+            color: #0a1128;
+            padding: 12px 30px;
+            border-radius: 50px;
+            font-size: 1.2rem;
+            font-weight: 600;
+            text-decoration: none;
+            transition: all 0.3s ease;
+            margin-top: 20px;
+            border: 2px solid transparent;
+        }
+
+        .cta-button:hover {
+            background: transparent;
+            color: #fca311;
+            border: 2px solid #fca311;
+            transform: translateY(-5px);
+            box-shadow: 0 10px 20px rgba(252, 163, 17, 0.3);
+        }
+
+        @media (max-width: 768px) {
+            h1 {
+                font-size: 2.2rem;
+            }
+            .tagline {
+                font-size: 1.2rem;
+            }
+            header {
+                height: 60vh;
+            }
+            .cta-button {
+                padding: 10px 20px;
+                font-size: 1rem;
+            }
+        }
+
+        /* Modern Navbar */
+        .navbar {
+            position: fixed;
+            top: 0;
+            left: 0;
+            width: 100%;
+            z-index: 1000;
+            transition: all 0.3s ease;
+            padding: 20px 0;
+        }
+
+        .navbar.scrolled {
+            background: rgba(10, 17, 40, 0.95);
+            backdrop-filter: blur(10px);
+            padding: 15px 0;
+            box-shadow: 0 5px 20px rgba(0, 0, 0, 0.2);
+        }
+
+        .navbar .container {
+            display: flex;
+            align-items: center;
+            justify-content: space-between;
+            padding: 0 50px;
+        }
+
+        .nav-logo {
+            max-width: 100px;
+            transition: all 0.3s ease;
+        }
+
+        .nav-logo:hover {
+            transform: scale(1.05);
+        }
+
+        .nav-links {
+            display: flex;
+            gap: 30px;
+            list-style: none;
+        }
+
+        .nav-links li {
+            position: relative;
+        }
+
+        .nav-links a {
+            color: #fff;
+            text-decoration: none;
+            font-weight: 500;
+            font-size: 1.1rem;
+            transition: all 0.3s ease;
+            padding: 8px 0;
+            position: relative;
+        }
+
+        .nav-links a:before {
+            content: '';
+            position: absolute;
+            bottom: 0;
+            left: 0;
+            width: 0;
+            height: 2px;
+            background: #fca311;
+            transition: width 0.3s ease;
+        }
+
+        .nav-links a:hover {
+            color: #fca311;
+        }
+
+        .nav-links a:hover:before {
+            width: 100%;
+        }
+
+        /* Search Bar */
+        .search-bar {
+            display: flex;
+            align-items: center;
+            background: rgba(255, 255, 255, 0.1);
+            border-radius: 50px;
+            padding: 5px 15px;
+            transition: all 0.3s ease;
+            margin-left: 20px;
+        }
+
+        .search-bar:hover {
+            background: rgba(255, 255, 255, 0.2);
+        }
+
+        .search-bar input {
+            background: transparent;
+            border: none;
+            color: #fff;
+            padding: 8px 10px;
+            width: 200px;
+            outline: none;
+        }
+
+        .search-bar input::placeholder {
+            color: rgba(255, 255, 255, 0.7);
+        }
+
+        .search-bar button {
+            background: transparent;
+            border: none;
+            color: #fca311;
+            cursor: pointer;
+            padding: 0 5px;
+            font-size: 1.1rem;
+        }
+
+        /* User Authentication Buttons */
+        .auth-buttons {
+            display: flex;
+            align-items: center;
+            gap: 15px;
+            margin-left: 20px;
+        }
+
+        .auth-btn {
+            padding: 8px 20px;
+            border-radius: 50px;
+            font-weight: 500;
+            transition: all 0.3s ease;
+            cursor: pointer;
+            text-decoration: none;
+            font-size: 0.9rem;
+        }
+
+        .login-btn {
+            background: transparent;
+            border: 2px solid #fca311;
+            color: #fca311;
+        }
+
+        .login-btn:hover {
+            background: rgba(252, 163, 17, 0.1);
+        }
+
+        .signup-btn {
+            background: #fca311;
+            border: 2px solid #fca311;
+            color: #0a1128;
+        }
+
+        .signup-btn:hover {
+            background: #e09213;
+            border-color: #e09213;
+        }
+
+        .welcome-text {
+            color: #fca311;
+            margin-right: 10px;
+            font-weight: 500;
+            white-space: nowrap;
+        }
+
+        .dropdown-content {
+            position: absolute;
+            top: 100%;
+            left: 0;
+            background: rgba(10, 17, 40, 0.95);
+            min-width: 200px;
+            padding: 15px;
+            border-radius: 8px;
+            box-shadow: 0 10px 30px rgba(0, 0, 0, 0.2);
+            opacity: 0;
+            visibility: hidden;
+            transform: translateY(10px);
+            transition: all 0.3s ease;
+            z-index: 1;
+            backdrop-filter: blur(10px);
+            border: 1px solid rgba(255, 255, 255, 0.1);
+        }
+
+        .dropdown-content a {
+            display: block;
+            padding: 10px 15px;
+            color: #fff;
+            text-decoration: none;
+            transition: all 0.2s ease;
+            border-radius: 5px;
+        }
+
+        .dropdown-content a:hover {
+            background: rgba(252, 163, 17, 0.2);
+            transform: translateX(5px);
+        }
+
+        .dropdown:hover .dropdown-content {
+            opacity: 1;
+            visibility: visible;
+            transform: translateY(0);
+        }
+
+        .nav-toggle {
+            display: none;
+            background: none;
+            border: none;
+            cursor: pointer;
+            padding: 10px;
+            z-index: 1001;
+        }
+
+        .nav-toggle span {
+            display: block;
+            width: 30px;
+            height: 3px;
+            background-color: #fff;
+            margin: 6px 0;
+            transition: all 0.3s ease;
+        }
+
+        @media (max-width: 1200px) {
+            .navbar .container {
+                padding: 0 20px;
+            }
+
+            .search-bar {
+                margin-left: 10px;
+            }
+
+            .search-bar input {
+                width: 150px;
+            }
+
+            .auth-buttons {
+                margin-left: 10px;
+            }
+        }
+
+        @media (max-width: 992px) {
+            .navbar .container {
+                padding: 0 20px;
+            }
+
+            .nav-toggle {
+                display: block;
+            }
+
+            .nav-links, .search-bar, .auth-buttons {
+                display: none;
+            }
+
+            .nav-links.active {
+                display: flex;
+                position: fixed;
+                top: 0;
+                right: 0;
+                width: 80%;
+                max-width: 400px;
+                height: 100vh;
+                background: rgba(10, 17, 40, 0.98);
+                backdrop-filter: blur(10px);
+                flex-direction: column;
+                align-items: flex-start;
+                padding: 80px 40px;
+                transition: all 0.5s ease;
+                gap: 15px;
+                box-shadow: -10px 0 30px rgba(0, 0, 0, 0.3);
+            }
+
+            .search-bar.active {
+                display: flex;
+                width: 100%;
+                margin: 20px 0;
+            }
+
+            .search-bar.active input {
+                width: 100%;
+            }
+
+            .auth-buttons.active {
+                display: flex;
+                flex-direction: column;
+                width: 100%;
+                margin: 20px 0;
+                gap: 10px;
+            }
+
+            .dropdown-content {
+                position: static;
+                opacity: 1;
+                visibility: visible;
+                transform: none;
+                box-shadow: none;
+                padding: 0 0 0 20px;
+                margin-top: 10px;
+                display: none;
+                background: transparent;
+                border: none;
+            }
+
+            .dropdown.active .dropdown-content {
+                display: block;
+            }
+
+            .nav-toggle.active span:nth-child(1) {
+                transform: rotate(45deg) translate(8px, 8px);
+            }
+
+            .nav-toggle.active span:nth-child(2) {
+                opacity: 0;
+            }
+
+            .nav-toggle.active span:nth-child(3) {
+                transform: rotate(-45deg) translate(8px, -8px);
+            }
+        }
+
+        /* Chef's Special Section */
+        .chef-special {
+            text-align: center;
+            padding: 80px 20px;
+            max-width: 1000px;
+            margin: 0 auto;
+            display: flex;
+            flex-direction: column;
+            align-items: center;
+            justify-content: center;
+            position: relative;
+        }
+
+        .chef-special:before {
+            content: '';
+            position: absolute;
+            top: 0;
+            left: 50%;
+            transform: translateX(-50%);
+            width: 100px;
+            height: 3px;
+            background: #fca311;
+        }
+
+        .section-title {
+            font-size: 2.8rem;
+            margin-bottom: 30px;
+            color: #fca311;
+            position: relative;
+            display: inline-block;
+        }
+
+        .section-title:after {
+            content: '';
+            position: absolute;
+            bottom: -10px;
+            left: 0;
+            width: 100%;
+            height: 2px;
+            background: rgba(252, 163, 17, 0.3);
+        }
+
+        .video-container {
+            width: 100%;
+            border-radius: 15px;
+            overflow: hidden;
+            box-shadow: 0 15px 30px rgba(0, 0, 0, 0.3);
+            transition: all 0.3s ease;
+            position: relative;
+        }
+
+        .video-container:hover {
+            transform: translateY(-10px);
+            box-shadow: 0 20px 40px rgba(0, 0, 0, 0.5);
+        }
+
+        .video-container video {
+            width: 100%;
+            display: block;
+        }
+
+        .video-overlay {
+            position: absolute;
+            top: 0;
+            left: 0;
+            width: 100%;
+            height: 100%;
+            background: linear-gradient(to top, rgba(10, 17, 40, 0.7), transparent);
+            pointer-events: none;
+        }
+
+        /* Community Feedback Section */
+        .feedback-section {
+            text-align: center;
+            padding: 80px 20px;
+            max-width: 1200px;
+            margin: auto;
+            position: relative;
+        }
+
+        .feedback-section:before {
+            content: '';
+            position: absolute;
+            top: 0;
+            left: 50%;
+            transform: translateX(-50%);
+            width: 100px;
+            height: 3px;
+            background: #fca311;
+        }
+
+        .feedback-container {
+            display: grid;
+            grid-template-columns: repeat(auto-fit, minmax(300px, 1fr));
+            gap: 30px;
+            margin-top: 50px;
+        }
+
+        .feedback {
+            background: rgba(255, 255, 255, 0.05);
+            padding: 30px;
+            border-radius: 15px;
+            transition: all 0.3s ease;
+            position: relative;
+            overflow: hidden;
+        }
+
+        .feedback:before {
+            content: '\201C';
+            position: absolute;
+            top: -20px;
+            left: 20px;
+            font-size: 120px;
+            color: rgba(252, 163, 17, 0.1);
+            font-family: serif;
+        }
+
+        .feedback:hover {
+            transform: translateY(-10px);
+            box-shadow: 0 10px 30px rgba(0, 0, 0, 0.2);
+            background: rgba(255, 255, 255, 0.1);
+        }
+
+        .highlight {
+            border-left: 5px solid #fca311;
+        }
+
+        .user-info {
+            display: flex;
+            align-items: center;
+            margin-bottom: 15px;
+            justify-content: flex-start;
+        }
+
+        .user-avatar {
+            width: 50px;
+            height: 50px;
+            border-radius: 50%;
+            overflow: hidden;
+            margin-right: 15px;
+        }
+
+        .user-avatar img {
+            width: 100%;
+            height: 100%;
+            object-fit: cover;
+        }
+
+        .user-name {
+            font-weight: 600;
+            color: #fca311;
+        }
+
+        .feedback p {
+            text-align: left;
+            line-height: 1.6;
+        }
+
+        .feedback-date {
+            margin-top: 15px;
+            display: block;
+            text-align: right;
+            font-size: 0.9rem;
+            color: rgba(255, 255, 255, 0.6);
+        }
+
+        .rating {
+            color: #fca311;
+            margin-top: 10px;
+            text-align: left;
+        }
+
+        /* Feature Cards Section */
+        .features-section {
+            padding: 80px 20px;
+            max-width: 1200px;
+            margin: auto;
+            position: relative;
+        }
+
+        .features-grid {
+            display: grid;
+            grid-template-columns: repeat(auto-fit, minmax(300px, 1fr));
+            gap: 30px;
+            margin-top: 50px;
+        }
+
+        .feature-card {
+            background: rgba(255, 255, 255, 0.05);
+            border-radius: 15px;
+            padding: 30px;
+            text-align: center;
+            transition: all 0.3s ease;
+            position: relative;
+            overflow: hidden;
+        }
+
+        .feature-card:hover {
+            transform: translateY(-10px);
+            background: rgba(255, 255, 255, 0.1);
+            box-shadow: 0 15px 30px rgba(0, 0, 0, 0.2);
+        }
+
+        .feature-icon {
+            background: rgba(252, 163, 17, 0.1);
+            width: 80px;
+            height: 80px;
+            border-radius: 50%;
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            margin: 0 auto 20px;
+            transition: all 0.3s ease;
+        }
+
+        .feature-card:hover .feature-icon {
+            background: #fca311;
+            transform: scale(1.1);
+        }
+
+        .feature-icon i {
+            font-size: 35px;
+            color: #fca311;
+            transition: all 0.3s ease;
+        }
+
+        .feature-card:hover .feature-icon i {
+            color: #0a1128;
+        }
+
+        .feature-title {
+            font-size: 1.5rem;
+            margin-bottom: 15px;
+            color: #f8f9fa;
+        }
+
+        .feature-desc {
+            color: rgba(255, 255, 255, 0.8);
+            line-height: 1.6;
+        }
+
+        /* Footer */
+        footer {
+            text-align: center;
+            padding: 60px 20px 30px;
+            background: linear-gradient(to bottom, transparent, rgba(255, 255, 255, 0.05));
+            margin-top: 40px;
+            position: relative;
+        }
+
+        .footer-content {
+            max-width: 1200px;
+            margin: 0 auto;
+            display: grid;
+            grid-template-columns: repeat(auto-fit, minmax(250px, 1fr));
+            gap: 40px;
+            text-align: left;
+        }
+
+        .footer-column h3 {
+            font-size: 1.5rem;
+            margin-bottom: 20px;
+            color: #fca311;
+            position: relative;
+            padding-bottom: 10px;
+        }
+
+        .footer-column h3:after {
+            content: '';
+            position: absolute;
+            bottom: 0;
+            left: 0;
+            width: 50px;
+            height: 2px;
+            background: #fca311;
+        }
+
+        .footer-links {
+            list-style: none;
+        }
+
+        .footer-links li {
+            margin-bottom: 10px;
+        }
+
+        .footer-links a {
+            color: rgba(255, 255, 255, 0.8);
+            text-decoration: none;
+            transition: all 0.3s ease;
+        }
+
+        .footer-links a:hover {
+            color: #fca311;
+            padding-left: 5px;
+        }
+
+        .social-links {
+            display: flex;
+            gap: 15px;
+            margin-top: 20px;
+        }
+
+        .social-links a {
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            width: 40px;
+            height: 40px;
+            background: rgba(255, 255, 255, 0.1);
+            border-radius: 50%;
+            color: #fff;
+            transition: all 0.3s ease;
+        }
+
+        .social-links a:hover {
+            background: #fca311;
+            transform: translateY(-5px);
+        }
+
+        .copyright {
+            margin-top: 40px;
+            padding-top: 20px;
+            border-top: 1px solid rgba(255, 255, 255, 0.1);
+        }
+
+        .copyright p {
+            margin: 10px 0;
+            color: rgba(255, 255, 255, 0.6);
+        }
+
+        .developer {
+            margin-top: 15px;
+            font-size: 0.9rem;
+            color: rgba(255, 255, 255, 0.5);
+        }
+
+        .developer a {
+            color: #fca311;
+            text-decoration: none;
+        }
+
+        .developer a:hover {
+            text-decoration: underline;
+        }
+
+        /* Animation */
+        @keyframes slideInUp {
+            from {
+                transform: translateY(50px);
+                opacity: 0;
+            }
+            to {
+                transform: translateY(0);
+                opacity: 1;
+            }
+        }
+
+        .animate {
+            animation: slideInUp 0.8s forwards;
+        }
+
+        .delay-1 {
+            animation-delay: 0.2s;
+        }
+
+        .delay-2 {
+            animation-delay: 0.4s;
+        }
+
+        .delay-3 {
+            animation-delay: 0.6s;
+        }
+
+        /* Scroll to top button */
+        .scroll-top {
+            position: fixed;
+            bottom: 30px;
+            right: 30px;
+            width: 50px;
+            height: 50px;
+            background: #fca311;
+            border-radius: 50%;
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            color: #0a1128;
+            font-size: 20px;
+            cursor: pointer;
+            opacity: 0;
+            visibility: hidden;
+            transition: all 0.3s ease;
+            z-index: 999;
+        }
+
+        .scroll-top.active {
+            opacity: 1;
+            visibility: visible;
+        }
+
+        .scroll-top:hover {
+            background: #fff;
+            transform: translateY(-5px);
+            box-shadow: 0 10px 20px rgba(252, 163, 17, 0.3);
+        }
+
+        /* Login/Signup Modal Styles */
+        .modal {
+            display: none;
+            position: fixed;
+            top: 0;
+            left: 0;
+            width: 100%;
+            height: 100%;
+            background: rgba(0, 0, 0, 0.8);
+            z-index: 2000;
+            align-items: center;
+            justify-content: center;
+            backdrop-filter: blur(5px);
+        }
+
+        .modal-content {
+            background: rgba(10, 17, 40, 0.95);
+            border-radius: 15px;
+            padding: 30px;
+            max-width: 400px;
+            width: 90%;
+            position: relative;
+            box-shadow: 0 15px 30px rgba(0, 0, 0, 0.3);
+            border: 1px solid rgba(252, 163, 17, 0.3);
+            animation: modalFadeIn 0.3s ease-out;
+        }
+
+        @keyframes modalFadeIn {
+            from {
+                opacity: 0;
+                transform: translateY(-20px);
+            }
+            to {
+                opacity: 1;
+                transform: translateY(0);
+            }
+        }
+
+        .close-modal {
+            position: absolute;
+            top: 15px;
+            right: 15px;
+            font-size: 24px;
+            color: rgba(255, 255, 255, 0.7);
+            cursor: pointer;
+            transition: all 0.3s ease;
+        }
+
+        .close-modal:hover {
+            color: #fca311;
+            transform: rotate(90deg);
+        }
+
+        .form-title {
+            font-size: 1.8rem;
+            margin-bottom: 20px;
+            color: #fca311;
+            text-align: center;
+        }
+
+        .form-group {
+            margin-bottom: 20px;
+        }
+
+        .form-group label {
+            display: block;
+            margin-bottom: 8px;
+            color: rgba(255, 255, 255, 0.8);
+        }
+
+        .form-group input {
+            width: 100%;
+            padding: 12px 15px;
+            background: rgba(255, 255, 255, 0.1);
+            border: 1px solid rgba(255, 255, 255, 0.2);
+            border-radius: 8px;
+            color: #fff;
+            transition: all 0.3s ease;
+        }
+
+        .form-group input:focus {
+            border-color: #fca311;
+            outline: none;
+            background: rgba(255, 255, 255, 0.15);
+        }
+
+        .form-btn {
+            width: 100%;
+            padding: 12px;
+            background: #fca311;
+            color: #0a1128;
+            border: none;
+            border-radius: 8px;
+            font-weight: 600;
+            cursor: pointer;
+            transition: all 0.3s ease;
+            margin-top: 10px;
+        }
+
+        .form-btn:hover {
+            background: #e09213;
+            transform: translateY(-2px);
+        }
+
+        .form-footer {
+            text-align: center;
+            margin-top: 20px;
+            color: rgba(255, 255, 255, 0.6);
+            font-size: 0.9rem;
+        }
+
+        .form-footer a {
+            color: #fca311;
+            text-decoration: none;
+            transition: all 0.3s ease;
+        }
+
+        .form-footer a:hover {
+            text-decoration: underline;
+        }
+        
+        /* Message styles */
+        .messages-container {
+            position: fixed;
+            top: 80px;
+            right: 20px;
+            z-index: 9999;
+            max-width: 350px;
+        }
+        
+        .message {
+            padding: 15px;
+            margin-bottom: 10px;
+            border-radius: 5px;
+            box-shadow: 0 2px 5px rgba(0,0,0,0.2);
+            color: white;
+            position: relative;
+        }
+        
+        .message.error {
+            background: #f44336;
+        }
+        
+        .message.success {
+            background: #4CAF50;
+        }
+        
+        .message.info {
+            background: #2196F3;
+        }
+        
+        .message.warning {
+            background: #ff9800;
+        }
+        
+        .close-message {
+            float: right;
+            cursor: pointer;
+            font-weight: bold;
+        }
+    </style>
+</head>
+<body>
+    <!-- Modern Fixed Navbar -->
+    <nav class="navbar">
+        <div class="container">
+            <a href="#" class="nav-logo">
+                <!-- Logo can be added here -->
+            </a>
+            <button class="nav-toggle">
+                <span></span>
+                <span></span>
+                <span></span>
+            </button>
+            <ul class="nav-links">
+                <li><a href="#"><i class="fas fa-home"></i> Home</a></li>
+                <li class="dropdown">
+                    <a href="#"><i class="fas fa-utensils"></i> Daily Recipes</a>
+                    <div class="dropdown-content">
+                        <a href="{% url 'recipes1:breakfast' %}"><i class="fas fa-coffee"></i> Breakfast</a>
+                        <a href="{% url 'recipes2:lunch' %}"><i class="fas fa-hamburger"></i> Lunch</a>
+                        <a href="{% url 'recipes3:dinner' %}"><i class="fas fa-concierge-bell"></i> Dinner</a>
+                        <a href="{% url 'recipes4:dessert' %}"><i class="fas fa-ice-cream"></i> Dessert</a>
+                        <a href="{% url 'recipes5:drinks' %}"><i class="fas fa-glass-cheers"></i> Drinks</a>
+                    </div>
+                </li>
+                <li class="dropdown">
+                    <a href="#"><i class="fas fa-calendar-alt"></i> Holidays</a>
+                    <div class="dropdown-content">
+                        <a href="{% url 'recipes8:mother' %}"><i class="fas fa-heart"></i> Mother's Day</a>
+                        <a href="{% url 'recipes9:new' %}"><i class="fas fa-glass-champagne"></i> New Year</a>
+                    </div>
+                </li>
+                <li class="dropdown">
+                    <a href="#"><i class="fas fa-heartbeat"></i> Health & Diet</a>
+                    <div class="dropdown-content">
+                        <a href="{% url 'recipes6:keto' %}"><i class="fas fa-drumstick-bite"></i> Keto</a>
+                        <a href="{% url 'recipes7:vege' %}"><i class="fas fa-seedling"></i> Vegetarian</a>
+                    </div>
+                </li>
+            </ul>
+
+            <!-- Search Bar -->
+            <div class="search-bar">
+                <input type="text" placeholder="Search for recipes...">
+                <button type="submit"><i class="fas fa-search"></i></button>
+            </div>
+
+            <!-- Authentication Buttons -->
+            <div class="auth-buttons">
+                {% if user.is_authenticated %}
+                <span class="welcome-text">Welcome, {{ user.username }}!</span>
+                <a href="{% url 'profile' %}" class="auth-btn login-btn">My Profile</a>
+                <a href="{% url 'logout' %}" class="auth-btn signup-btn">Logout</a>
+            {% else %}
+                <a href="#" class="auth-btn login-btn" id="loginBtn">Login</a>
+                <a href="#" class="auth-btn signup-btn" id="signupBtn">Sign Up</a>
+            {% endif %}
+        </div>
+    </div>
+</nav>
+
+<!-- Login Modal -->
+<div class="modal" id="loginModal">
+    <div class="modal-content">
+        <span class="close-modal" id="closeLogin">&times;</span>
+        <h2 class="form-title">Login to Your Account</h2>
+        <form method="post" action="{% url 'login' %}">
+            {% csrf_token %}
+            <div class="form-group">
+                <label for="loginEmail">Email or Username</label>
+                <input type="text" id="loginEmail" name="username" required>
+            </div>
+            <div class="form-group">
+                <label for="loginPassword">Password</label>
+                <input type="password" id="loginPassword" name="password" required>
+            </div>
+            <input type="hidden" name="next" value="{{ request.path }}">
+            <button type="submit" class="form-btn">Login</button>
+        </form>
+        <div class="form-footer">
+            <p>Don't have an account? <a href="#" id="switchToSignup">Sign up here</a></p>
+            <p><a href="{% url 'password_reset' %}">Forgot your password?</a></p>
+        </div>
+    </div>
+</div>
+
+<header>
+    <video autoplay muted loop id="bg-video">
+        <source src="/api/placeholder/1920/1080" type="video/mp4">
+    </video>
+    <div class="overlay">
+        <h1>Welcome to Recepies</h1>
+        <p class="tagline">Discover the art of cooking with our exclusive recipes</p>
+        <a href="#" class="cta-button">Explore Recipes <i class="fas fa-arrow-right"></i></a>
+    </div>
+</header>
+
+<!-- Features Section -->
+<section class="features-section">
+    <h2 class="section-title" style="text-align: center;">Why Choose Recepies?</h2>
+    <div class="features-grid">
+        <div class="feature-card animate delay-1">
+            <div class="feature-icon">
+                <i class="fas fa-book-open"></i>
+            </div>
+            <h3 class="feature-title">Extensive Collection</h3>
+            <p class="feature-desc">Discover thousands of recipes from everyday meals to special occasions, all carefully curated for you.</p>
+        </div>
+        <div class="feature-card animate delay-2">
+            <div class="feature-icon">
+                <i class="fas fa-star"></i>
+            </div>
+            <h3 class="feature-title">Chef-Approved</h3>
+            <p class="feature-desc">All recipes are tested and approved by professional chefs to ensure perfect results every time.</p>
+        </div>
+        <div class="feature-card animate delay-3">
+            <div class="feature-icon">
+                <i class="fas fa-utensils"></i>
+            </div>
+            <h3 class="feature-title">Easy Instructions</h3>
+            <p class="feature-desc">Simple step-by-step instructions make cooking a breeze, even for beginners.</p>
+        </div>
+    </div>
+</section>
+
+<!-- Chef's Special Section -->
+<section class="chef-special">
+    <h2 class="section-title">Chef's Special</h2>
+    <div class="video-container">
+        <video controls>
+            <source src="/api/placeholder/800/450" type="video/mp4">
+        </video>
+        <div class="video-overlay"></div>
+    </div>
+</section>
+
+<!-- Community Feedback Section -->
+<section class="feedback-section">
+    <h2 class="section-title">Community Feedback</h2>
+    <div class="feedback-container">
+        <div class="feedback highlight animate delay-1">
+            <div class="user-info">
+                <div class="user-avatar">
+                    <img src="/api/placeholder/50/50" alt="Sarah M.">
+                </div>
+                <div>
+                    <p class="user-name">Sarah M.</p>
+                </div>
+            </div>
+            <p>"I tried the pasta recipe and it turned out amazing! The instructions were clear and the pictures helped guide me through each step. Can't wait to try more recipes!"</p>
+            <div class="rating">
+                <i class="fas fa-star"></i>
+                <i class="fas fa-star"></i>
+                <i class="fas fa-star"></i>
+                <i class="fas fa-star"></i>
+                <i class="fas fa-star"></i>
+            </div>
+            <span class="feedback-date">March 15, 2025</span>
+        </div>
+        <div class="feedback highlight animate delay-2">
+            <div class="user-info">
+                <div class="user-avatar">
+                    <img src="/api/placeholder/50/50" alt="James T.">
+                </div>
+                <div>
+                    <p class="user-name">James T.</p>
+                </div>
+            </div>
+            <p>"Absolutely love the variety of recipes here! As someone who follows a keto diet, I appreciate the wide range of options available. The filtering system makes it easy to find exactly what I'm looking for."</p>
+            <div class="rating">
+                <i class="fas fa-star"></i>
+                <i class="fas fa-star"></i>
+                <i class="fas fa-star"></i>
+                <i class="fas fa-star"></i>
+                <i class="fas fa-star-half-alt"></i>
+            </div>
+            <span class="feedback-date">March 10, 2025</span>
+        </div>
+        <div class="feedback highlight animate delay-3">
+            <div class="user-info">
+                <div class="user-avatar">
+                    <img src="/api/placeholder/50/50" alt="Emily R.">
+                </div>
+                <div>
+                    <p class="user-name">Emily R.</p>
+                </div>
+            </div>
+            <p>"Your holiday-themed recipes were a hit! I made several dishes for our family gathering, and everyone was impressed. The presentation tips were especially helpful. Thank you for making me look like a pro!"</p>
+            <div class="rating">
+                <i class="fas fa-star"></i>
+                <i class="fas fa-star"></i>
+                <i class="fas fa-star"></i>
+                <i class="fas fa-star"></i>
+                <i class="fas fa-star"></i>
+            </div>
+            <span class="feedback-date">March 5, 2025</span>
+        </div>
+    </div>
+</section>
+
+<!-- Footer -->
+<footer>
+    <div class="footer-content">
+        <div class="footer-column">
+            <h3>Quick Links</h3>
+            <ul class="footer-links">
+                <li><a href="#">Home</a></li>
+                <li><a href="#">Recipes</a></li>
+                <li><a href="#">Privacy Policy</a></li>
+                <li><a href="#">Terms of Service</a></li>
+            </ul>
+        </div>
+        <div class="footer-column">
+            <h3>Categories</h3>
+            <ul class="footer-links">
+                <li><a href="#">Breakfast</a></li>
+                <li><a href="#">Lunch</a></li>
+                <li><a href="#">Dinner</a></li>
+                <li><a href="#">Desserts</a></li>
+                <li><a href="#">Healthy Options</a></li>
+            </ul>
+        </div>
+        <div class="footer-column">
+            <h3>Contact Us</h3>
+            <ul class="footer-links">
+                <li><i class="fas fa-envelope"></i> info@recepies.com</li>
+                <li><i class="fas fa-phone"></i> +1 (555) 123-4567</li>
+                <li><i class="fas fa-map-marker-alt"></i> 123 Cooking St, Food City</li>
+            </ul>
+            <div class="social-links">
+                <a href="#"><i class="fab fa-facebook-f"></i></a>
+                <a href="#"><i class="fab fa-instagram"></i></a>
+                <a href="#"><i class="fab fa-twitter"></i></a>
+                <a href="#"><i class="fab fa-youtube"></i></a>
+            </div>
+        </div>
+        <div class="footer-column">
+            <h3>Newsletter</h3>
+            <p>Subscribe to get the latest recipes and cooking tips delivered to your inbox.</p>
+            <form style="margin-top: 15px;">
+                <input type="email" placeholder="Your Email Address" style="padding: 10px; width: 100%; border-radius: 5px; border: none; margin-bottom: 10px; background: rgba(255, 255, 255, 0.1); color: #fff;">
+                <button type="submit" style="padding: 10px 20px; background: #fca311; border: none; border-radius: 5px; color: #0a1128; cursor: pointer; font-weight: 600; width: 100%;">Subscribe</button>
+            </form>
+        </div>
+    </div>
+    <div class="copyright">
+        <p>© 2025 Recepies. All rights reserved.</p>
+        <p class="developer">Designed with <i class="fas fa-heart" style="color: #fca311;"></i> by <a href="#">Your Name</a></p>
+    </div>
+</footer>
+
+<!-- Signup Modal -->
+<div class="modal" id="signupModal">
+    <div class="modal-content">
+        <span class="close-modal" id="closeSignup">&times;</span>
+        <h2 class="form-title">Create Your Account</h2>
+        <form method="post" action="{% url 'signup' %}">
+            {% csrf_token %}
+            <div class="form-group">
+                <label for="signupName">Full Name</label>
+                <input type="text" id="signupName" name="full_name" required>
+            </div>
+            <div class="form-group">
+                <label for="signupEmail">Email</label>
+                <input type="email" id="signupEmail" name="email" required>
+            </div>
+            <div class="form-group">
+                <label for="signupUsername">Username</label>
+                <input type="text" id="signupUsername" name="username" required>
+            </div>
+            <div class="form-group">
+                <label for="signupPassword1">Password</label>
+                <input type="password" id="signupPassword1" name="password1" required>
+            </div>
+            <div class="form-group">
+                <label for="signupPassword2">Confirm Password</label>
+                <input type="password" id="signupPassword2" name="password2" required>
+            </div>
+            <input type="hidden" name="next" value="{{ request.path }}">
+            <button type="submit" class="form-btn">Create Account</button>
+        </form>
+        <div class="form-footer">
+            <p>Already have an account? <a href="#" id="switchToLogin">Login here</a></p>
+        </div>
+    </div>
+</div>
+
+<div class="scroll-top" id="scrollTop">
+    <i class="fas fa-chevron-up"></i>
+</div>
+
+<!-- Django Messages Display -->
+{% if messages %}
+<div class="messages-container">
+    {% for message in messages %}
+    <div class="message {% if message.tags %}{{ message.tags }}{% endif %}">
+        {{ message }}
+        <span class="close-message">&times;</span>
+    </div>
+    {% endfor %}
+</div>
+
+<script>
+    // Auto-hide messages after 5 seconds
+    setTimeout(function() {
+        const messages = document.querySelectorAll('.message');
+        messages.forEach(message => {
+            message.style.opacity = '0';
+            message.style.transition = 'opacity 0.5s ease';
+            setTimeout(() => message.remove(), 500);
+        });
+    }, 5000);
+    
+    // Close message on click
+    document.querySelectorAll('.close-message').forEach(closeBtn => {
+        closeBtn.addEventListener('click', function() {
+            this.parentElement.style.opacity = '0';
+            this.parentElement.style.transition = 'opacity 0.5s ease';
+            setTimeout(() => this.parentElement.remove(), 500);
+        });
+    });
+</script>
+{% endif %}
+
+<!-- JavaScript for interactivity -->
+<script>
+    // Navbar Scroll Effect
+    window.addEventListener('scroll', function() {
+        const navbar = document.querySelector('.navbar');
+        const scrollTop = document.querySelector('.scroll-top');
+        
+        if (window.scrollY > 50) {
+            navbar.classList.add('scrolled');
+            scrollTop.classList.add('active');
+        } else {
+            navbar.classList.remove('scrolled');
+            scrollTop.classList.remove('active');
+        }
+    });
+
+    // Mobile Navigation Toggle
+    const navToggle = document.querySelector('.nav-toggle');
+    const navLinks = document.querySelector('.nav-links');
+    const searchBar = document.querySelector('.search-bar');
+    const authButtons = document.querySelector('.auth-buttons');
+    
+    navToggle.addEventListener('click', function() {
+        navToggle.classList.toggle('active');
+        navLinks.classList.toggle('active');
+        searchBar.classList.toggle('active');
+        authButtons.classList.toggle('active');
+    });
+
+    // Dropdowns on Mobile
+    const dropdowns = document.querySelectorAll('.dropdown');
+    
+    if (window.innerWidth < 992) {
+        dropdowns.forEach(dropdown => {
+            dropdown.addEventListener('click', function() {
+                this.classList.toggle('active');
+            });
+        });
+    }
+
+    // Scroll to Top
+    document.getElementById('scrollTop').addEventListener('click', function() {
+        window.scrollTo({
+            top: 0,
+            behavior: 'smooth'
+        });
+    });
+
+    // Login/Signup Modal
+    const loginBtn = document.getElementById('loginBtn');
+    const signupBtn = document.getElementById('signupBtn');
+    const loginModal = document.getElementById('loginModal');
+    const signupModal = document.getElementById('signupModal');
+    const closeLogin = document.getElementById('closeLogin');
+    const closeSignup = document.getElementById('closeSignup');
+    const switchToSignup = document.getElementById('switchToSignup');
+    const switchToLogin = document.getElementById('switchToLogin');
+
+    // Only set up modal events if buttons exist (user is not logged in)
+    if (loginBtn) { 
+        loginBtn.addEventListener('click', function() {
+            loginModal.style.display = 'flex';
+        });
+    }
+    
+    if (signupBtn) {
+        signupBtn.addEventListener('click', function() {
+            signupModal.style.display = 'flex';
+        });
+    }
+
+    if (closeLogin) {
+        closeLogin.addEventListener('click', function() {
+            loginModal.style.display = 'none';
+        });
+    }
+
+    if (closeSignup) {
+        closeSignup.addEventListener('click', function() {
+            signupModal.style.display = 'none';
+        });
+    }
+
+    if (switchToSignup) {
+        switchToSignup.addEventListener('click', function() {
+            loginModal.style.display = 'none';
+            signupModal.style.display = 'flex';
+        });
+    }
+
+    if (switchToLogin) {
+        switchToLogin.addEventListener('click', function() {
+            signupModal.style.display = 'none';
+            loginModal.style.display = 'flex';
+        });
+    }
+
+    // Close modals when clicking outside
+    window.addEventListener('click', function(event) {
+        if (event.target == loginModal) {
+            loginModal.style.display = 'none';
+        }
+        if (event.target == signupModal) {
+            signupModal.style.display = 'none';
+        }
+    });
+
+    // Animation on scroll
+    const animatedElements = document.querySelectorAll('.animate');
+    
+    function checkIfInView() {
+        const windowHeight = window.innerHeight;
+        const windowTopPosition = window.scrollY;
+        const windowBottomPosition = windowTopPosition + windowHeight;
+        
+        animatedElements.forEach(element => {
+            const elementHeight = element.offsetHeight;
+            const elementTopPosition = element.offsetTop;
+            const elementBottomPosition = elementTopPosition + elementHeight;
+            
+            if (elementBottomPosition >= windowTopPosition && elementTopPosition <= windowBottomPosition) {
+                element.style.opacity = 1;
+                element.style.transform = 'translateY(0)';
+            }
+        });
+    }
+    
+    window.addEventListener('scroll', checkIfInView);
+    window.addEventListener('load', checkIfInView);
+</script>
+</body>
+</html>

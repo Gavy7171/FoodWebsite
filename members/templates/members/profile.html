@@ -1,0 +1,49 @@
+<!-- If this is the contents of profile.html, please confirm -->
+<!DOCTYPE html>
+<html>
+<head>
+    <title>User Profile</title>
+    <meta name="viewport" content="width=device-width, initial-scale=1">
+    <style>
+        /* Your existing CSS styles */
+    </style>
+</head>
+<body>
+    <div class="profile-container">
+        <h1>User Profile</h1>
+        
+        <div class="profile-section">
+            <h2>Account Information</h2>
+            <div class="field">
+                <div class="field-label">Username:</div>
+                <div class="field-value">{{ user.username }}</div>
+            </div>
+            <div class="field">
+                <div class="field-label">Email:</div>
+                <div class="field-value">{{ user.email|default:"Not provided" }}</div>
+            </div>
+            <div class="field">
+                <div class="field-label">Date Joined:</div>
+                <div class="field-value">{{ user.date_joined|date:"F d, Y" }}</div>
+            </div>
+        </div>
+        
+        <div class="profile-section">
+            <h2>Personal Information</h2>
+            <div class="field">
+                <div class="field-label">First Name:</div>
+                <div class="field-value">{{ user.first_name|default:"Not provided" }}</div>
+            </div>
+            <div class="field">
+                <div class="field-label">Last Name:</div>
+                <div class="field-value">{{ user.last_name|default:"Not provided" }}</div>
+            </div>
+        </div>
+        
+        <div class="actions">
+            <a href="/" class="btn btn-home">Home</a>
+            
+        </div>
+    </div>  
+</body>
+</html>

@@ -1,0 +1,1166 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Recepies - Drinks Recipes</title>
+    <link href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.0.0/css/all.min.css" rel="stylesheet">
+    <link href="https://fonts.googleapis.com/css2?family=Poppins:wght@300;400;500;600;700&display=swap" rel="stylesheet">
+    <style>
+        /* General Reset */
+        * {
+            margin: 0;
+            padding: 0;
+            box-sizing: border-box;
+            font-family: 'Poppins', sans-serif;
+        }
+
+        body {
+            background-color: #0a1128;
+            color: #fff;
+            overflow-x: hidden;
+        }
+
+        /* Header with Background Video */
+        header {
+            position: relative;
+            width: 100%;
+            height: 60vh;
+            overflow: hidden;
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            text-align: center;
+        }
+
+        #bg-video {
+            position: absolute;
+            top: 0;
+            left: 0;
+            width: 100%;
+            height: 100%;
+            object-fit: cover;
+            z-index: -1;
+            filter: brightness(40%);
+        }
+
+        .overlay {
+            position: relative;
+            padding: 30px;
+            border-radius: 15px;
+            max-width: 90%;
+            text-align: center;
+            background: rgba(0, 0, 0, 0.4);
+            backdrop-filter: blur(5px);
+            animation: fadeIn 1.5s ease-in-out;
+        }
+
+        @keyframes fadeIn {
+            from { opacity: 0; transform: translateY(20px); }
+            to { opacity: 1; transform: translateY(0); }
+        }
+
+        .logo {
+            position: absolute;
+            top: 15px;
+            left: 15px;
+            max-width: 120px;
+            transition: transform 0.3s ease-in-out;
+            z-index: 1000;
+        }
+
+        @media (max-width: 768px) {
+            .logo {
+                max-width: 80px;
+            }
+        }
+
+        .logo:hover {
+            transform: scale(1.1);
+            filter: drop-shadow(0 0 10px rgba(252, 163, 17, 0.8));
+        }
+
+        h1 {
+            font-size: 3rem;
+            color: #f8f9fa;
+            text-shadow: 2px 2px 15px rgba(255, 255, 255, 0.6);
+            margin-bottom: 20px;
+            font-weight: 700;
+        }
+
+        .tagline {
+            font-size: 1.5rem;
+            margin-bottom: 30px;
+            color: #fca311;
+            text-shadow: 1px 1px 8px rgba(0, 0, 0, 0.8);
+        }
+
+        @media (max-width: 768px) {
+            h1 {
+                font-size: 2.2rem;
+            }
+            .tagline {
+                font-size: 1.2rem;
+            }
+            header {
+                height: 50vh;
+            }
+        }
+
+        /* Modern Navbar */
+        .navbar {
+            position: fixed;
+            top: 0;
+            left: 0;
+            width: 100%;
+            z-index: 1000;
+            transition: all 0.3s ease;
+            padding: 20px 0;
+        }
+
+        .navbar.scrolled {
+            background: rgba(10, 17, 40, 0.95);
+            backdrop-filter: blur(10px);
+            padding: 15px 0;
+            box-shadow: 0 5px 20px rgba(0, 0, 0, 0.2);
+        }
+
+        .navbar .container {
+            display: flex;
+            align-items: center;
+            justify-content: space-between;
+            padding: 0 50px;
+        }
+
+        .nav-logo {
+            max-width: 100px;
+            transition: all 0.3s ease;
+        }
+
+        .nav-logo:hover {
+            transform: scale(1.05);
+        }
+
+        .nav-links {
+            display: flex;
+            gap: 30px;
+            list-style: none;
+        }
+
+        .nav-links li {
+            position: relative;
+        }
+
+        .nav-links a {
+            color: #fff;
+            text-decoration: none;
+            font-weight: 500;
+            font-size: 1.1rem;
+            transition: all 0.3s ease;
+            padding: 8px 0;
+            position: relative;
+        }
+
+        .nav-links a:before {
+            content: '';
+            position: absolute;
+            bottom: 0;
+            left: 0;
+            width: 0;
+            height: 2px;
+            background: #fca311;
+            transition: width 0.3s ease;
+        }
+
+        .nav-links a:hover {
+            color: #fca311;
+        }
+
+        .nav-links a:hover:before {
+            width: 100%;
+        }
+
+        .dropdown-content {
+            position: absolute;
+            top: 100%;
+            left: 0;
+            background: rgba(10, 17, 40, 0.95);
+            min-width: 200px;
+            padding: 15px;
+            border-radius: 8px;
+            box-shadow: 0 10px 30px rgba(0, 0, 0, 0.2);
+            opacity: 0;
+            visibility: hidden;
+            transform: translateY(10px);
+            transition: all 0.3s ease;
+            z-index: 1;
+            backdrop-filter: blur(10px);
+            border: 1px solid rgba(255, 255, 255, 0.1);
+        }
+
+        .dropdown-content a {
+            display: block;
+            padding: 10px 15px;
+            color: #fff;
+            text-decoration: none;
+            transition: all 0.2s ease;
+            border-radius: 5px;
+        }
+
+        .dropdown-content a:hover {
+            background: rgba(252, 163, 17, 0.2);
+            transform: translateX(5px);
+        }
+
+        .dropdown:hover .dropdown-content {
+            opacity: 1;
+            visibility: visible;
+            transform: translateY(0);
+        }
+
+        .nav-toggle {
+            display: none;
+            background: none;
+            border: none;
+            cursor: pointer;
+            padding: 10px;
+            z-index: 1001;
+        }
+
+        .nav-toggle span {
+            display: block;
+            width: 30px;
+            height: 3px;
+            background-color: #fff;
+            margin: 6px 0;
+            transition: all 0.3s ease;
+        }
+
+        @media (max-width: 992px) {
+            .navbar .container {
+                padding: 0 20px;
+            }
+
+            .nav-toggle {
+                display: block;
+            }
+
+            .nav-links {
+                position: fixed;
+                top: 0;
+                right: -100%;
+                width: 80%;
+                max-width: 400px;
+                height: 100vh;
+                background: rgba(10, 17, 40, 0.98);
+                backdrop-filter: blur(10px);
+                flex-direction: column;
+                align-items: flex-start;
+                padding: 80px 40px;
+                transition: all 0.5s ease;
+                gap: 15px;
+                box-shadow: -10px 0 30px rgba(0, 0, 0, 0.3);
+            }
+
+            .nav-links.active {
+                right: 0;
+            }
+
+            .dropdown-content {
+                position: static;
+                opacity: 1;
+                visibility: visible;
+                transform: none;
+                box-shadow: none;
+                padding: 0 0 0 20px;
+                margin-top: 10px;
+                display: none;
+                background: transparent;
+                border: none;
+            }
+
+            .dropdown.active .dropdown-content {
+                display: block;
+            }
+
+            .nav-toggle.active span:nth-child(1) {
+                transform: rotate(45deg) translate(8px, 8px);
+            }
+
+            .nav-toggle.active span:nth-child(2) {
+                opacity: 0;
+            }
+
+            .nav-toggle.active span:nth-child(3) {
+                transform: rotate(-45deg) translate(8px, -8px);
+            }
+        }
+
+        /* Recipe Container */
+        .recipe-container {
+            max-width: 1200px;
+            margin: 60px auto;
+            padding: 0 20px;
+        }
+
+        .category-title {
+            font-size: 2.5rem;
+            margin-bottom: 40px;
+            color: #fca311;
+            text-align: center;
+            position: relative;
+            padding-bottom: 15px;
+        }
+
+        .category-title:after {
+            content: '';
+            position: absolute;
+            bottom: 0;
+            left: 50%;
+            transform: translateX(-50%);
+            width: 100px;
+            height: 3px;
+            background: #fca311;
+        }
+
+        .recipe-grid {
+            display: grid;
+            grid-template-columns: repeat(auto-fill, minmax(320px, 1fr));
+            gap: 40px;
+        }
+
+        .recipe-card {
+            background: rgba(255, 255, 255, 0.05);
+            border-radius: 15px;
+            overflow: hidden;
+            transition: all 0.3s ease;
+            cursor: pointer;
+            position: relative;
+            box-shadow: 0 10px 20px rgba(0, 0, 0, 0.1);
+            border: 1px solid rgba(255, 255, 255, 0.05);
+            height: 100%;
+        }
+
+        .recipe-card:hover {
+            transform: translateY(-10px);
+            box-shadow: 0 15px 30px rgba(0, 0, 0, 0.2);
+            border-color: rgba(252, 163, 17, 0.3);
+        }
+
+        .recipe-image {
+            width: 100%;
+            height: 220px;
+            object-fit: cover;
+            transition: all 0.3s ease;
+        }
+
+        .recipe-card:hover .recipe-image {
+            transform: scale(1.05);
+        }
+
+        .recipe-content {
+            padding: 25px;
+        }
+
+        .recipe-title {
+            font-size: 1.5rem;
+            margin-bottom: 15px;
+            color: #fca311;
+            position: relative;
+            padding-bottom: 10px;
+        }
+
+        .recipe-title:after {
+            content: '';
+            position: absolute;
+            bottom: 0;
+            left: 0;
+            width: 40px;
+            height: 2px;
+            background: rgba(252, 163, 17, 0.5);
+        }
+
+        .recipe-info {
+            display: flex;
+            justify-content: space-between;
+            margin-top: 15px;
+            color: rgba(255, 255, 255, 0.7);
+            font-size: 0.9rem;
+        }
+
+        .recipe-info span {
+            display: flex;
+            align-items: center;
+        }
+
+        .recipe-info i {
+            margin-right: 5px;
+            color: #fca311;
+        }
+
+        .recipe-details {
+            display: none;
+            background: rgba(255, 255, 255, 0.05);
+            padding: 30px;
+            border-radius: 15px;
+            margin-top: 40px;
+            box-shadow: 0 10px 30px rgba(0, 0, 0, 0.1);
+            animation: fadeIn 0.5s ease;
+            border: 1px solid rgba(252, 163, 17, 0.2);
+            position: relative;
+        }
+
+        .recipe-details h3 {
+            font-size: 2rem;
+            color: #fca311;
+            margin-bottom: 20px;
+            text-align: center;
+        }
+
+        .recipe-details h4 {
+            font-size: 1.3rem;
+            color: #f8f9fa;
+            margin: 20px 0 10px;
+            position: relative;
+            padding-left: 15px;
+        }
+
+        .recipe-details h4:before {
+            content: '';
+            position: absolute;
+            left: 0;
+            top: 50%;
+            transform: translateY(-50%);
+            width: 5px;
+            height: 20px;
+            background: #fca311;
+            border-radius: 2px;
+        }
+
+        .recipe-details ul {
+            list-style: none;
+            margin: 15px 0;
+        }
+
+        .recipe-details li {
+            margin-bottom: 8px;
+            padding-left: 20px;
+            position: relative;
+        }
+
+        .recipe-details li:before {
+            content: '•';
+            color: #fca311;
+            position: absolute;
+            left: 0;
+            font-size: 1.2rem;
+        }
+
+        .recipe-details p {
+            line-height: 1.7;
+            color: rgba(255, 255, 255, 0.9);
+            margin-bottom: 15px;
+        }
+
+        .close-btn {
+            position: absolute;
+            top: 15px;
+            right: 15px;
+            background: rgba(252, 163, 17, 0.2);
+            border: none;
+            width: 40px;
+            height: 40px;
+            border-radius: 50%;
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            cursor: pointer;
+            color: #fca311;
+            font-size: 1.2rem;
+            transition: all 0.3s ease;
+        }
+
+        .close-btn:hover {
+            background: #fca311;
+            color: #0a1128;
+        }
+
+        .recipe-grid-container {
+            position: relative;
+        }
+
+        .macros-box {
+            background: rgba(252, 163, 17, 0.1);
+            border-radius: 10px;
+            padding: 15px;
+            margin-top: 20px;
+            display: inline-block;
+        }
+
+        .macros-box p {
+            margin: 0;
+            font-weight: 500;
+        }
+
+        /* Footer */
+        footer {
+            text-align: center;
+            padding: 60px 20px 30px;
+            background: linear-gradient(to bottom, transparent, rgba(255, 255, 255, 0.05));
+            margin-top: 40px;
+            position: relative;
+        }
+
+        .footer-content {
+            max-width: 1200px;
+            margin: 0 auto;
+            display: grid;
+            grid-template-columns: repeat(auto-fit, minmax(250px, 1fr));
+            gap: 40px;
+            text-align: left;
+        }
+
+        .footer-column h3 {
+            font-size: 1.5rem;
+            margin-bottom: 20px;
+            color: #fca311;
+            position: relative;
+            padding-bottom: 10px;
+        }
+
+        .footer-column h3:after {
+            content: '';
+            position: absolute;
+            bottom: 0;
+            left: 0;
+            width: 50px;
+            height: 2px;
+            background: #fca311;
+        }
+
+        .footer-links {
+            list-style: none;
+        }
+
+        .footer-links li {
+            margin-bottom: 10px;
+        }
+
+        .footer-links a {
+            color: rgba(255, 255, 255, 0.8);
+            text-decoration: none;
+            transition: all 0.3s ease;
+        }
+
+        .footer-links a:hover {
+            color: #fca311;
+            padding-left: 5px;
+        }
+
+        .social-links {
+            display: flex;
+            gap: 15px;
+            margin-top: 20px;
+        }
+
+        .social-links a {
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            width: 40px;
+            height: 40px;
+            background: rgba(255, 255, 255, 0.1);
+            border-radius: 50%;
+            color: #fff;
+            transition: all 0.3s ease;
+        }
+
+        .social-links a:hover {
+            background: #fca311;
+            transform: translateY(-5px);
+        }
+
+        .copyright {
+            margin-top: 40px;
+            padding-top: 20px;
+            border-top: 1px solid rgba(255, 255, 255, 0.1);
+        }
+
+        .copyright p {
+            margin: 10px 0;
+            color: rgba(255, 255, 255, 0.6);
+        }
+
+        .developer {
+            margin-top: 15px;
+            font-size: 0.9rem;
+            color: rgba(255, 255, 255, 0.5);
+        }
+
+        .developer a {
+            color: #fca311;
+            text-decoration: none;
+        }
+
+        .developer a:hover {
+            text-decoration: underline;
+        }
+
+        /* Animation */
+        @keyframes slideInUp {
+            from {
+                transform: translateY(50px);
+                opacity: 0;
+            }
+            to {
+                transform: translateY(0);
+                opacity: 1;
+            }
+        }
+
+        .animate {
+            animation: slideInUp 0.8s forwards;
+        }
+
+        .delay-1 {
+            animation-delay: 0.2s;
+        }
+
+        .delay-2 {
+            animation-delay: 0.4s;
+        }
+
+        .delay-3 {
+            animation-delay: 0.6s;
+        }
+
+        /* Scroll to top button */
+        .scroll-top {
+            position: fixed;
+            bottom: 30px;
+            right: 30px;
+            width: 50px;
+            height: 50px;
+            background: #fca311;
+            border-radius: 50%;
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            color: #0a1128;
+            font-size: 20px;
+            cursor: pointer;
+            opacity: 0;
+            visibility: hidden;
+            transition: all 0.3s ease;
+            z-index: 999;
+        }
+
+        .scroll-top.active {
+            opacity: 1;
+            visibility: visible;
+        }
+
+        .scroll-top:hover {
+            background: #fff;
+            transform: translateY(-5px);
+            box-shadow: 0 10px 20px rgba(252, 163, 17, 0.3);
+        }
+    </style>
+</head>
+<body>
+    <!-- Modern Fixed Navbar -->
+    <nav class="navbar">
+        <div class="container">
+            <a href="#" class="nav-logo">
+                <img src="/api/placeholder/100/80" alt="Recepies Logo">
+            </a>
+            <button class="nav-toggle">
+                <span></span>
+                <span></span>
+                <span></span>
+            </button>
+            <ul class="nav-links">
+                <li class="dropdown">
+                    <a href="#"><i class="fas fa-utensils"></i> Daily Recipes</a>
+                    <div class="dropdown-content">
+                        <a href="breakfast.html"><i class="fas fa-coffee"></i> Breakfast</a>
+                        <a href="index.html"><i class="fas fa-home"></i> Home</a>
+                        <a href="lunch.html"><i class="fas fa-hamburger"></i> Lunch</a>
+                        <a href="#"><i class="fas fa-concierge-bell"></i> Dinner</a>
+                        <a href="#"><i class="fas fa-ice-cream"></i> Dessert</a>
+                        <a href="#" class="active"><i class="fas fa-glass-cheers"></i> Drinks</a>
+                    </div>
+                </li>
+                <li class="dropdown">
+                    <a href="#"><i class="fas fa-utensils"></i> Daily Recipes</a>
+                    <div class="dropdown-content">
+                        <a href="{% url 'recipes1:breakfast' %}"><i class="fas fa-coffee"></i> Breakfast</a>
+                        <a href="#"><i class="fas fa-home"></i> Home</a>
+                        <a href="{% url 'recipes2:lunch' %}"><i class="fas fa-hamburger"></i> Lunch</a>
+                        <a href="{% url 'recipes3:dinner' %}"><i class="fas fa-concierge-bell"></i> Dinner</a>
+                        <a href="{% url 'recipes4:dessert' %}"><i class="fas fa-ice-cream"></i> Dessert</a>
+                        <a href="{% url 'recipes5:drinks' %}"><i class="fas fa-glass-cheers"></i> Drinks</a>
+                    </div>
+                </li>
+                <li class="dropdown">
+                    <a href="#"><i class="fas fa-calendar-alt"></i> Holidays</a>
+                    <div class="dropdown-content">
+                        <a href="{% url 'recipes8:mother' %}"><i class="fas fa-heart"></i> Mother's Day</a>
+                        <a href="{% url 'recipes9:new' %}"><i class="fas fa-glass-champagne"></i> New Year</a>
+                    </div>
+                </li>
+                <li class="dropdown">
+                    <a href="#"><i class="fas fa-heartbeat"></i> Health & Diet</a>
+                    <div class="dropdown-content">
+                        <a href="{% url 'recipes6:keto' %}"><i class="fas fa-drumstick-bite"></i> Keto</a>
+                        <a href="{% url 'recipes7:vege' %}"><i class="fas fa-seedling"></i> Vegetarian</a>
+                    </div>
+                </li>
+                <li><a href="#"><i class="fas fa-info-circle"></i> About Us</a></li>
+                <li><a href="#"><i class="fas fa-envelope"></i> Contact</a></li>
+            </ul>
+        </div>
+    </nav>
+
+    <header>
+        <video autoplay muted loop id="bg-video">
+            <source src="/api/placeholder/1920/1080" type="video/mp4">
+        </video>
+        <div class="overlay">
+            <h1>Drink Recipes</h1>
+            <p class="tagline">Refreshing beverages for every occasion</p>
+        </div>
+    </header>
+
+    <div class="recipe-container">
+        <h2 class="category-title">Thirst Quenchers</h2>
+        
+        <div class="recipe-grid-container">
+            <div class="recipe-grid">
+                <div class="recipe-card animate delay-1" onclick="showRecipe('mojito')">
+                    <img src="/api/placeholder/400/300" alt="Classic Mojito" class="recipe-image">
+                    <div class="recipe-content">
+                        <h3 class="recipe-title">Classic Mojito</h3>
+                        <p>A refreshing Cuban cocktail with white rum, mint, lime, sugar, and soda water.</p>
+                        <div class="recipe-info">
+                            <span><i class="far fa-clock"></i> 5 mins</span>
+                            <span><i class="fas fa-fire"></i> 140 cal</span>
+                            <span><i class="fas fa-star"></i> 4.9</span>
+                        </div>
+                    </div>
+                </div>
+
+                <div class="recipe-card animate delay-2" onclick="showRecipe('smoothie')">
+                    <img src="/api/placeholder/400/300" alt="Berry Blast Smoothie" class="recipe-image">
+                    <div class="recipe-content">
+                        <h3 class="recipe-title">Berry Blast Smoothie</h3>
+                        <p>Nutritious and colorful smoothie packed with mixed berries, banana, and Greek yogurt.</p>
+                        <div class="recipe-info">
+                            <span><i class="far fa-clock"></i> 10 mins</span>
+                            <span><i class="fas fa-fire"></i> 210 cal</span>
+                            <span><i class="fas fa-star"></i> 4.7</span>
+                        </div>
+                    </div>
+                </div>
+
+                <div class="recipe-card animate delay-3" onclick="showRecipe('lemonade')">
+                    <img src="/api/placeholder/400/300" alt="Homemade Lemonade" class="recipe-image">
+                    <div class="recipe-content">
+                        <h3 class="recipe-title">Homemade Lemonade</h3>
+                        <p>Classic summer refreshment with fresh-squeezed lemons, sugar, and ice.</p>
+                        <div class="recipe-info">
+                            <span><i class="far fa-clock"></i> 15 mins</span>
+                            <span><i class="fas fa-fire"></i> 120 cal</span>
+                            <span><i class="fas fa-star"></i> 4.8</span>
+                        </div>
+                    </div>
+                </div>
+                
+                <div class="recipe-card animate delay-1" onclick="showRecipe('margarita')">
+                    <img src="/api/placeholder/400/300" alt="Classic Margarita" class="recipe-image">
+                    <div class="recipe-content">
+                        <h3 class="recipe-title">Classic Margarita</h3>
+                        <p>The perfect blend of tequila, lime juice, and triple sec with a salted rim.</p>
+                        <div class="recipe-info">
+                            <span><i class="far fa-clock"></i> 5 mins</span>
+                            <span><i class="fas fa-fire"></i> 170 cal</span>
+                            <span><i class="fas fa-star"></i> 4.9</span>
+                        </div>
+                    </div>
+                </div>
+                
+                <div class="recipe-card animate delay-2" onclick="showRecipe('hotchocolate')">
+                    <img src="/api/placeholder/400/300" alt="Decadent Hot Chocolate" class="recipe-image">
+                    <div class="recipe-content">
+                        <h3 class="recipe-title">Decadent Hot Chocolate</h3>
+                        <p>Rich and creamy hot chocolate made with real chocolate, topped with whipped cream.</p>
+                        <div class="recipe-info">
+                            <span><i class="far fa-clock"></i> 12 mins</span>
+                            <span><i class="fas fa-fire"></i> 280 cal</span>
+                            <span><i class="fas fa-star"></i> 4.8</span>
+                        </div>
+                    </div>
+                </div>
+                
+                <div class="recipe-card animate delay-3" onclick="showRecipe('icedcoffee')">
+                    <img src="/api/placeholder/400/300" alt="Vanilla Iced Coffee" class="recipe-image">
+                    <div class="recipe-content">
+                        <h3 class="recipe-title">Vanilla Iced Coffee</h3>
+                        <p>Smooth cold brew coffee with vanilla syrup and cream over ice.</p>
+                        <div class="recipe-info">
+                            <span><i class="far fa-clock"></i> 10 mins</span>
+                            <span><i class="fas fa-fire"></i> 150 cal</span>
+                            <span><i class="fas fa-star"></i> 4.7</span>
+                        </div>
+                    </div>
+                </div>
+            </div>
+
+            <div id="recipe-details" class="recipe-details">
+                <button class="close-btn" onclick="closeRecipe()">
+                    <i class="fas fa-times"></i>
+                </button>
+                <!-- Recipe details will be loaded dynamically -->
+            </div>
+        </div>
+    </div>
+
+    <footer>
+        <div class="footer-content">
+            <div class="footer-column">
+                <h3>Quick Links</h3>
+                <ul class="footer-links">
+                    <li><a href="#">Home</a></li>
+                    <li><a href="#">Recipes</a></li>
+                    <li><a href="#">About Us</a></li>
+                    <li><a href="#">Contact</a></li>
+                    <li><a href="#">Privacy Policy</a></li>
+                </ul>
+            </div>
+            <div class="footer-column">
+                <h3>Categories</h3>
+                <ul class="footer-links">
+                    <li><a href="breakfast.html">Breakfast</a></li>
+                    <li><a href="lunch.html">Lunch</a></li>
+                    <li><a href="#">Dinner</a></li>
+                    <li><a href="#">Desserts</a></li>
+                    <li><a href="vegetarian.html">Vegetarian</a></li>
+                </ul>
+            </div>
+            <div class="footer-column">
+                <h3>Contact Us</h3>
+                <ul class="footer-links">
+                    <li><i class="fas fa-envelope"></i> info@recepies.com</li>
+                    <li><i class="fas fa-phone"></i> +1 (555) 123-4567</li>
+                    <li><i class="fas fa-map-marker-alt"></i> 123 Cooking St, Food City</li>
+                </ul>
+                <div class="social-links">
+                    <a href="#"><i class="fab fa-facebook-f"></i></a>
+                    <a href="#"><i class="fab fa-instagram"></i></a>
+                    <a href="#"><i class="fab fa-twitter"></i></a>
+                    <a href="#"><i class="fab fa-youtube"></i></a>
+                </div>
+            </div>
+            <div class="footer-column">
+                <h3>Newsletter</h3>
+                <p>Subscribe to get the latest recipes and cooking tips delivered to your inbox.</p>
+                <form style="margin-top: 15px;">
+                    <input type="email" placeholder="Your Email Address" style="padding: 10px; width: 100%; border-radius: 5px; border: none; margin-bottom: 10px; background: rgba(255, 255, 255, 0.1); color: #fff;">
+                    <button type="submit" style="padding: 10px 20px; background: #fca311; border: none; border-radius: 5px; color: #0a1128; cursor: pointer; font-weight: 600; width: 100%;">Subscribe</button>
+                </form>
+            </div>
+        </div>
+        <div class="copyright">
+            <p>&copy; 2025 Recepies | Designed for Food Lovers</p>
+            <p>Follow us on: <a href="#">Facebook</a> | <a href="#">Instagram</a> | <a href="#">Twitter</a> | <a href="#">Youtube</a></p>
+            <p class="developer">Developer: Gurparteek Benipal | Email: gurparteek7171@gmail.com | GitHub: gavy7171 | LinkedIn: yourlinkedin</p>
+        </div>
+    </footer>
+
+    <div class="scroll-top" id="scrollTop">
+        <i class="fas fa-arrow-up"></i>
+    </div>
+
+    <script>
+    // Function to show recipe details
+    function showRecipe(recipeId) {
+            const detailsContainer = document.getElementById('recipe-details');
+            let content = '';
+            
+            if (recipeId === 'mojito') {
+                content = `
+                    <button class="close-btn" onclick="closeRecipe()">
+                        <i class="fas fa-times"></i>
+                    </button>
+                    <h3>Classic Mojito</h3>
+                    <p><strong>By:</strong> Bartender Carlos Rodriguez</p>
+                    <p>A refreshing Cuban cocktail with white rum, mint, lime, sugar, and soda water.</p>
+                    
+                    <h4>Ingredients</h4>
+                    <ul>
+                        <li>10 fresh mint leaves</li>
+                        <li>1/2 lime, cut into 4 wedges</li>
+                        <li>2 tablespoons white sugar, or to taste</li>
+                        <li>1 cup ice cubes</li>
+                        <li>1 1/2 oz white rum</li>
+                        <li>1/2 cup club soda</li>
+                        <li>1 sprig of mint for garnish</li>
+                    </ul>
+                    
+                    <h4>Instructions</h4>
+                    <ul>
+                        <li>Place mint leaves and 1 lime wedge into a sturdy glass</li>
+                        <li>Use a muddler to crush the mint and lime to release the mint oils and lime juice</li>
+                        <li>Add 2 more lime wedges and the sugar, and muddle again to release the lime juice</li>
+                        <li>Do not strain the mixture</li>
+                        <li>Fill the glass almost to the top with ice</li>
+                        <li>Pour the rum over the ice</li>
+                        <li>Fill the glass with carbonated water</li>
+                        <li>Stir, taste, and add more sugar if desired</li>
+                        <li>Garnish with the remaining lime wedge and mint sprig</li>
+                    </ul>
+
+                    <div class="macros-box">
+                        <p>Alcohol Content: 13% | Calories: 140 | Sugar: 10g</p>
+                    </div>
+                `;
+            } else if (recipeId === 'smoothie') {
+                content = `
+                    <button class="close-btn" onclick="closeRecipe()">
+                        <i class="fas fa-times"></i>
+                    </button>
+                    <h3>Berry Blast Smoothie</h3>
+                    <p><strong>By:</strong> Nutritionist Sarah Johnson</p>
+                    <p>Nutritious and colorful smoothie packed with mixed berries, banana, and Greek yogurt.</p>
+                    
+                    <h4>Ingredients</h4>
+                    <ul>
+                        <li>1 cup mixed berries (strawberries, blueberries, raspberries)</li>
+                        <li>1 ripe banana</li>
+                        <li>1/2 cup Greek yogurt</li>
+                        <li>1/4 cup milk of choice</li>
+                        <li>1 tablespoon honey or maple syrup (optional)</li>
+                        <li>1 tablespoon chia seeds (optional)</li>
+                        <li>4-5 ice cubes</li>
+                    </ul>
+                    
+                    <h4>Instructions</h4>
+                    <ul>
+                        <li>Add all ingredients to a blender</li>
+                        <li>Blend on high speed until smooth and creamy</li>
+                        <li>If the smoothie is too thick, add a little more milk</li>
+                        <li>Taste and adjust sweetness if needed</li>
+                        <li>Pour into a glass and top with additional berries if desired</li>
+                        <li>Serve immediately</li>
+                    </ul>
+
+                    <div class="macros-box">
+                        <p>Protein: 8g | Carbs: 35g | Fat: 3g | Calories: 210</p>
+                    </div>
+                `;
+            } else if (recipeId === 'lemonade') {
+                content = `
+                    <button class="close-btn" onclick="closeRecipe()">
+                        <i class="fas fa-times"></i>
+                    </button>
+                    <h3>Homemade Lemonade</h3>
+                    <p><strong>By:</strong> Chef Lisa Miller</p>
+                    <p>Classic summer refreshment with fresh-squeezed lemons, sugar, and ice.</p>
+                    
+                    <h4>Ingredients</h4>
+                    <ul>
+                        <li>6 lemons</li>
+                        <li>1 cup white sugar</li>
+                        <li>6 cups cold water</li>
+                        <li>Ice cubes</li>
+                        <li>Lemon slices and mint for garnish (optional)</li>
+                    </ul>
+                    
+                    <h4>Instructions</h4>
+                    <ul>
+                        <li>Roll the lemons on a countertop while applying pressure to make them easier to juice</li>
+                        <li>Cut the lemons in half and squeeze the juice into a measuring cup</li>
+                        <li>Remove any seeds</li>
+                        <li>In a large pitcher, mix the sugar with 1 cup of warm water until dissolved</li>
+                        <li>Add the fresh lemon juice and remaining 5 cups of cold water</li>
+                        <li>Stir well and adjust sweetness if needed</li>
+                        <li>Refrigerate until chilled</li>
+                        <li>Serve over ice with lemon slices and mint if desired</li>
+                    </ul>
+
+                    <div class="macros-box">
+                        <p>Calories: 120 per serving | Sugar: 24g | Vitamin C: 40% DV</p>
+                    </div>
+                `;
+            } else if (recipeId === 'margarita') {
+                content = `
+                    <button class="close-btn" onclick="closeRecipe()">
+                        <i class="fas fa-times"></i>
+                    </button>
+                    <h3>Classic Margarita</h3>
+                    <p><strong>By:</strong> Mixologist David Martinez</p>
+                    <p>The perfect blend of tequila, lime juice, and triple sec with a salted rim.</p>
+                    
+                    <h4>Ingredients</h4>
+                    <ul>
+                        <li>2 oz silver tequila</li>
+                        <li>1 oz freshly squeezed lime juice</li>
+                        <li>1/2 oz triple sec or Cointreau</li>
+                        <li>1/2 oz simple syrup (optional, for a sweeter drink)</li>
+                        <li>Coarse salt for rimming the glass</li>
+                        <li>Lime wheel for garnish</li>
+                        <li>Ice cubes</li>
+                    </ul>
+                    
+                    <h4>Instructions</h4>
+                    <ul>
+                        <li>Run a lime wedge around the rim of a margarita glass</li>
+                        <li>Dip the rim in coarse salt</li>
+                        <li>Fill a cocktail shaker with ice</li>
+                        <li>Add tequila, lime juice, triple sec, and simple syrup if using</li>
+                        <li>Shake vigorously for 15 seconds</li>
+                        <li>Strain into the prepared glass over fresh ice</li>
+                        <li>Garnish with a lime wheel</li>
+                        <li>Serve immediately</li>
+                    </ul>
+
+                    <div class="macros-box">
+                        <p>Alcohol Content: 20% | Calories: 170 | Carbs: 7g</p>
+                    </div>
+                `;
+            } else if (recipeId === 'hotchocolate') {
+                content = `
+                    <button class="close-btn" onclick="closeRecipe()">
+                        <i class="fas fa-times"></i>
+                    </button>
+                    <h3>Decadent Hot Chocolate</h3>
+                    <p><strong>By:</strong> Pastry Chef James Wilson</p>
+                    <p>Rich and creamy hot chocolate made with real chocolate, topped with whipped cream.</p>
+                    
+                    <h4>Ingredients</h4>
+                    <ul>
+                        <li>2 cups whole milk</li>
+                        <li>1/2 cup heavy cream</li>
+                        <li>4 oz high-quality dark chocolate, chopped</li>
+                        <li>2 tablespoons unsweetened cocoa powder</li>
+                        <li>3 tablespoons granulated sugar</li>
+                        <li>1/4 teaspoon vanilla extract</li>
+                        <li>Pinch of salt</li>
+                        <li>Whipped cream for topping</li>
+                        <li>Chocolate shavings or cocoa powder for garnish</li>
+                    </ul>
+                    
+                    <h4>Instructions</h4>
+                    <ul>
+                        <li>In a medium saucepan, whisk together milk, cream, and cocoa powder</li>
+                        <li>Heat over medium heat until it begins to steam, but don't let it boil</li>
+                        <li>Add the chopped chocolate, sugar, vanilla, and salt</li>
+                        <li>Whisk continuously until the chocolate is completely melted and the mixture is smooth</li>
+                        <li>Remove from heat</li>
+                        <li>Pour into mugs</li>
+                        <li>Top with whipped cream</li>
+                        <li>Garnish with chocolate shavings or a dusting of cocoa powder</li>
+                        <li>Serve immediately</li>
+                    </ul>
+
+                    <div class="macros-box">
+                        <p>Calories: 280 per serving | Fat: 18g | Carbs: 24g | Protein: 6g</p>
+                    </div>
+                `;
+            } else if (recipeId === 'icedcoffee') {
+                content = `
+                    <button class="close-btn" onclick="closeRecipe()">
+                        <i class="fas fa-times"></i>
+                    </button>
+                    <h3>Vanilla Iced Coffee</h3>
+                    <p><strong>By:</strong> Barista Alex Thompson</p>
+                    <p>Smooth cold brew coffee with vanilla syrup and cream over ice.</p>
+                    
+                    <h4>Ingredients</h4>
+                    <ul>
+                        <li>1 cup cold brew coffee concentrate</li>
+                        <li>1/4 cup milk or cream of choice</li>
+                        <li>1-2 tablespoons vanilla syrup, to taste</li>
+                        <li>1/2 cup ice cubes</li>
+                        <li>Whipped cream (optional)</li>
+                        <li>Vanilla bean pod for garnish (optional)</li>
+                    </ul>
+                    
+                    <h4>Instructions</h4>
+                    <ul>
+                        <li>Fill a tall glass with ice cubes</li>
+                        <li>Pour the cold brew coffee concentrate over the ice</li>
+                        <li>Add the vanilla syrup and stir well</li>
+                        <li>Pour in the milk or cream</li>
+                        <li>Stir gently to combine</li>
+                        <li>Taste and adjust sweetness if needed</li>
+                        <li>Top with whipped cream if desired</li>
+                        <li>Garnish with a vanilla bean or a sprinkle of cinnamon</li>
+                        <li>Serve with a straw</li>
+                    </ul>
+
+                    <div class="macros-box">
+                        <p>Caffeine: 100mg | Calories: 150 | Sugar: 12g | Fat: 6g</p>
+                    </div>
+                `;
+            }
+            
+            detailsContainer.innerHTML = content;
+            detailsContainer.style.display = 'block';
+            
+            // Scroll to recipe details
+            detailsContainer.scrollIntoView({ behavior: 'smooth', block: 'start' });
+        }
+
+        // Function to close recipe details
+        function closeRecipe() {
+            document.getElementById('recipe-details').style.display = 'none';
+        }
+
+        // Navbar scroll effect
+        const navbar = document.querySelector('.navbar');
+        window.addEventListener('scroll', function() {
+            if (window.scrollY > 50) {
+                navbar.classList.add('scrolled');
+            } else {
+                navbar.classList.remove('scrolled');
+            }
+        });
+
+        // Mobile menu toggle
+        const navToggle = document.querySelector('.nav-toggle');
+        const navLinks = document.querySelector('.nav-links');
+
+        navToggle.addEventListener('click', function() {
+            navToggle.classList.toggle('active');
+            navLinks.classList.toggle('active');
+        });
+
+        // Handle mobile dropdown clicks
+        document.querySelectorAll('.nav-links .dropdown').forEach(dropdown => {
+            if (window.innerWidth <= 992) {
+                dropdown.addEventListener('click', function(e) {
+                    this.classList.toggle('active');
+                    e.stopPropagation();
+                });
+            }
+        });
+
+        // Scroll to top button
+        const scrollTop = document.getElementById('scrollTop');
+
+        window.addEventListener('scroll', function() {
+            if (window.scrollY > 300) {
+                scrollTop.classList.add('active');
+            } else {
+                scrollTop.classList.remove('active');
+            }
+        });
+
+        scrollTop.addEventListener('click', function() {
+            window.scrollTo({
+                top: 0,
+                behavior: 'smooth'
+            });
+        });
+    </script>
