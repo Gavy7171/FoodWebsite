@@ -1,0 +1,542 @@
+{% load static %}
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>{{ recipe.title }} - Recepies</title>
+    <link href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.0.0/css/all.min.css" rel="stylesheet">
+    <link href="https://fonts.googleapis.com/css2?family=Poppins:wght@300;400;500;600;700&display=swap" rel="stylesheet">
+    <style>
+        /* General Reset */
+        * {
+            margin: 0;
+            padding: 0;
+            box-sizing: border-box;
+            font-family: 'Poppins', sans-serif;
+        }
+
+        body {
+            background-color: #0a1128;
+            color: #fff;
+            overflow-x: hidden;
+        }
+
+        /* Modern Navbar */
+        .navbar {
+            position: fixed;
+            top: 0;
+            left: 0;
+            width: 100%;
+            z-index: 1000;
+            transition: all 0.3s ease;
+            padding: 20px 0;
+        }
+
+        .navbar.scrolled {
+            background: rgba(10, 17, 40, 0.95);
+            backdrop-filter: blur(10px);
+            padding: 15px 0;
+            box-shadow: 0 5px 20px rgba(0, 0, 0, 0.2);
+        }
+
+        .navbar .container {
+            display: flex;
+            align-items: center;
+            justify-content: space-between;
+            padding: 0 50px;
+        }
+
+        .nav-logo {
+            max-width: 100px;
+            transition: all 0.3s ease;
+        }
+
+        .nav-logo:hover {
+            transform: scale(1.05);
+        }
+
+        .nav-links {
+            display: flex;
+            gap: 30px;
+            list-style: none;
+        }
+
+        .nav-links li {
+            position: relative;
+        }
+
+        .nav-links a {
+            color: #fff;
+            text-decoration: none;
+            font-weight: 500;
+            font-size: 1.1rem;
+            transition: all 0.3s ease;
+            padding: 8px 0;
+            position: relative;
+        }
+
+        .nav-links a:before {
+            content: '';
+            position: absolute;
+            bottom: 0;
+            left: 0;
+            width: 0;
+            height: 2px;
+            background: #fca311;
+            transition: width 0.3s ease;
+        }
+
+        .nav-links a:hover {
+            color: #fca311;
+        }
+
+        .nav-links a:hover:before {
+            width: 100%;
+        }
+
+        /* Container */
+        .container {
+            max-width: 1200px;
+            margin: 100px auto 60px;
+            padding: 0 20px;
+        }
+
+        /* Recipe Header */
+        .recipe-header {
+            display: flex;
+            flex-direction: column;
+            gap: 20px;
+            margin-bottom: 40px;
+        }
+
+        .recipe-title-row {
+            display: flex;
+            justify-content: space-between;
+            align-items: flex-start;
+        }
+
+        .recipe-title {
+            font-size: 2.5rem;
+            color: #fca311;
+        }
+
+        .recipe-author {
+            font-size: 1.1rem;
+            color: rgba(255, 255, 255, 0.7);
+            margin-top: 5px;
+        }
+
+        .recipe-author span {
+            color: #fca311;
+        }
+
+        .action-buttons {
+            display: flex;
+            gap: 10px;
+        }
+
+        .action-btn {
+            display: inline-flex;
+            align-items: center;
+            justify-content: center;
+            padding: 8px 20px;
+            border-radius: 50px;
+            font-size: 1rem;
+            font-weight: 500;
+            text-decoration: none;
+            transition: all 0.3s ease;
+            gap: 5px;
+        }
+
+        .edit-btn {
+            background: rgba(46, 204, 113, 0.2);
+            color: #2ecc71;
+            border: 1px solid #2ecc71;
+        }
+
+        .edit-btn:hover {
+            background: rgba(46, 204, 113, 0.3);
+        }
+
+        .delete-btn {
+            background: rgba(231, 76, 60, 0.2);
+            color: #e74c3c;
+            border: 1px solid #e74c3c;
+        }
+
+        .delete-btn:hover {
+            background: rgba(231, 76, 60, 0.3);
+        }
+
+        .back-btn {
+            display: inline-flex;
+            align-items: center;
+            color: rgba(255, 255, 255, 0.8);
+            text-decoration: none;
+            font-size: 1rem;
+            transition: all 0.3s ease;
+            gap: 5px;
+            margin-bottom: 15px;
+        }
+
+        .back-btn:hover {
+            color: #fca311;
+        }
+
+        /* Recipe Image and Quick Info */
+        .recipe-main {
+            display: grid;
+            grid-template-columns: 1fr 350px;
+            gap: 30px;
+            margin-bottom: 40px;
+        }
+
+        .recipe-image {
+            width: 100%;
+            height: 450px;
+            border-radius: 15px;
+            overflow: hidden;
+            box-shadow: 0 10px 30px rgba(0, 0, 0, 0.3);
+        }
+
+        .recipe-image img {
+            width: 100%;
+            height: 100%;
+            object-fit: cover;
+        }
+
+        .recipe-quick-info {
+            background: rgba(255, 255, 255, 0.05);
+            border-radius: 15px;
+            padding: 30px;
+            display: flex;
+            flex-direction: column;
+            gap: 20px;
+        }
+
+        .info-title {
+            font-size: 1.5rem;
+            color: #fca311;
+            margin-bottom: 5px;
+        }
+
+        .info-list {
+            list-style: none;
+        }
+
+        .info-list li {
+            display: flex;
+            justify-content: space-between;
+            padding: 10px 0;
+            border-bottom: 1px solid rgba(255, 255, 255, 0.1);
+        }
+
+        .info-list li:last-child {
+            border-bottom: none;
+        }
+
+        .info-label {
+            color: rgba(255, 255, 255, 0.7);
+        }
+
+        .info-value {
+            font-weight: 500;
+        }
+
+        .recipe-tags {
+            display: flex;
+            flex-wrap: wrap;
+            gap: 10px;
+        }
+
+        .tag {
+            font-size: 0.85rem;
+            padding: 5px 15px;
+            border-radius: 50px;
+            font-weight: 500;
+        }
+
+        .tag.vegetarian {
+            background: rgba(46, 204, 113, 0.2);
+            color: #2ecc71;
+        }
+
+        .tag.vegan {
+            background: rgba(52, 152, 219, 0.2);
+            color: #3498db;
+        }
+
+        .tag.gluten-free {
+            background: rgba(155, 89, 182, 0.2);
+            color: #9b59b6;
+        }
+
+        .tag.keto {
+            background: rgba(241, 196, 15, 0.2);
+            color: #f1c40f;
+        }
+
+        /* Description */
+        .recipe-description {
+            background: rgba(255, 255, 255, 0.05);
+            border-radius: 15px;
+            padding: 30px;
+            margin-bottom: 40px;
+        }
+
+        .recipe-description p {
+            line-height: 1.7;
+            color: rgba(255, 255, 255, 0.9);
+        }
+
+        /* Ingredients & Instructions */
+        .recipe-content {
+            display: grid;
+            grid-template-columns: 350px 1fr;
+            gap: 30px;
+            margin-bottom: 40px;
+        }
+
+        .ingredients-section, .instructions-section {
+            background: rgba(255, 255, 255, 0.05);
+            border-radius: 15px;
+            padding: 30px;
+        }
+
+        .section-title {
+            font-size: 1.5rem;
+            color: #fca311;
+            margin-bottom: 20px;
+            padding-bottom: 10px;
+            border-bottom: 1px solid rgba(252, 163, 17, 0.3);
+        }
+
+        .ingredients-list {
+            list-style: none;
+        }
+
+        .ingredients-list li {
+            padding: 10px 0;
+            border-bottom: 1px solid rgba(255, 255, 255, 0.1);
+            display: flex;
+        }
+
+        .ingredients-list li:last-child {
+            border-bottom: none;
+        }
+
+        .ingredient-quantity {
+            min-width: 80px;
+            font-weight: 600;
+            color: #fca311;
+        }
+
+        .instruction-step {
+            margin-bottom: 25px;
+            position: relative;
+            padding-left: 40px;
+        }
+
+        .step-number {
+            position: absolute;
+            left: 0;
+            top: 0;
+            width: 30px;
+            height: 30px;
+            background: #fca311;
+            color: #0a1128;
+            border-radius: 50%;
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            font-weight: 600;
+        }
+
+        .instruction-step p {
+            line-height: 1.7;
+        }
+
+        /* Notes Section */
+        .notes-section {
+            background: rgba(255, 255, 255, 0.05);
+            border-radius: 15px;
+            padding: 30px;
+            margin-bottom: 40px;
+        }
+
+        .notes-content {
+            line-height: 1.7;
+            color: rgba(255, 255, 255, 0.9);
+        }
+
+        /* Responsive */
+        @media (max-width: 992px) {
+            .recipe-main, .recipe-content {
+                grid-template-columns: 1fr;
+            }
+
+            .recipe-image {
+                height: 350px;
+            }
+
+            .recipe-title-row {
+                flex-direction: column;
+                gap: 20px;
+            }
+        }
+
+        @media (max-width: 768px) {
+            .navbar .container {
+                padding: 0 20px;
+            }
+        }
+    </style>
+</head>
+<body>
+    <!-- Include your navbar here or keep it as is from your existing code -->
+
+    <div class="container">
+        <a href="{% url 'recipes10:my_recipes' %}" class="back-btn">
+            <i class="fas fa-arrow-left"></i> Back to My Recipes
+        </a>
+        
+        <div class="recipe-header">
+            <div class="recipe-title-row">
+                <div>
+                    <h1 class="recipe-title">{{ recipe.title }}</h1>
+                    <p class="recipe-author">Created by <span>{{ recipe.author.username }}</span> on {{ recipe.created_at|date:"F d, Y" }}</p>
+                </div>
+                
+                {% if request.user == recipe.author %}
+                <div class="action-buttons">
+                    <a href="{% url 'recipes10:edit_recipe' recipe.id %}" class="action-btn edit-btn">
+                        <i class="fas fa-edit"></i> Edit Recipe
+                    </a>
+                    <a href="{% url 'recipes10:delete_recipe' recipe.id %}" class="action-btn delete-btn">
+                        <i class="fas fa-trash-alt"></i> Delete
+                    </a>
+                </div>
+                {% endif %}
+            </div>
+        </div>
+        
+        <div class="recipe-main">
+            <div class="recipe-image">
+                {% if recipe.image %}
+                <img src="{{ recipe.image.url }}" alt="{{ recipe.title }}">
+                {% else %}
+                <img src="{% static 'images/recipe-placeholder.jpg' %}" alt="{{ recipe.title }}">
+                {% endif %}
+            </div>
+            
+            <div class="recipe-quick-info">
+                <div>
+                    <h2 class="info-title">Quick Info</h2>
+                    <ul class="info-list">
+                        <li>
+                            <span class="info-label">Prep Time:</span>
+                            <span class="info-value">{{ recipe.prep_time }} mins</span>
+                        </li>
+                        <li>
+                            <span class="info-label">Cook Time:</span>
+                            <span class="info-value">{{ recipe.cook_time }} mins</span>
+                        </li>
+                        <li>
+                            <span class="info-label">Total Time:</span>
+                            <span class="info-value">{{ recipe.prep_time|add:recipe.cook_time }} mins</span>
+                        </li>
+                        <li>
+                            <span class="info-label">Servings:</span>
+                            <span class="info-value">{{ recipe.servings }}</span>
+                        </li>
+                        <li>
+                            <span class="info-label">Difficulty:</span>
+                            <span class="info-value">{{ recipe.difficulty|title }}</span>
+                        </li>
+                        <li>
+                            <span class="info-label">Category:</span>
+                            <span class="info-value">{{ recipe.category.name }}</span>
+                        </li>
+                        {% if recipe.subcategory %}
+                        <li>
+                            <span class="info-label">Subcategory:</span>
+                            <span class="info-value">{{ recipe.subcategory }}</span>
+                        </li>
+                        {% endif %}
+                        {% if recipe.cuisine %}
+                        <li>
+                            <span class="info-label">Cuisine:</span>
+                            <span class="info-value">{{ recipe.cuisine }}</span>
+                        </li>
+                        {% endif %}
+                    </ul>
+                </div>
+                
+                <div>
+                    <h2 class="info-title">Diet Information</h2>
+                    <div class="recipe-tags">
+                        {% if recipe.vegetarian %}<span class="tag vegetarian">Vegetarian</span>{% endif %}
+                        {% if recipe.vegan %}<span class="tag vegan">Vegan</span>{% endif %}
+                        {% if recipe.gluten_free %}<span class="tag gluten-free">Gluten-Free</span>{% endif %}
+                        {% if recipe.keto %}<span class="tag keto">Keto</span>{% endif %}
+                    </div>
+                </div>
+            </div>
+        </div>
+        
+        <div class="recipe-description">
+            <h2 class="section-title">Description</h2>
+            <p>{{ recipe.description }}</p>
+        </div>
+        
+        <div class="recipe-content">
+            <div class="ingredients-section">
+                <h2 class="section-title">Ingredients</h2>
+                <ul class="ingredients-list">
+                    {% for ingredient in recipe.ingredients.all %}
+                    <li>
+                        <span class="ingredient-quantity">{{ ingredient.quantity }}</span>
+                        <span class="ingredient-name">{{ ingredient.name }}</span>
+                    </li>
+                    {% endfor %}
+                </ul>
+            </div>
+            
+            <div class="instructions-section">
+                <h2 class="section-title">Instructions</h2>
+                <div class="instructions-list">
+                    {% for step in recipe.steps.all %}
+                    <div class="instruction-step">
+                        <div class="step-number">{{ step.order }}</div>
+                        <p>{{ step.description }}</p>
+                    </div>
+                    {% endfor %}
+                </div>
+            </div>
+        </div>
+        
+        {% if recipe.notes %}
+        <div class="notes-section">
+            <h2 class="section-title">Notes & Tips</h2>
+            <div class="notes-content">
+                {{ recipe.notes|linebreaks }}
+            </div>
+        </div>
+        {% endif %}
+    </div>
+    
+    <script>
+        // Navbar scroll effect
+        window.addEventListener('scroll', function() {
+            const navbar = document.querySelector('.navbar');
+            
+            if (window.scrollY > 50) {
+                navbar.classList.add('scrolled');
+            } else {
+                navbar.classList.remove('scrolled');
+            }
+        });
+    </script>
+</body>
+</html>

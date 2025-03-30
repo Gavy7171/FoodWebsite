@@ -7,7 +7,7 @@ from django.http import HttpResponse
 
 def home_view(request):
     """View for home page"""
-    return render(request, 'home.html')
+    return render(request, 'members/home.html')  # Updated path
 
 def login_view(request):
     """View for user login"""
@@ -32,7 +32,7 @@ def login_view(request):
             print(f"Login failed for {username}")
             messages.error(request, "Invalid username or password.")
     
-    return render(request, 'login.html')
+    return render(request, 'members/login.html')  # Updated path
 
 def logout_view(request):
     """View for user logout"""
@@ -55,12 +55,12 @@ def signup_view(request):
         # Check passwords match
         if password1 != password2:
             messages.error(request, "Passwords don't match")
-            return render(request, 'signup.html')
+            return render(request, 'members/signup.html')  # Updated path
         
         # Check if username exists
         if User.objects.filter(username=username).exists():
             messages.error(request, "Username already exists")
-            return render(request, 'signup.html')
+            return render(request, 'members/signup.html')  # Updated path
         
         # Create user
         try:
@@ -92,7 +92,7 @@ def signup_view(request):
             print(f"Signup error: {str(e)}")
             messages.error(request, f"Error creating account: {str(e)}")
     
-    return render(request, 'signup.html')
+    return render(request, 'members/signup.html')  # Updated path
 
 @login_required
 def profile_view(request):

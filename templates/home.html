@@ -1011,59 +1011,74 @@
 </head>
 <body>
     <!-- Modern Fixed Navbar -->
-    <nav class="navbar">
-        <div class="container">
-            <a href="#" class="nav-logo">
-                <!-- Logo can be added here -->
-            </a>
-            <button class="nav-toggle">
-                <span></span>
-                <span></span>
-                <span></span>
-            </button>
-            <ul class="nav-links">
-                <li><a href="#"><i class="fas fa-home"></i> Home</a></li>
-                <li class="dropdown">
-                    <a href="#"><i class="fas fa-utensils"></i> Daily Recipes</a>
-                    <div class="dropdown-content">
-                        <a href="{% url 'recipes1:breakfast' %}"><i class="fas fa-coffee"></i> Breakfast</a>
-                        <a href="{% url 'recipes2:lunch' %}"><i class="fas fa-hamburger"></i> Lunch</a>
-                        <a href="{% url 'recipes3:dinner' %}"><i class="fas fa-concierge-bell"></i> Dinner</a>
-                        <a href="{% url 'recipes4:dessert' %}"><i class="fas fa-ice-cream"></i> Dessert</a>
-                        <a href="{% url 'recipes5:drinks' %}"><i class="fas fa-glass-cheers"></i> Drinks</a>
-                    </div>
-                </li>
-                <li class="dropdown">
-                    <a href="#"><i class="fas fa-calendar-alt"></i> Holidays</a>
-                    <div class="dropdown-content">
-                        <a href="{% url 'recipes8:mother' %}"><i class="fas fa-heart"></i> Mother's Day</a>
-                        <a href="{% url 'recipes9:new' %}"><i class="fas fa-glass-champagne"></i> New Year</a>
-                    </div>
-                </li>
-                <li class="dropdown">
-                    <a href="#"><i class="fas fa-heartbeat"></i> Health & Diet</a>
-                    <div class="dropdown-content">
-                        <a href="{% url 'recipes6:keto' %}"><i class="fas fa-drumstick-bite"></i> Keto</a>
-                        <a href="{% url 'recipes7:vege' %}"><i class="fas fa-seedling"></i> Vegetarian</a>
-                    </div>
-                </li>
-            </ul>
+    <!-- Modern Fixed Navbar with Recipe Creation Dropdown -->
+<nav class="navbar">
+    <div class="container">
+        <a href="/" class="nav-logo">
+            <!-- Logo can be added here -->
+            <span style="color: #fca311; font-weight: 700; font-size: 1.8rem;">Recepies</span>
+        </a>
+        <button class="nav-toggle">
+            <span></span>
+            <span></span>
+            <span></span>
+        </button>
+        <ul class="nav-links">
+            <li><a href="/"><i class="fas fa-home"></i> Home</a></li>
+            <li class="dropdown">
+                <a href="#"><i class="fas fa-utensils"></i> Daily Recipes</a>
+                <div class="dropdown-content">
+                    <a href="{% url 'recipes1:breakfast' %}"><i class="fas fa-coffee"></i> Breakfast</a>
+                    <a href="{% url 'recipes2:lunch' %}"><i class="fas fa-hamburger"></i> Lunch</a>
+                    <a href="{% url 'recipes3:dinner' %}"><i class="fas fa-concierge-bell"></i> Dinner</a>
+                    <a href="{% url 'recipes4:dessert' %}"><i class="fas fa-ice-cream"></i> Dessert</a>
+                    <a href="{% url 'recipes5:drinks' %}"><i class="fas fa-glass-cheers"></i> Drinks</a>
+                </div>
+            </li>
+            <li class="dropdown">
+                <a href="#"><i class="fas fa-calendar-alt"></i> Holidays</a>
+                <div class="dropdown-content">
+                    <a href="{% url 'recipes8:mother' %}"><i class="fas fa-heart"></i> Mother's Day</a>
+                    <a href="{% url 'recipes9:new' %}"><i class="fas fa-glass-champagne"></i> New Year</a>
+                </div>
+            </li>
+            <li class="dropdown">
+                <a href="#"><i class="fas fa-heartbeat"></i> Health & Diet</a>
+                <div class="dropdown-content">
+                    <a href="{% url 'recipes6:keto' %}"><i class="fas fa-drumstick-bite"></i> Keto</a>
+                    <a href="{% url 'recipes7:vege' %}"><i class="fas fa-seedling"></i> Vegetarian</a>
+                </div>
+            </li>
+            {% if user.is_authenticated %}
+            <li class="dropdown">
+                <a href="#"><i class="fas fa-pencil-alt"></i> My Recipes</a>
+                <div class="dropdown-content">
+                    <a href="{% url 'recipes10:submit_recipe' %}"><i class="fas fa-plus-circle"></i> Create New Recipe</a>
+                    <a href="{% url 'recipes10:my_recipes' %}"><i class="fas fa-book"></i> My Recipe Collection</a>
+                    <a href="{% url 'recipes10:recipe_list' %}"><i class="fas fa-list"></i> Browse All Recipes</a>
+                    {% if user.is_staff %}
+                    <a href="{% url 'admin:index' %}"><i class="fas fa-cog"></i> Admin Panel</a>
+                    {% endif %}
+                </div>
+            </li>
+            {% endif %}
+        </ul>
 
-            <!-- Search Bar -->
-            <div class="search-bar">
-                <input type="text" placeholder="Search for recipes...">
-                <button type="submit"><i class="fas fa-search"></i></button>
-            </div>
+        <!-- Search Bar -->
+        <div class="search-bar">
+            <input type="text" placeholder="Search for recipes...">
+            <button type="submit"><i class="fas fa-search"></i></button>
+        </div>
 
-            <!-- Authentication Buttons -->
-            <div class="auth-buttons">
-                {% if user.is_authenticated %}
-                <span class="welcome-text">Welcome, {{ user.username }}!</span>
-                <a href="{% url 'profile' %}" class="auth-btn login-btn">My Profile</a>
-                <a href="{% url 'logout' %}" class="auth-btn signup-btn">Logout</a>
+        <!-- Authentication Buttons -->
+        <div class="auth-buttons">
+            {% if user.is_authenticated %}
+            <span class="welcome-text">Welcome, {{ user.username }}!</span>
+            <a href="{% url 'profile' %}" class="auth-btn login-btn">My Profile</a>
+            <a href="{% url 'logout' %}" class="auth-btn signup-btn">Logout</a>
             {% else %}
-                <a href="#" class="auth-btn login-btn" id="loginBtn">Login</a>
-                <a href="#" class="auth-btn signup-btn" id="signupBtn">Sign Up</a>
+            <a href="#" class="auth-btn login-btn" id="loginBtn">Login</a>
+            <a href="#" class="auth-btn signup-btn" id="signupBtn">Sign Up</a>
             {% endif %}
         </div>
     </div>

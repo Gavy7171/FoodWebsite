@@ -48,6 +48,7 @@ INSTALLED_APPS = [
     'recipes8',
     'recipes9',
     'members',
+    'recipes10',
     
 ]
 
