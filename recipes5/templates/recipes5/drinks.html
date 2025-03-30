@@ -672,7 +672,7 @@
     <nav class="navbar">
         <div class="container">
             <a href="#" class="nav-logo">
-                <img src="/api/placeholder/100/80" alt="Recepies Logo">
+                <span style="color: #fca311; font-weight: 700; font-size: 1.8rem;">Recepies</span>
             </a>
             <button class="nav-toggle">
                 <span></span>
@@ -683,13 +683,14 @@
                 <li class="dropdown">
                     <a href="#"><i class="fas fa-utensils"></i> Daily Recipes</a>
                     <div class="dropdown-content">
-                        <a href="breakfast.html"><i class="fas fa-coffee"></i> Breakfast</a>
-                        <a href="index.html"><i class="fas fa-home"></i> Home</a>
-                        <a href="lunch.html"><i class="fas fa-hamburger"></i> Lunch</a>
-                        <a href="#"><i class="fas fa-concierge-bell"></i> Dinner</a>
-                        <a href="#"><i class="fas fa-ice-cream"></i> Dessert</a>
-                        <a href="#" class="active"><i class="fas fa-glass-cheers"></i> Drinks</a>
+                        <a href="{% url 'recipes1:breakfast' %}"><i class="fas fa-coffee"></i> Breakfast</a>
+                        <a href="#"><i class="fas fa-home"></i> Home</a>
+                        <a href="{% url 'recipes2:lunch' %}"><i class="fas fa-hamburger"></i> Lunch</a>
+                        <a href="{% url 'recipes3:dinner' %}"><i class="fas fa-concierge-bell"></i> Dinner</a>
+                        <a href="{% url 'recipes4:dessert' %}"><i class="fas fa-ice-cream"></i> Dessert</a>
+                        <a href="{% url 'recipes5:drinks' %}"><i class="fas fa-glass-cheers"></i> Drinks</a>
                     </div>
+                </li>
                 </li>
                 <li class="dropdown">
                     <a href="#"><i class="fas fa-utensils"></i> Daily Recipes</a>
