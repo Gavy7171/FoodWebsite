@@ -1,0 +1,812 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Edit Recipe - Recepies</title>
+    <link href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.0.0/css/all.min.css" rel="stylesheet">
+    <link href="https://fonts.googleapis.com/css2?family=Poppins:wght@300;400;500;600;700&display=swap" rel="stylesheet">
+    <style>
+        /* General Reset */
+        * {
+            margin: 0;
+            padding: 0;
+            box-sizing: border-box;
+            font-family: 'Poppins', sans-serif;
+        }
+
+        body {
+            background-color: #0a1128;
+            color: #fff;
+            overflow-x: hidden;
+        }
+
+        /* Modern Navbar */
+        .navbar {
+            position: fixed;
+            top: 0;
+            left: 0;
+            width: 100%;
+            z-index: 1000;
+            transition: all 0.3s ease;
+            padding: 20px 0;
+        }
+
+        .navbar.scrolled {
+            background: rgba(10, 17, 40, 0.95);
+            backdrop-filter: blur(10px);
+            padding: 15px 0;
+            box-shadow: 0 5px 20px rgba(0, 0, 0, 0.2);
+        }
+
+        .navbar .container {
+            display: flex;
+            align-items: center;
+            justify-content: space-between;
+            padding: 0 50px;
+        }
+
+        .nav-logo {
+            max-width: 100px;
+            transition: all 0.3s ease;
+        }
+
+        .nav-logo:hover {
+            transform: scale(1.05);
+        }
+
+        .nav-links {
+            display: flex;
+            gap: 30px;
+            list-style: none;
+        }
+
+        .nav-links li {
+            position: relative;
+        }
+
+        .nav-links a {
+            color: #fff;
+            text-decoration: none;
+            font-weight: 500;
+            font-size: 1.1rem;
+            transition: all 0.3s ease;
+            padding: 8px 0;
+            position: relative;
+        }
+
+        .nav-links a:before {
+            content: '';
+            position: absolute;
+            bottom: 0;
+            left: 0;
+            width: 0;
+            height: 2px;
+            background: #fca311;
+            transition: width 0.3s ease;
+        }
+
+        .nav-links a:hover {
+            color: #fca311;
+        }
+
+        .nav-links a:hover:before {
+            width: 100%;
+        }
+
+        /* Container */
+        .container {
+            max-width: 1000px;
+            margin: 100px auto 60px;
+            padding: 0 20px;
+        }
+
+        /* Page Header */
+        .page-header {
+            text-align: center;
+            margin-bottom: 40px;
+        }
+
+        .page-header h1 {
+            font-size: 2.8rem;
+            color: #fca311;
+            margin-bottom: 15px;
+        }
+
+        .page-header p {
+            color: rgba(255, 255, 255, 0.8);
+            max-width: 700px;
+            margin: 0 auto;
+        }
+
+        /* Form Styles */
+        .form-container {
+            background: rgba(255, 255, 255, 0.05);
+            border-radius: 15px;
+            padding: 30px;
+            box-shadow: 0 10px 30px rgba(0, 0, 0, 0.2);
+            margin-bottom: 40px;
+        }
+
+        .form-section {
+            margin-bottom: 30px;
+        }
+
+        .form-section-title {
+            font-size: 1.4rem;
+            color: #fca311;
+            margin-bottom: 20px;
+            padding-bottom: 10px;
+            border-bottom: 1px solid rgba(252, 163, 17, 0.3);
+        }
+
+        .form-group {
+            margin-bottom: 20px;
+        }
+
+        .form-group label {
+            display: block;
+            margin-bottom: 8px;
+            color: rgba(255, 255, 255, 0.9);
+            font-weight: 500;
+        }
+
+        .form-control, input[type="text"], input[type="number"], textarea, select {
+            width: 100%;
+            padding: 12px 15px;
+            background: rgba(255, 255, 255, 0.1);
+            border: 1px solid rgba(255, 255, 255, 0.2);
+            border-radius: 8px;
+            color: #fff;
+            transition: all 0.3s ease;
+        }
+
+        .form-control:focus, input:focus, textarea:focus, select:focus {
+            border-color: #fca311;
+            outline: none;
+            background: rgba(255, 255, 255, 0.15);
+        }
+
+        textarea {
+            min-height: 120px;
+            resize: vertical;
+        }
+
+        .custom-file-upload {
+            display: block;
+            padding: 12px 15px;
+            background: rgba(255, 255, 255, 0.1);
+            border: 1px solid rgba(255, 255, 255, 0.2);
+            border-radius: 8px;
+            color: #fff;
+            cursor: pointer;
+            transition: all 0.3s ease;
+            text-align: center;
+        }
+
+        .custom-file-upload:hover {
+            background: rgba(255, 255, 255, 0.2);
+        }
+        
+        .custom-file-upload i {
+            margin-right: 8px;
+            color: #fca311;
+        }
+        
+        .file-preview {
+            margin-top: 10px;
+            padding: 10px;
+            background: rgba(255, 255, 255, 0.05);
+            border-radius: 8px;
+            text-align: center;
+            display: none;
+        }
+        
+        .file-preview img {
+            max-width: 100%;
+            max-height: 200px;
+            border-radius: 8px;
+        }
+
+        /* Ingredient Dynamic Fields */
+        .ingredients-container, .steps-container {
+            margin-bottom: 20px;
+        }
+
+        .ingredient-row, .step-row {
+            display: flex;
+            gap: 10px;
+            margin-bottom: 10px;
+        }
+
+        .ingredient-row input:first-of-type {
+            width: 30%;
+        }
+
+        .btn-add {
+            background: rgba(252, 163, 17, 0.2);
+            color: #fca311;
+            border: 1px solid #fca311;
+            border-radius: 8px;
+            padding: 8px 15px;
+            cursor: pointer;
+            transition: all 0.3s ease;
+            display: flex;
+            align-items: center;
+            gap: 5px;
+        }
+
+        .btn-add:hover {
+            background: rgba(252, 163, 17, 0.3);
+        }
+
+        .btn-remove {
+            background: rgba(255, 59, 59, 0.2);
+            color: #ff3b3b;
+            border: none;
+            border-radius: 8px;
+            width: 40px;
+            cursor: pointer;
+            transition: all 0.3s ease;
+            display: flex;
+            justify-content: center;
+            align-items: center;
+        }
+
+        .btn-remove:hover {
+            background: rgba(255, 59, 59, 0.3);
+        }
+
+        /* Select styles */
+        select {
+            appearance: none;
+            background-image: url("data:image/svg+xml;charset=UTF-8,%3csvg xmlns='http://www.w3.org/2000/svg' viewBox='0 0 24 24' fill='none' stroke='white' stroke-width='2' stroke-linecap='round' stroke-linejoin='round'%3e%3cpolyline points='6 9 12 15 18 9'%3e%3c/polyline%3e%3c/svg%3e");
+            background-repeat: no-repeat;
+            background-position: right 15px center;
+            background-size: 15px;
+        }
+
+        /* Submit button */
+        .submit-btn {
+            display: inline-block;
+            background: #fca311;
+            color: #0a1128;
+            padding: 14px 30px;
+            border-radius: 50px;
+            font-size: 1.2rem;
+            font-weight: 600;
+            text-decoration: none;
+            transition: all 0.3s ease;
+            border: 2px solid transparent;
+            cursor: pointer;
+            margin-top: 20px;
+        }
+
+        .submit-btn:hover {
+            background: transparent;
+            color: #fca311;
+            border: 2px solid #fca311;
+            transform: translateY(-5px);
+            box-shadow: 0 10px 20px rgba(252, 163, 17, 0.3);
+        }
+
+        /* Form validation */
+        .error-message {
+            color: #ff3b3b;
+            font-size: 0.9rem;
+            margin-top: 5px;
+            display: none;
+        }
+
+        .is-invalid {
+            border-color: #ff3b3b !important;
+        }
+
+        /* Two-column layout for larger screens */
+        @media (min-width: 768px) {
+            .form-row {
+                display: flex;
+                gap: 20px;
+            }
+            
+            .form-row .form-group {
+                flex: 1;
+            }
+        }
+        
+        /* Tooltip styles */
+        .tooltip {
+            position: relative;
+            display: inline-block;
+            margin-left: 8px;
+            color: rgba(255, 255, 255, 0.6);
+        }
+
+        .tooltip .tooltiptext {
+            visibility: hidden;
+            width: 200px;
+            background-color: rgba(0, 0, 0, 0.8);
+            color: #fff;
+            text-align: center;
+            border-radius: 6px;
+            padding: 8px;
+            position: absolute;
+            z-index: 1;
+            bottom: 125%;
+            left: 50%;
+            transform: translateX(-50%);
+            opacity: 0;
+            transition: opacity 0.3s;
+            font-size: 0.85rem;
+            font-weight: normal;
+        }
+
+        .tooltip .tooltiptext::after {
+            content: "";
+            position: absolute;
+            top: 100%;
+            left: 50%;
+            margin-left: -5px;
+            border-width: 5px;
+            border-style: solid;
+            border-color: rgba(0, 0, 0, 0.8) transparent transparent transparent;
+        }
+
+        .tooltip:hover .tooltiptext {
+            visibility: visible;
+            opacity: 1;
+        }
+
+        /* Back button */
+        .back-btn {
+            display: inline-flex;
+            align-items: center;
+            color: rgba(255, 255, 255, 0.8);
+            text-decoration: none;
+            font-size: 1rem;
+            transition: all 0.3s ease;
+            gap: 5px;
+            margin-bottom: 15px;
+        }
+
+        .back-btn:hover {
+            color: #fca311;
+        }
+    </style>
+</head>
+<body>
+    <!-- Include your navbar here or keep it as is from your existing code -->
+    
+    <div class="container">
+        <a href="{% url 'recipes10:recipe_detail' recipe.id %}" class="back-btn">
+            <i class="fas fa-arrow-left"></i> Back to Recipe
+        </a>
+        
+        <div class="page-header">
+            <h1>Edit Recipe</h1>
+            <p>Update your recipe details below.</p>
+        </div>
+        
+        <form id="recipeForm" method="post" enctype="multipart/form-data" action="{% url 'recipes10:edit_recipe' recipe.id %}" class="form-container">
+            {% csrf_token %}
+            
+            <!-- Basic Information Section -->
+            <div class="form-section">
+                <h2 class="form-section-title">Basic Information</h2>
+                
+                <div class="form-row">
+                    <div class="form-group">
+                        <label for="id_title">Recipe Name*</label>
+                        {{ form.title }}
+                        {% if form.title.errors %}
+                        <div class="error-message" style="display: block;">{{ form.title.errors }}</div>
+                        {% endif %}
+                    </div>
+                    
+                    <div class="form-group">
+                        <label for="id_prep_time">Preparation Time (minutes)*</label>
+                        {{ form.prep_time }}
+                        {% if form.prep_time.errors %}
+                        <div class="error-message" style="display: block;">{{ form.prep_time.errors }}</div>
+                        {% endif %}
+                    </div>
+                </div>
+                
+                <div class="form-row">
+                    <div class="form-group">
+                        <label for="id_cook_time">Cooking Time (minutes)*</label>
+                        {{ form.cook_time }}
+                        {% if form.cook_time.errors %}
+                        <div class="error-message" style="display: block;">{{ form.cook_time.errors }}</div>
+                        {% endif %}
+                    </div>
+                    
+                    <div class="form-group">
+                        <label for="id_servings">Servings*</label>
+                        {{ form.servings }}
+                        {% if form.servings.errors %}
+                        <div class="error-message" style="display: block;">{{ form.servings.errors }}</div>
+                        {% endif %}
+                    </div>
+                </div>
+                
+                <div class="form-group">
+                    <label for="id_image">Recipe Image</label>
+                    <input type="file" id="id_image" name="image" accept="image/*" style="display: none;">
+                    <label for="id_image" class="custom-file-upload">
+                        <i class="fas fa-cloud-upload-alt"></i> Choose Image
+                    </label>
+                    <div id="image-preview" class="file-preview">
+                        <img id="preview-img" src="{% if recipe.image %}{{ recipe.image.url }}{% endif %}" alt="Recipe preview">
+                    </div>
+                    {% if form.image.errors %}
+                    <div class="error-message" style="display: block;">{{ form.image.errors }}</div>
+                    {% endif %}
+                </div>
+                
+                <div class="form-group">
+                    <label for="id_description">Brief Description*</label>
+                    {{ form.description }}
+                    {% if form.description.errors %}
+                    <div class="error-message" style="display: block;">{{ form.description.errors }}</div>
+                    {% endif %}
+                </div>
+            </div>
+            
+            <!-- Categories Section -->
+            <div class="form-section">
+                <h2 class="form-section-title">Categories</h2>
+                
+                <div class="form-row">
+                    <div class="form-group">
+                        <label for="id_category">Main Category*</label>
+                        {{ form.category }}
+                        {% if form.category.errors %}
+                        <div class="error-message" style="display: block;">{{ form.category.errors }}</div>
+                        {% endif %}
+                    </div>
+                    
+                    <div class="form-group">
+                        <label for="id_subcategory">Subcategory</label>
+                        {{ form.subcategory }}
+                        {% if form.subcategory.errors %}
+                        <div class="error-message" style="display: block;">{{ form.subcategory.errors }}</div>
+                        {% endif %}
+                    </div>
+                </div>
+                
+                <div class="form-row">
+                    <div class="form-group">
+                        <label for="id_difficulty">Difficulty Level*</label>
+                        {{ form.difficulty }}
+                        {% if form.difficulty.errors %}
+                        <div class="error-message" style="display: block;">{{ form.difficulty.errors }}</div>
+                        {% endif %}
+                    </div>
+                    
+                    <div class="form-group">
+                        <label for="id_cuisine">Cuisine</label>
+                        {{ form.cuisine }}
+                        {% if form.cuisine.errors %}
+                        <div class="error-message" style="display: block;">{{ form.cuisine.errors }}</div>
+                        {% endif %}
+                    </div>
+                </div>
+                
+                <!-- Diet and Allergen Tags -->
+                <div class="form-group">
+                    <label>Diet/Lifestyle Tags <span class="tooltip"><i class="fas fa-question-circle"></i><span class="tooltiptext">Select all that apply to your recipe</span></span></label>
+                    <div style="display: flex; flex-wrap: wrap; gap: 15px; margin-top: 10px;">
+                        <div style="display: flex; align-items: center;">
+                            {{ form.vegetarian }}
+                            <label for="id_vegetarian" style="margin-left: 5px; margin-bottom: 0;">Vegetarian</label>
+                        </div>
+                        <div style="display: flex; align-items: center;">
+                            {{ form.vegan }}
+                            <label for="id_vegan" style="margin-left: 5px; margin-bottom: 0;">Vegan</label>
+                        </div>
+                        <div style="display: flex; align-items: center;">
+                            {{ form.gluten_free }}
+                            <label for="id_gluten_free" style="margin-left: 5px; margin-bottom: 0;">Gluten-Free</label>
+                        </div>
+                        <div style="display: flex; align-items: center;">
+                            {{ form.keto }}
+                            <label for="id_keto" style="margin-left: 5px; margin-bottom: 0;">Keto</label>
+                        </div>
+                    </div>
+                </div>
+            </div>
+            
+            <!-- Ingredients Section -->
+            <div class="form-section">
+                <h2 class="form-section-title">Ingredients</h2>
+                
+                {{ ingredient_formset.management_form }}
+                <div class="ingredients-container" id="ingredients-container">
+                    {% for ingredient_form in ingredient_formset %}
+                    <div class="ingredient-row">
+                        <div style="display: none;">{{ ingredient_form.id }}</div>
+                        {{ ingredient_form.quantity }}
+                        {{ ingredient_form.name }}
+                        <button type="button" class="btn-remove"><i class="fas fa-times"></i></button>
+                    </div>
+                    {% endfor %}
+                </div>
+                
+                <button type="button" class="btn-add" id="add-ingredient">
+                    <i class="fas fa-plus"></i> Add Another Ingredient
+                </button>
+            </div>
+            
+            <!-- Directions Section -->
+            <div class="form-section">
+                <h2 class="form-section-title">Cooking Directions</h2>
+                
+                {{ step_formset.management_form }}
+                <div class="steps-container" id="steps-container">
+                    {% for step_form in step_formset %}
+                    <div class="step-row">
+                        <div style="display: none;">{{ step_form.id }}</div>
+                        <div style="display: none;">{{ step_form.order }}</div>
+                        {{ step_form.description }}
+                        <button type="button" class="btn-remove"><i class="fas fa-times"></i></button>
+                    </div>
+                    {% endfor %}
+                </div>
+                
+                <button type="button" class="btn-add" id="add-step">
+                    <i class="fas fa-plus"></i> Add Another Step
+                </button>
+            </div>
+            
+            <!-- Additional Notes Section -->
+            <div class="form-section">
+                <h2 class="form-section-title">Additional Notes (Optional)</h2>
+                
+                <div class="form-group">
+                    <label for="id_notes">Notes, Tips, or Variations</label>
+                    {{ form.notes }}
+                    {% if form.notes.errors %}
+                    <div class="error-message" style="display: block;">{{ form.notes.errors }}</div>
+                    {% endif %}
+                </div>
+            </div>
+            
+            <button type="submit" class="submit-btn">
+                <i class="fas fa-save"></i> Save Changes
+            </button>
+        </form>
+    </div>
+</body>
+
+<script>
+    // Navbar scroll effect
+    window.addEventListener('scroll', function() {
+        var navbar = document.querySelector('.navbar');
+        
+        if (window.scrollY > 50) {
+            navbar.classList.add('scrolled');
+        } else {
+            navbar.classList.remove('scrolled');
+        }
+    });
+    
+    // Image preview
+    document.getElementById('id_image').addEventListener('change', function() {
+        var preview = document.getElementById('image-preview');
+        var previewImg = document.getElementById('preview-img');
+        
+        if (this.files && this.files[0]) {
+            var reader = new FileReader();
+            
+            reader.onload = function(e) {
+                previewImg.src = e.target.result;
+                preview.style.display = 'block';
+            };
+            
+            reader.readAsDataURL(this.files[0]);
+        }
+    });
+    
+    
+   
+    
+    // Helper function to update form indices
+    function updateElementIndex(element, prefix, ndx) {
+        var idRegex = new RegExp('(' + prefix + '-\\d+)');
+        var replacement = prefix + '-' + ndx;
+        
+        var nameFields = element.querySelectorAll('[name^="' + prefix + '-"]');
+        for (var i = 0; i < nameFields.length; i++) {
+            var field = nameFields[i];
+            field.name = field.name.replace(idRegex, replacement);
+            if (field.id) {
+                field.id = field.id.replace(idRegex, replacement);
+            }
+        }
+        
+        var forFields = element.querySelectorAll('[for^="id_' + prefix + '-"]');
+        for (var i = 0; i < forFields.length; i++) {
+            var field = forFields[i];
+            field.htmlFor = field.htmlFor.replace(idRegex, replacement);
+        }
+    }
+    
+    // Formset management for ingredients
+    document.getElementById('add-ingredient').addEventListener('click', function() {
+        var container = document.getElementById('ingredients-container');
+        var formRows = container.querySelectorAll('.ingredient-row');
+        var totalForms = document.getElementById('id_ingredients-TOTAL_FORMS');
+        var newRow = formRows[0].cloneNode(true);
+        
+        // Update form index
+        var formNum = formRows.length;
+        newRow.innerHTML = newRow.innerHTML.replace(/-\d+-/g, '-' + formNum + '-');
+        
+        // Clear input values
+        var inputs = newRow.querySelectorAll('input[type="text"]');
+        for (var i = 0; i < inputs.length; i++) {
+            inputs[i].value = '';
+        }
+        
+        // Add new row
+        container.appendChild(newRow);
+        totalForms.value = formRows.length + 1;
+        
+        // Add event listener to the new remove button
+        var removeBtn = newRow.querySelector('.btn-remove');
+        removeBtn.addEventListener('click', function() {
+            container.removeChild(newRow);
+            totalForms.value = parseInt(totalForms.value) - 1;
+            
+            // Update indices for all following form elements
+            var formRows = container.querySelectorAll('.ingredient-row');
+            for (var i = 0; i < formRows.length; i++) {
+                updateElementIndex(formRows[i], 'ingredients', i);
+            }
+        });
+    });
+    
+    // Setup initial remove buttons for ingredients
+    var ingredientRemoveBtns = document.querySelectorAll('#ingredients-container .btn-remove');
+    for (var i = 0; i < ingredientRemoveBtns.length; i++) {
+        ingredientRemoveBtns[i].addEventListener('click', function() {
+            var container = document.getElementById('ingredients-container');
+            var formRows = container.querySelectorAll('.ingredient-row');
+            var totalForms = document.getElementById('id_ingredients-TOTAL_FORMS');
+            
+            if (formRows.length > 1) {
+                var row = this.closest('.ingredient-row');
+                container.removeChild(row);
+                totalForms.value = parseInt(totalForms.value) - 1;
+                
+                // Update indices for all following form elements
+                var updatedFormRows = container.querySelectorAll('.ingredient-row');
+                for (var j = 0; j < updatedFormRows.length; j++) {
+                    updateElementIndex(updatedFormRows[j], 'ingredients', j);
+                }
+            }
+        });
+    }
+    
+    // Formset management for steps
+    document.getElementById('add-step').addEventListener('click', function() {
+        var container = document.getElementById('steps-container');
+        var formRows = container.querySelectorAll('.step-row');
+        var totalForms = document.getElementById('id_steps-TOTAL_FORMS');
+        var newRow = formRows[0].cloneNode(true);
+        
+        // Update form index
+        var formNum = formRows.length;
+        newRow.innerHTML = newRow.innerHTML.replace(/-\d+-/g, '-' + formNum + '-');
+        
+        // Clear input values and update order
+        newRow.querySelector('textarea').value = '';
+        newRow.querySelector('input[name$="-order"]').value = formNum + 1;
+        
+        // Add new row
+        container.appendChild(newRow);
+        totalForms.value = formRows.length + 1;
+        
+        // Add event listener to the new remove button
+        var removeBtn = newRow.querySelector('.btn-remove');
+        removeBtn.addEventListener('click', function() {
+            container.removeChild(newRow);
+            totalForms.value = parseInt(totalForms.value) - 1;
+            
+            // Update indices and order for all following form elements
+            var formRows = container.querySelectorAll('.step-row');
+            for (var i = 0; i < formRows.length; i++) {
+                updateElementIndex(formRows[i], 'steps', i);
+                formRows[i].querySelector('input[name$="-order"]').value = i + 1;
+            }
+        });
+    });
+    
+    // Setup initial remove buttons for steps
+    var stepRemoveBtns = document.querySelectorAll('#steps-container .btn-remove');
+    for (var i = 0; i < stepRemoveBtns.length; i++) {
+        stepRemoveBtns[i].addEventListener('click', function() {
+            var container = document.getElementById('steps-container');
+            var formRows = container.querySelectorAll('.step-row');
+            var totalForms = document.getElementById('id_steps-TOTAL_FORMS');
+            
+            if (formRows.length > 1) {
+                var row = this.closest('.step-row');
+                container.removeChild(row);
+                totalForms.value = parseInt(totalForms.value) - 1;
+                
+                // Update indices and order for all form elements
+                var updatedFormRows = container.querySelectorAll('.step-row');
+                for (var j = 0; j < updatedFormRows.length; j++) {
+                    updateElementIndex(updatedFormRows[j], 'steps', j);
+                    updatedFormRows[j].querySelector('input[name$="-order"]').value = j + 1;
+                }
+            }
+        });
+    }
+    
+    // Form validation
+    document.getElementById('recipeForm').addEventListener('submit', function(event) {
+        var valid = true;
+        
+        // Check required fields
+        var requiredFields = this.querySelectorAll('[required]');
+        for (var i = 0; i < requiredFields.length; i++) {
+            var field = requiredFields[i];
+            if (!field.value.trim()) {
+                field.classList.add('is-invalid');
+                var errorMsg = field.nextElementSibling;
+                if (errorMsg && errorMsg.classList.contains('error-message')) {
+                    errorMsg.style.display = 'block';
+                }
+                valid = false;
+            } else {
+                field.classList.remove('is-invalid');
+                var errorMsg = field.nextElementSibling;
+                if (errorMsg && errorMsg.classList.contains('error-message')) {
+                    errorMsg.style.display = 'none';
+                }
+            }
+        }
+        
+        // Check ingredients
+        var ingredientNames = document.querySelectorAll('input[name$="-name"]');
+        var hasIngredients = false;
+        
+        for (var i = 0; i < ingredientNames.length; i++) {
+            var field = ingredientNames[i];
+            if (field.value.trim()) {
+                hasIngredients = true;
+                break;
+            }
+        }
+        
+        if (!hasIngredients) {
+            valid = false;
+            alert('Please add at least one ingredient');
+        }
+        
+        // Check steps
+        var steps = document.querySelectorAll('textarea[name$="-description"]');
+        var hasSteps = false;
+        
+        for (var i = 0; i < steps.length; i++) {
+            var field = steps[i];
+            if (field.value.trim()) {
+                hasSteps = true;
+                break;
+            }
+        }
+        
+        if (!hasSteps) {
+            valid = false;
+            alert('Please add at least one cooking step');
+        }
+        
+        if (!valid) {
+            event.preventDefault();
+        }
+    });
+</script>
+</html>

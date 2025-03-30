@@ -1,0 +1,1554 @@
+{% load static %}
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>All Recipes - Recepies</title>
+    <link href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.0.0/css/all.min.css" rel="stylesheet">
+    <link href="https://fonts.googleapis.com/css2?family=Poppins:wght@300;400;500;600;700&display=swap" rel="stylesheet">
+    <style>
+        /* General Reset */
+        * {
+            margin: 0;
+            padding: 0;
+            box-sizing: border-box;
+            font-family: 'Poppins', sans-serif;
+        }
+
+        body {
+            background-color: #0a1128;
+            color: #fff;
+            overflow-x: hidden;
+        }
+
+        /* Header with Background Video */
+        header {
+            position: relative;
+            width: 100%;
+            height: 60vh;
+            overflow: hidden;
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            text-align: center;
+        }
+
+        #bg-video {
+            position: absolute;
+            top: 0;
+            left: 0;
+            width: 100%;
+            height: 100%;
+            object-fit: cover;
+            z-index: -1;
+            filter: brightness(40%);
+        }
+
+        .overlay {
+            position: relative;
+            padding: 30px;
+            border-radius: 15px;
+            max-width: 90%;
+            text-align: center;
+            background: rgba(0, 0, 0, 0.4);
+            backdrop-filter: blur(5px);
+            animation: fadeIn 1.5s ease-in-out;
+        }
+
+        @keyframes fadeIn {
+            from { opacity: 0; transform: translateY(20px); }
+            to { opacity: 1; transform: translateY(0); }
+        }
+
+        h1 {
+            font-size: 3.5rem;
+            color: #f8f9fa;
+            text-shadow: 2px 2px 15px rgba(255, 255, 255, 0.6);
+            margin-bottom: 20px;
+            font-weight: 700;
+        }
+
+        .tagline {
+            font-size: 1.5rem;
+            margin-bottom: 30px;
+            color: #fca311;
+            text-shadow: 1px 1px 8px rgba(0, 0, 0, 0.8);
+        }
+
+        .cta-button {
+            display: inline-block;
+            background: #fca311;
+            color: #0a1128;
+            padding: 12px 30px;
+            border-radius: 50px;
+            font-size: 1.2rem;
+            font-weight: 600;
+            text-decoration: none;
+            transition: all 0.3s ease;
+            margin-top: 20px;
+            border: 2px solid transparent;
+        }
+
+        .cta-button:hover {
+            background: transparent;
+            color: #fca311;
+            border: 2px solid #fca311;
+            transform: translateY(-5px);
+            box-shadow: 0 10px 20px rgba(252, 163, 17, 0.3);
+        }
+
+        /* Modern Navbar */
+        .navbar {
+            position: fixed;
+            top: 0;
+            left: 0;
+            width: 100%;
+            z-index: 1000;
+            transition: all 0.3s ease;
+            padding: 20px 0;
+        }
+
+        .navbar.scrolled {
+            background: rgba(10, 17, 40, 0.95);
+            backdrop-filter: blur(10px);
+            padding: 15px 0;
+            box-shadow: 0 5px 20px rgba(0, 0, 0, 0.2);
+        }
+
+        .navbar .container {
+            display: flex;
+            align-items: center;
+            justify-content: space-between;
+            padding: 0 50px;
+        }
+
+        .nav-logo {
+            max-width: 100px;
+            transition: all 0.3s ease;
+        }
+
+        .nav-logo:hover {
+            transform: scale(1.05);
+        }
+
+        .nav-links {
+            display: flex;
+            gap: 30px;
+            list-style: none;
+        }
+
+        .nav-links li {
+            position: relative;
+        }
+
+        .nav-links a {
+            color: #fff;
+            text-decoration: none;
+            font-weight: 500;
+            font-size: 1.1rem;
+            transition: all 0.3s ease;
+            padding: 8px 0;
+            position: relative;
+        }
+
+        .nav-links a:before {
+            content: '';
+            position: absolute;
+            bottom: 0;
+            left: 0;
+            width: 0;
+            height: 2px;
+            background: #fca311;
+            transition: width 0.3s ease;
+        }
+
+        .nav-links a:hover {
+            color: #fca311;
+        }
+
+        .nav-links a:hover:before {
+            width: 100%;
+        }
+
+        /* Search Bar */
+        .search-bar {
+            display: flex;
+            align-items: center;
+            background: rgba(255, 255, 255, 0.1);
+            border-radius: 50px;
+            padding: 5px 15px;
+            transition: all 0.3s ease;
+            margin-left: 20px;
+        }
+
+        .search-bar:hover {
+            background: rgba(255, 255, 255, 0.2);
+        }
+
+        .search-bar input {
+            background: transparent;
+            border: none;
+            color: #fff;
+            padding: 8px 10px;
+            width: 200px;
+            outline: none;
+        }
+
+        .search-bar input::placeholder {
+            color: rgba(255, 255, 255, 0.7);
+        }
+
+        .search-bar button {
+            background: transparent;
+            border: none;
+            color: #fca311;
+            cursor: pointer;
+            padding: 0 5px;
+            font-size: 1.1rem;
+        }
+
+        /* User Authentication Buttons */
+        .auth-buttons {
+            display: flex;
+            align-items: center;
+            gap: 15px;
+            margin-left: 20px;
+        }
+
+        .auth-btn {
+            padding: 8px 20px;
+            border-radius: 50px;
+            font-weight: 500;
+            transition: all 0.3s ease;
+            cursor: pointer;
+            text-decoration: none;
+            font-size: 0.9rem;
+        }
+
+        .login-btn {
+            background: transparent;
+            border: 2px solid #fca311;
+            color: #fca311;
+        }
+
+        .login-btn:hover {
+            background: rgba(252, 163, 17, 0.1);
+        }
+
+        .signup-btn {
+            background: #fca311;
+            border: 2px solid #fca311;
+            color: #0a1128;
+        }
+
+        .signup-btn:hover {
+            background: #e09213;
+            border-color: #e09213;
+        }
+
+        .welcome-text {
+            color: #fca311;
+            margin-right: 10px;
+            font-weight: 500;
+            white-space: nowrap;
+        }
+
+        .dropdown-content {
+            position: absolute;
+            top: 100%;
+            left: 0;
+            background: rgba(10, 17, 40, 0.95);
+            min-width: 200px;
+            padding: 15px;
+            border-radius: 8px;
+            box-shadow: 0 10px 30px rgba(0, 0, 0, 0.2);
+            opacity: 0;
+            visibility: hidden;
+            transform: translateY(10px);
+            transition: all 0.3s ease;
+            z-index: 1;
+            backdrop-filter: blur(10px);
+            border: 1px solid rgba(255, 255, 255, 0.1);
+        }
+
+        .dropdown-content a {
+            display: block;
+            padding: 10px 15px;
+            color: #fff;
+            text-decoration: none;
+            transition: all 0.2s ease;
+            border-radius: 5px;
+        }
+
+        .dropdown-content a:hover {
+            background: rgba(252, 163, 17, 0.2);
+            transform: translateX(5px);
+        }
+
+        .dropdown:hover .dropdown-content {
+            opacity: 1;
+            visibility: visible;
+            transform: translateY(0);
+        }
+
+        .nav-toggle {
+            display: none;
+            background: none;
+            border: none;
+            cursor: pointer;
+            padding: 10px;
+            z-index: 1001;
+        }
+
+        .nav-toggle span {
+            display: block;
+            width: 30px;
+            height: 3px;
+            background-color: #fff;
+            margin: 6px 0;
+            transition: all 0.3s ease;
+        }
+
+        @media (max-width: 1200px) {
+            .navbar .container {
+                padding: 0 20px;
+            }
+
+            .search-bar {
+                margin-left: 10px;
+            }
+
+            .search-bar input {
+                width: 150px;
+            }
+
+            .auth-buttons {
+                margin-left: 10px;
+            }
+        }
+
+        @media (max-width: 992px) {
+            .navbar .container {
+                padding: 0 20px;
+            }
+
+            .nav-toggle {
+                display: block;
+            }
+
+            .nav-links, .search-bar, .auth-buttons {
+                display: none;
+            }
+
+            .nav-links.active {
+                display: flex;
+                position: fixed;
+                top: 0;
+                right: 0;
+                width: 80%;
+                max-width: 400px;
+                height: 100vh;
+                background: rgba(10, 17, 40, 0.98);
+                backdrop-filter: blur(10px);
+                flex-direction: column;
+                align-items: flex-start;
+                padding: 80px 40px;
+                transition: all 0.5s ease;
+                gap: 15px;
+                box-shadow: -10px 0 30px rgba(0, 0, 0, 0.3);
+            }
+
+            .search-bar.active {
+                display: flex;
+                width: 100%;
+                margin: 20px 0;
+            }
+
+            .search-bar.active input {
+                width: 100%;
+            }
+
+            .auth-buttons.active {
+                display: flex;
+                flex-direction: column;
+                width: 100%;
+                margin: 20px 0;
+                gap: 10px;
+            }
+
+            .dropdown-content {
+                position: static;
+                opacity: 1;
+                visibility: visible;
+                transform: none;
+                box-shadow: none;
+                padding: 0 0 0 20px;
+                margin-top: 10px;
+                display: none;
+                background: transparent;
+                border: none;
+            }
+
+            .dropdown.active .dropdown-content {
+                display: block;
+            }
+
+            .nav-toggle.active span:nth-child(1) {
+                transform: rotate(45deg) translate(8px, 8px);
+            }
+
+            .nav-toggle.active span:nth-child(2) {
+                opacity: 0;
+            }
+
+            .nav-toggle.active span:nth-child(3) {
+                transform: rotate(-45deg) translate(8px, -8px);
+            }
+        }
+
+        /* Main Content */
+        .main-content {
+            max-width: 1200px;
+            margin: 0 auto;
+            padding: 40px 20px;
+        }
+
+        .section-title {
+            font-size: 2.5rem;
+            text-align: center;
+            color: #fca311;
+            margin-bottom: 40px;
+            position: relative;
+            display: inline-block;
+            left: 50%;
+            transform: translateX(-50%);
+        }
+
+        .section-title:after {
+            content: '';
+            position: absolute;
+            bottom: -10px;
+            left: 0;
+            width: 100%;
+            height: 2px;
+            background: rgba(252, 163, 17, 0.3);
+        }
+
+        /* Filter Section */
+        .filter-section {
+            display: flex;
+            justify-content: space-between;
+            align-items: center;
+            flex-wrap: wrap;
+            margin-bottom: 30px;
+            background: rgba(255, 255, 255, 0.05);
+            padding: 20px;
+            border-radius: 10px;
+        }
+
+        .filter-group {
+            display: flex;
+            align-items: center;
+            gap: 15px;
+            margin: 10px 0;
+        }
+
+        .filter-label {
+            font-weight: 500;
+            color: #fca311;
+        }
+
+        .filter-select {
+            padding: 8px 15px;
+            background: rgba(255, 255, 255, 0.1);
+            border: 1px solid rgba(255, 255, 255, 0.2);
+            border-radius: 5px;
+            color: #fff;
+            outline: none;
+        }
+
+        .sort-select {
+            padding: 8px 15px;
+            background: rgba(255, 255, 255, 0.1);
+            border: 1px solid rgba(255, 255, 255, 0.2);
+            border-radius: 5px;
+            color: #fff;
+            outline: none;
+        }
+
+        /* Recipe Grid */
+        .recipe-grid {
+            display: grid;
+            grid-template-columns: repeat(auto-fill, minmax(300px, 1fr));
+            gap: 30px;
+            margin-top: 40px;
+        }
+
+        .recipe-card {
+            background: rgba(255, 255, 255, 0.05);
+            border-radius: 15px;
+            overflow: hidden;
+            transition: all 0.3s ease;
+            height: 100%;
+            display: flex;
+            flex-direction: column;
+            animation: fadeIn 0.5s ease-in-out;
+        }
+
+        .recipe-card:hover {
+            transform: translateY(-10px);
+            box-shadow: 0 15px 30px rgba(0, 0, 0, 0.2);
+            background: rgba(255, 255, 255, 0.1);
+        }
+
+        .recipe-image {
+            height: 200px;
+            overflow: hidden;
+            position: relative;
+        }
+
+        .recipe-image img {
+            width: 100%;
+            height: 100%;
+            object-fit: cover;
+            transition: transform 0.5s ease;
+        }
+
+        .recipe-card:hover .recipe-image img {
+            transform: scale(1.1);
+        }
+
+        .recipe-content {
+            padding: 20px;
+            flex-grow: 1;
+            display: flex;
+            flex-direction: column;
+        }
+
+        .recipe-title {
+            font-size: 1.4rem;
+            margin-bottom: 10px;
+            color: #fca311;
+        }
+
+        .recipe-description {
+            color: rgba(255, 255, 255, 0.9);
+            margin-bottom: 15px;
+            line-height: 1.5;
+        }
+
+        .recipe-meta {
+            display: flex;
+            flex-wrap: wrap;
+            gap: 15px;
+            margin-bottom: 15px;
+            font-size: 0.9rem;
+            color: rgba(255, 255, 255, 0.7);
+        }
+
+        .recipe-meta span i {
+            margin-right: 5px;
+            color: #fca311;
+        }
+
+        .recipe-tags {
+            display: flex;
+            flex-wrap: wrap;
+            gap: 8px;
+            margin-bottom: 15px;
+        }
+
+        .recipe-tag {
+            font-size: 0.8rem;
+            padding: 4px 10px;
+            border-radius: 20px;
+            background: rgba(252, 163, 17, 0.2);
+            color: #fca311;
+        }
+
+        .recipe-rating {
+            margin-top: auto;
+            color: #fca311;
+        }
+
+        .recipe-actions {
+            display: flex;
+            gap: 10px;
+            margin-top: 15px;
+        }
+
+        .recipe-btn {
+            flex: 1;
+            text-align: center;
+            padding: 8px 0;
+            border-radius: 5px;
+            font-weight: 500;
+            text-decoration: none;
+            transition: all 0.3s ease;
+        }
+
+        .view-btn {
+            background: rgba(52, 152, 219, 0.2);
+            color: #3498db;
+        }
+
+        .view-btn:hover {
+            background: rgba(52, 152, 219, 0.3);
+        }
+
+        .save-btn {
+            background: rgba(46, 204, 113, 0.2);
+            color: #2ecc71;
+        }
+
+        .save-btn:hover {
+            background: rgba(46, 204, 113, 0.3);
+        }
+
+        /* Pagination */
+        .pagination {
+            display: flex;
+            justify-content: center;
+            margin-top: 50px;
+            gap: 10px;
+        }
+
+        .page-link {
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            width: 40px;
+            height: 40px;
+            background: rgba(255, 255, 255, 0.1);
+            border-radius: 5px;
+            color: #fff;
+            text-decoration: none;
+            transition: all 0.3s ease;
+        }
+
+        .page-link:hover, .page-link.active {
+            background: #fca311;
+            color: #0a1128;
+        }
+
+        /* Footer */
+        footer {
+            text-align: center;
+            padding: 60px 20px 30px;
+            background: linear-gradient(to bottom, transparent, rgba(255, 255, 255, 0.05));
+            margin-top: 40px;
+            position: relative;
+        }
+
+        .footer-content {
+            max-width: 1200px;
+            margin: 0 auto;
+            display: grid;
+            grid-template-columns: repeat(auto-fit, minmax(250px, 1fr));
+            gap: 40px;
+            text-align: left;
+        }
+
+        .footer-column h3 {
+            font-size: 1.5rem;
+            margin-bottom: 20px;
+            color: #fca311;
+            position: relative;
+            padding-bottom: 10px;
+        }
+
+        .footer-column h3:after {
+            content: '';
+            position: absolute;
+            bottom: 0;
+            left: 0;
+            width: 50px;
+            height: 2px;
+            background: #fca311;
+        }
+
+        .footer-links {
+            list-style: none;
+        }
+
+        .footer-links li {
+            margin-bottom: 10px;
+        }
+
+        .footer-links a {
+            color: rgba(255, 255, 255, 0.8);
+            text-decoration: none;
+            transition: all 0.3s ease;
+        }
+
+        .footer-links a:hover {
+            color: #fca311;
+            padding-left: 5px;
+        }
+
+        .social-links {
+            display: flex;
+            gap: 15px;
+            margin-top: 20px;
+        }
+
+        .social-links a {
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            width: 40px;
+            height: 40px;
+            background: rgba(255, 255, 255, 0.1);
+            border-radius: 50%;
+            color: #fff;
+            transition: all 0.3s ease;
+        }
+
+        .social-links a:hover {
+            background: #fca311;
+            transform: translateY(-5px);
+        }
+
+        .copyright {
+            margin-top: 40px;
+            padding-top: 20px;
+            border-top: 1px solid rgba(255, 255, 255, 0.1);
+        }
+
+        .copyright p {
+            margin: 10px 0;
+            color: rgba(255, 255, 255, 0.6);
+        }
+
+        .developer {
+            margin-top: 15px;
+            font-size: 0.9rem;
+            color: rgba(255, 255, 255, 0.5);
+        }
+
+        .developer a {
+            color: #fca311;
+            text-decoration: none;
+        }
+
+        .developer a:hover {
+            text-decoration: underline;
+        }
+
+        /* Empty state */
+        .empty-state {
+            text-align: center;
+            padding: 60px 20px;
+            background: rgba(255, 255, 255, 0.05);
+            border-radius: 15px;
+            margin: 50px auto;
+            max-width: 800px;
+        }
+
+        .empty-state i {
+            font-size: 5rem;
+            color: rgba(252, 163, 17, 0.3);
+            margin-bottom: 20px;
+        }
+
+        .empty-state h3 {
+            font-size: 2rem;
+            margin-bottom: 15px;
+            color: #fca311;
+        }
+
+        .empty-state p {
+            margin-bottom: 30px;
+            color: rgba(255, 255, 255, 0.7);
+            max-width: 600px;
+            margin-left: auto;
+            margin-right: auto;
+        }
+
+        /* Scroll to top button */
+        .scroll-top {
+            position: fixed;
+            bottom: 30px;
+            right: 30px;
+            width: 50px;
+            height: 50px;
+            background: #fca311;
+            border-radius: 50%;
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            color: #0a1128;
+            font-size: 20px;
+            cursor: pointer;
+            opacity: 0;
+            visibility: hidden;
+            transition: all 0.3s ease;
+            z-index: 999;
+        }
+
+        .scroll-top.active {
+            opacity: 1;
+            visibility: visible;
+        }
+
+        .scroll-top:hover {
+            background: #fff;
+            transform: translateY(-5px);
+            box-shadow: 0 10px 20px rgba(252, 163, 17, 0.3);
+        }
+
+        /* Login/Signup Modal Styles */
+        .modal {
+            display: none;
+            position: fixed;
+            top: 0;
+            left: 0;
+            width: 100%;
+            height: 100%;
+            background: rgba(0, 0, 0, 0.8);
+            z-index: 2000;
+            align-items: center;
+            justify-content: center;
+            backdrop-filter: blur(5px);
+        }
+
+        .modal-content {
+            background: rgba(10, 17, 40, 0.95);
+            border-radius: 15px;
+            padding: 30px;
+            max-width: 400px;
+            width: 90%;
+            position: relative;
+            box-shadow: 0 15px 30px rgba(0, 0, 0, 0.3);
+            border: 1px solid rgba(252, 163, 17, 0.3);
+            animation: modalFadeIn 0.3s ease-out;
+        }
+
+        @keyframes modalFadeIn {
+            from {
+                opacity: 0;
+                transform: translateY(-20px);
+            }
+            to {
+                opacity: 1;
+                transform: translateY(0);
+            }
+        }
+
+        .close-modal {
+            position: absolute;
+            top: 15px;
+            right: 15px;
+            font-size: 24px;
+            color: rgba(255, 255, 255, 0.7);
+            cursor: pointer;
+            transition: all 0.3s ease;
+        }
+
+        .close-modal:hover {
+            color: #fca311;
+            transform: rotate(90deg);
+        }
+
+        .form-title {
+            font-size: 1.8rem;
+            margin-bottom: 20px;
+            color: #fca311;
+            text-align: center;
+        }
+
+        .form-group {
+            margin-bottom: 20px;
+        }
+
+        .form-group label {
+            display: block;
+            margin-bottom: 8px;
+            color: rgba(255, 255, 255, 0.8);
+        }
+
+        .form-group input {
+            width: 100%;
+            padding: 12px 15px;
+            background: rgba(255, 255, 255, 0.1);
+            border: 1px solid rgba(255, 255, 255, 0.2);
+            border-radius: 8px;
+            color: #fff;
+            transition: all 0.3s ease;
+        }
+
+        .form-group input:focus {
+            border-color: #fca311;
+            outline: none;
+            background: rgba(255, 255, 255, 0.15);
+        }
+
+        .form-btn {
+            width: 100%;
+            padding: 12px;
+            background: #fca311;
+            color: #0a1128;
+            border: none;
+            border-radius: 8px;
+            font-weight: 600;
+            cursor: pointer;
+            transition: all 0.3s ease;
+            margin-top: 10px;
+        }
+
+        .form-btn:hover {
+            background: #e09213;
+            transform: translateY(-2px);
+        }
+
+        .form-footer {
+            text-align: center;
+            margin-top: 20px;
+            color: rgba(255, 255, 255, 0.6);
+            font-size: 0.9rem;
+        }
+
+        .form-footer a {
+            color: #fca311;
+            text-decoration: none;
+            transition: all 0.3s ease;
+        }
+
+        .form-footer a:hover {
+            text-decoration: underline;
+        }
+
+        /* Animation */
+        @keyframes slideInUp {
+            from {
+                transform: translateY(50px);
+                opacity: 0;
+            }
+            to {
+                transform: translateY(0);
+                opacity: 1;
+            }
+        }
+
+        .animate {
+            animation: slideInUp 0.8s forwards;
+        }
+
+        .delay-1 {
+            animation-delay: 0.2s;
+        }
+
+        .delay-2 {
+            animation-delay: 0.4s;
+        }
+
+        .delay-3 {
+            animation-delay: 0.6s;
+        }
+
+        /* Responsive adjustments */
+        @media (max-width: 768px) {
+            h1 {
+                font-size: 2.5rem;
+            }
+            .tagline {
+                font-size: 1.2rem;
+            }
+            .filter-section {
+                flex-direction: column;
+                align-items: flex-start;
+            }
+            .recipe-grid {
+                grid-template-columns: repeat(auto-fill, minmax(250px, 1fr));
+            }
+        }
+    </style>
+</head>
+<body>
+    <!-- Navbar -->
+    <nav class="navbar">
+        <div class="container">
+            <a href="/" class="nav-logo">
+                <img src="{% static 'images/logo.png' %}" alt="Logo" onerror="this.style.display='none'">
+                <span style="color: #fca311; font-weight: 700; font-size: 1.8rem;">Recepies</span>
+            </a>
+            <button class="nav-toggle">
+                <span></span>
+                <span></span>
+                <span></span>
+            </button>
+            <ul class="nav-links">
+                <li><a href="/"><i class="fas fa-home"></i> Home</a></li>
+                <li class="dropdown">
+                    <a href="#"><i class="fas fa-utensils"></i> Daily Recipes</a>
+                    <div class="dropdown-content">
+                        <a href="{% url 'recipes1:breakfast' %}"><i class="fas fa-coffee"></i> Breakfast</a>
+                        <a href="{% url 'recipes2:lunch' %}"><i class="fas fa-hamburger"></i> Lunch</a>
+                        <a href="{% url 'recipes3:dinner' %}"><i class="fas fa-concierge-bell"></i> Dinner</a>
+                        <a href="{% url 'recipes4:dessert' %}"><i class="fas fa-ice-cream"></i> Dessert</a>
+                        <a href="{% url 'recipes5:drinks' %}"><i class="fas fa-glass-cheers"></i> Drinks</a>
+                    </div>
+
+<script>
+// Navbar scroll effect
+window.addEventListener('scroll', function() {
+    const navbar = document.querySelector('.navbar');
+    const scrollTop = document.querySelector('.scroll-top');
+    
+    if (window.scrollY > 50) {
+        navbar.classList.add('scrolled');
+        scrollTop.classList.add('active');
+    } else {
+        navbar.classList.remove('scrolled');
+        scrollTop.classList.remove('active');
+    }
+});
+
+// Mobile Navigation Toggle
+const navToggle = document.querySelector('.nav-toggle');
+const navLinks = document.querySelector('.nav-links');
+const searchBar = document.querySelector('.search-bar');
+const authButtons = document.querySelector('.auth-buttons');
+
+if (navToggle) {
+    navToggle.addEventListener('click', function() {
+        navToggle.classList.toggle('active');
+        navLinks.classList.toggle('active');
+        searchBar.classList.toggle('active');
+        authButtons.classList.toggle('active');
+    });
+}
+
+// Dropdowns on Mobile
+const dropdowns = document.querySelectorAll('.dropdown');
+
+if (window.innerWidth < 992) {
+    dropdowns.forEach(dropdown => {
+        dropdown.addEventListener('click', function() {
+            this.classList.toggle('active');
+        });
+    });
+}
+
+// Scroll to Top
+document.getElementById('scrollTop').addEventListener('click', function() {
+    window.scrollTo({
+        top: 0,
+        behavior: 'smooth'
+    });
+});
+
+// Filter functionality
+const categoryFilter = document.getElementById('categoryFilter');
+const cuisineFilter = document.getElementById('cuisineFilter');
+const dietFilter = document.getElementById('dietFilter');
+const sortFilter = document.getElementById('sortFilter');
+
+// Apply filters when changed
+if (categoryFilter && cuisineFilter && dietFilter && sortFilter) {
+    const applyFilters = () => {
+        let url = new URL(window.location.href);
+        
+        // Set query parameters based on filter values
+        if (categoryFilter.value !== 'all') url.searchParams.set('category', categoryFilter.value);
+        else url.searchParams.delete('category');
+        
+        if (cuisineFilter.value !== 'all') url.searchParams.set('cuisine', cuisineFilter.value);
+        else url.searchParams.delete('cuisine');
+        
+        if (dietFilter.value !== 'all') url.searchParams.set('diet', dietFilter.value);
+        else url.searchParams.delete('diet');
+        
+        if (sortFilter.value !== 'latest') url.searchParams.set('sort', sortFilter.value);
+        else url.searchParams.delete('sort');
+        
+        // Reset to page 1 when filters change
+        url.searchParams.delete('page');
+        
+        // Navigate to the filtered URL
+        window.location.href = url.toString();
+    };
+
+    categoryFilter.addEventListener('change', applyFilters);
+    cuisineFilter.addEventListener('change', applyFilters);
+    dietFilter.addEventListener('change', applyFilters);
+    sortFilter.addEventListener('change', applyFilters);
+
+    // Set filter values based on URL params on page load
+    const urlParams = new URLSearchParams(window.location.search);
+    
+    if (urlParams.has('category')) categoryFilter.value = urlParams.get('category');
+    if (urlParams.has('cuisine')) cuisineFilter.value = urlParams.get('cuisine');
+    if (urlParams.has('diet')) dietFilter.value = urlParams.get('diet');
+    if (urlParams.has('sort')) sortFilter.value = urlParams.get('sort');
+}
+
+// Login/Signup Modal
+const loginBtn = document.getElementById('loginBtn');
+const loginBtnHeader = document.getElementById('loginBtnHeader');
+const loginBtnEmpty = document.getElementById('loginBtnEmpty');
+const signupBtn = document.getElementById('signupBtn');
+const loginModal = document.getElementById('loginModal');
+const signupModal = document.getElementById('signupModal');
+const closeLogin = document.getElementById('closeLogin');
+const closeSignup = document.getElementById('closeSignup');
+const switchToSignup = document.getElementById('switchToSignup');
+const switchToLogin = document.getElementById('switchToLogin');
+
+// Setup login buttons
+const setupLoginBtn = (btn) => {
+    if (btn) {
+        btn.addEventListener('click', function() {
+            loginModal.style.display = 'flex';
+        });
+    }
+};
+
+setupLoginBtn(loginBtn);
+setupLoginBtn(loginBtnHeader);
+setupLoginBtn(loginBtnEmpty);
+
+if (signupBtn) {
+    signupBtn.addEventListener('click', function() {
+        signupModal.style.display = 'flex';
+    });
+}
+
+if (closeLogin) {
+    closeLogin.addEventListener('click', function() {
+        loginModal.style.display = 'none';
+    });
+}
+
+if (closeSignup) {
+    closeSignup.addEventListener('click', function() {
+        signupModal.style.display = 'none';
+    });
+}
+
+if (switchToSignup) {
+    switchToSignup.addEventListener('click', function() {
+        loginModal.style.display = 'none';
+        signupModal.style.display = 'flex';
+    });
+}
+
+if (switchToLogin) {
+    switchToLogin.addEventListener('click', function() {
+        signupModal.style.display = 'none';
+        loginModal.style.display = 'flex';
+    });
+}
+
+// Close modals when clicking outside
+window.addEventListener('click', function(event) {
+    if (event.target == loginModal) {
+        loginModal.style.display = 'none';
+    }
+    if (event.target == signupModal) {
+        signupModal.style.display = 'none';
+    }
+});
+
+// Handle save recipe functionality
+const saveButtons = document.querySelectorAll('.save-btn');
+
+saveButtons.forEach(button => {
+    button.addEventListener('click', function(e) {
+        e.preventDefault();
+        const recipeId = this.getAttribute('data-recipe-id');
+        
+        // Example of what you might do - this would need a proper backend endpoint
+        fetch(`/recipes10/save-recipe/${recipeId}/`, {
+            method: 'POST',
+            headers: {
+                'Content-Type': 'application/json',
+                'X-CSRFToken': getCSRFToken()
+            }
+        })
+        .then(response => response.json())
+        .then(data => {
+            if (data.success) {
+                this.innerHTML = '<i class="fas fa-check"></i> Saved';
+                this.style.background = 'rgba(46, 204, 113, 0.3)';
+            }
+        })
+        .catch(error => {
+            console.error('Error saving recipe:', error);
+        });
+    });
+});
+
+// Helper function to get CSRF token from cookies
+function getCSRFToken() {
+    const name = 'csrftoken';
+    let cookieValue = null;
+    if (document.cookie && document.cookie !== '') {
+        const cookies = document.cookie.split(';');
+        for (let i = 0; i < cookies.length; i++) {
+            const cookie = cookies[i].trim();
+            if (cookie.substring(0, name.length + 1) === (name + '=')) {
+                cookieValue = decodeURIComponent(cookie.substring(name.length + 1));
+                break;
+            }
+        }
+    }
+    return cookieValue;
+}
+
+// Animation on scroll
+document.addEventListener('DOMContentLoaded', function() {
+    const animatedElements = document.querySelectorAll('.animate');
+    
+    function checkIfInView() {
+        const windowHeight = window.innerHeight;
+        const windowTopPosition = window.scrollY;
+        const windowBottomPosition = windowTopPosition + windowHeight;
+        
+        animatedElements.forEach(element => {
+            const elementHeight = element.offsetHeight;
+            const elementTopPosition = element.offsetTop;
+            const elementBottomPosition = elementTopPosition + elementHeight;
+            
+            if (elementBottomPosition >= windowTopPosition && elementTopPosition <= windowBottomPosition) {
+                element.style.opacity = 1;
+                element.style.transform = 'translateY(0)';
+            }
+        });
+    }
+    
+    window.addEventListener('scroll', checkIfInView);
+    window.addEventListener('load', checkIfInView);
+    checkIfInView();
+});
+</script>
+</body>
+</html>
+                </li>
+                <li class="dropdown">
+                    <a href="#"><i class="fas fa-calendar-alt"></i> Holidays</a>
+                    <div class="dropdown-content">
+                        <a href="{% url 'recipes8:mother' %}"><i class="fas fa-heart"></i> Mother's Day</a>
+                        <a href="{% url 'recipes9:new' %}"><i class="fas fa-glass-champagne"></i> New Year</a>
+                    </div>
+                </li>
+                <li class="dropdown">
+                    <a href="#"><i class="fas fa-heartbeat"></i> Health & Diet</a>
+                    <div class="dropdown-content">
+                        <a href="{% url 'recipes6:keto' %}"><i class="fas fa-drumstick-bite"></i> Keto</a>
+                        <a href="{% url 'recipes7:vege' %}"><i class="fas fa-seedling"></i> Vegetarian</a>
+                    </div>
+                </li>
+                {% if user.is_authenticated %}
+                <li class="dropdown">
+                    <a href="#"><i class="fas fa-pencil-alt"></i> My Recipes</a>
+                    <div class="dropdown-content">
+                        <a href="{% url 'recipes10:submit_recipe' %}"><i class="fas fa-plus-circle"></i> Create New Recipe</a>
+                        <a href="{% url 'recipes10:my_recipes' %}"><i class="fas fa-book"></i> My Recipe Collection</a>
+                        <a href="{% url 'recipes10:recipe_list' %}"><i class="fas fa-list"></i> Browse All Recipes</a>
+                        {% if user.is_staff %}
+                        <a href="{% url 'admin:index' %}"><i class="fas fa-cog"></i> Admin Panel</a>
+                        {% endif %}
+                    </div>
+                </li>
+                {% endif %}
+            </ul>
+    
+            <!-- Search Bar -->
+            <div class="search-bar">
+                <input type="text" placeholder="Search for recipes...">
+                <button type="submit"><i class="fas fa-search"></i></button>
+            </div>
+    
+            <!-- Authentication Buttons -->
+            <div class="auth-buttons">
+                {% if user.is_authenticated %}
+                <span class="welcome-text">Welcome, {{ user.username }}!</span>
+                <a href="{% url 'profile' %}" class="auth-btn login-btn">My Profile</a>
+                <a href="{% url 'logout' %}" class="auth-btn signup-btn">Logout</a>
+                {% else %}
+                <a href="#" class="auth-btn login-btn" id="loginBtn">Login</a>
+                <a href="#" class="auth-btn signup-btn" id="signupBtn">Sign Up</a>
+                {% endif %}
+            </div>
+        </div>
+    </nav>
+
+    <!-- Header -->
+    <header>
+        <video autoplay muted loop id="bg-video">
+            <source src="/api/placeholder/1920/1080" type="video/mp4">
+        </video>
+        <div class="overlay">
+            <h1>Browse All Recipes</h1>
+            <p class="tagline">Discover delicious recipes from our community</p>
+            {% if user.is_authenticated %}
+            <a href="{% url 'recipes10:submit_recipe' %}" class="cta-button">Share Your Recipe <i class="fas fa-arrow-right"></i></a>
+            {% else %}
+            <a href="#" id="loginBtnHeader" class="cta-button">Login to Share Recipes <i class="fas fa-arrow-right"></i></a>
+            {% endif %}
+        </div>
+    </header>
+
+    <!-- Main Content -->
+    <div class="main-content">
+        <!-- Filter Section -->
+        <div class="filter-section">
+            <div class="filter-group">
+                <span class="filter-label">Category:</span>
+                <select class="filter-select" id="categoryFilter">
+                    <option value="all">All Categories</option>
+                    {% for category in categories %}
+                    <option value="{{ category.slug }}">{{ category.name }}</option>
+                    {% endfor %}
+                </select>
+            </div>
+            <div class="filter-group">
+                <span class="filter-label">Cuisine:</span>
+                <select class="filter-select" id="cuisineFilter">
+                    <option value="all">All Cuisines</option>
+                    {% for cuisine in cuisines %}
+                    <option value="{{ cuisine.id }}">{{ cuisine.name }}</option>
+                    {% endfor %}
+                </select>
+            </div>
+            <div class="filter-group">
+                <span class="filter-label">Diet:</span>
+                <select class="filter-select" id="dietFilter">
+                    <option value="all">All Diets</option>
+                    <option value="vegetarian">Vegetarian</option>
+                    <option value="vegan">Vegan</option>
+                    <option value="gluten-free">Gluten-Free</option>
+                    <option value="keto">Keto</option>
+                </select>
+            </div>
+            <div class="filter-group">
+                <span class="filter-label">Sort By:</span>
+                <select class="sort-select" id="sortFilter">
+                    <option value="latest">Latest</option>
+                    <option value="popular">Most Popular</option>
+                    <option value="rating">Highest Rated</option>
+                    <option value="time">Quickest</option>
+                </select>
+            </div>
+        </div>
+
+        <!-- Recipe Grid -->
+        <h2 class="section-title">All Recipes</h2>
+        
+        {% if recipes %}
+        <div class="recipe-grid">
+            {% for recipe in recipes %}
+            <div class="recipe-card animate delay-1">
+                <div class="recipe-image">
+                    {% if recipe.image %}
+                    <img src="{{ recipe.image.url }}" alt="{{ recipe.title }}">
+                    {% else %}
+                    <img src="/api/placeholder/300/200" alt="{{ recipe.title }}">
+                    {% endif %}
+                </div>
+                <div class="recipe-content">
+                    <h3 class="recipe-title">{{ recipe.title }}</h3>
+                    <div class="recipe-meta">
+                        <span><i class="fas fa-clock"></i> {{ recipe.prep_time|add:recipe.cook_time }} min</span>
+                        <span><i class="fas fa-utensils"></i> {{ recipe.category.name }}</span>
+                        <span><i class="fas fa-user"></i> {{ recipe.author.username }}</span>
+                    </div>
+                    <p class="recipe-description">{{ recipe.description|truncatechars:100 }}</p>
+                    
+                    <div class="recipe-tags">
+                        {% if recipe.vegetarian %}<span class="recipe-tag">Vegetarian</span>{% endif %}
+                        {% if recipe.vegan %}<span class="recipe-tag">Vegan</span>{% endif %}
+                        {% if recipe.gluten_free %}<span class="recipe-tag">Gluten-Free</span>{% endif %}
+                        {% if recipe.keto %}<span class="recipe-tag">Keto</span>{% endif %}
+                    </div>
+                    
+                    <div class="recipe-rating">
+                        {% with ''|center:recipe.avg_rating as range %}
+                        {% for _ in range %}
+                        <i class="fas fa-star"></i>
+                        {% endfor %}
+                        {% endwith %}
+                        {% with ''|center:5|slice:recipe.avg_rating as range %}
+                        {% for _ in range %}
+                        <i class="far fa-star"></i>
+                        {% endfor %}
+                        {% endwith %}
+                        <span>({{ recipe.total_ratings }})</span>
+                    </div>
+                    
+                    <div class="recipe-actions">
+                        <a href="{% url 'recipes10:recipe_detail' recipe.id %}" class="recipe-btn view-btn">
+                            <i class="fas fa-eye"></i> View Recipe
+                        </a>
+                        {% if user.is_authenticated %}
+                        <a href="#" class="recipe-btn save-btn" data-recipe-id="{{ recipe.id }}">
+                            <i class="fas fa-bookmark"></i> Save
+                        </a>
+                        {% endif %}
+                    </div>
+                </div>
+            </div>
+            {% endfor %}
+        </div>
+        
+        <!-- Pagination -->
+        {% if is_paginated %}
+        <div class="pagination">
+            {% if page_obj.has_previous %}
+            <a href="?page=1" class="page-link"><i class="fas fa-angle-double-left"></i></a>
+            <a href="?page={{ page_obj.previous_page_number }}" class="page-link"><i class="fas fa-angle-left"></i></a>
+            {% endif %}
+            
+            {% for num in page_obj.paginator.page_range %}
+                {% if page_obj.number == num %}
+                <a href="?page={{ num }}" class="page-link active">{{ num }}</a>
+                {% elif num > page_obj.number|add:'-3' and num < page_obj.number|add:'3' %}
+                <a href="?page={{ num }}" class="page-link">{{ num }}</a>
+                {% endif %}
+            {% endfor %}
+            
+            {% if page_obj.has_next %}
+            <a href="?page={{ page_obj.next_page_number }}" class="page-link"><i class="fas fa-angle-right"></i></a>
+            <a href="?page={{ page_obj.paginator.num_pages }}" class="page-link"><i class="fas fa-angle-double-right"></i></a>
+            {% endif %}
+        </div>
+        {% endif %}
+        
+        {% else %}
+        <div class="empty-state">
+            <i class="fas fa-utensils"></i>
+            <h3>No Recipes Found</h3>
+            <p>There are no recipes matching your search criteria. Try adjusting your filters or check back later for new recipes.</p>
+            {% if user.is_authenticated %}
+            <a href="{% url 'recipes10:submit_recipe' %}" class="cta-button">Share Your Recipe</a>
+            {% else %}
+            <a href="#" id="loginBtnEmpty" class="cta-button">Login to Share Recipes</a>
+            {% endif %}
+        </div>
+        {% endif %}
+    </div>
+
+    <!-- Footer -->
+    <footer>
+        <div class="footer-content">
+            <div class="footer-column">
+                <h3>Quick Links</h3>
+                <ul class="footer-links">
+                    <li><a href="/">Home</a></li>
+                    <li><a href="{% url 'recipes10:recipe_list' %}">All Recipes</a></li>
+                    <li><a href="{% url 'recipes10:my_recipes' %}">My Recipes</a></li>
+                    <li><a href="{% url 'recipes10:submit_recipe' %}">Create Recipe</a></li>
+                    <li><a href="#">Privacy Policy</a></li>
+                    <li><a href="#">Terms of Service</a></li>
+                </ul>
+            </div>
+            <div class="footer-column">
+                <h3>Categories</h3>
+                <ul class="footer-links">
+                    {% for category in categories %}
+                    <li><a href="{% url 'recipes10:category_recipes' category.slug %}">{{ category.name }}</a></li>
+                    {% empty %}
+                    <li><a href="#">Breakfast</a></li>
+                    <li><a href="#">Lunch</a></li>
+                    <li><a href="#">Dinner</a></li>
+                    <li><a href="#">Desserts</a></li>
+                    <li><a href="#">Healthy Options</a></li>
+                    {% endfor %}
+                </ul>
+            </div>
+            <div class="footer-column">
+                <h3>Contact Us</h3>
+                <ul class="footer-links">
+                    <li><i class="fas fa-envelope"></i> info@recepies.com</li>
+                    <li><i class="fas fa-phone"></i> +1 (555) 123-4567</li>
+                    <li><i class="fas fa-map-marker-alt"></i> 123 Cooking St, Food City</li>
+                </ul>
+                <div class="social-links">
+                    <a href="#"><i class="fab fa-facebook-f"></i></a>
+                    <a href="#"><i class="fab fa-instagram"></i></a>
+                    <a href="#"><i class="fab fa-twitter"></i></a>
+                    <a href="#"><i class="fab fa-youtube"></i></a>
+                </div>
+            </div>
+            <div class="footer-column">
+                <h3>Newsletter</h3>
+                <p>Subscribe to get the latest recipes and cooking tips delivered to your inbox.</p>
+                <form style="margin-top: 15px;">
+                    <input type="email" placeholder="Your Email Address" style="padding: 10px; width: 100%; border-radius: 5px; border: none; margin-bottom: 10px; background: rgba(255, 255, 255, 0.1); color: #fff;">
+                    <button type="submit" style="padding: 10px 20px; background: #fca311; border: none; border-radius: 5px; color: #0a1128; cursor: pointer; font-weight: 600; width: 100%;">Subscribe</button>
+                </form>
+            </div>
+        </div>
+        <div class="copyright">
+            <p>© 2025 Recepies. All rights reserved.</p>
+            <p class="developer">Designed with <i class="fas fa-heart" style="color: #fca311;"></i> by <a href="#">Your Name</a></p>
+        </div>
+    </footer>
+    
+    <!-- Scroll to Top Button -->
+    <div class="scroll-top" id="scrollTop">
+        <i class="fas fa-chevron-up"></i>
+    </div>
+    
+    <!-- Login Modal -->
+    <div class="modal" id="loginModal">
+        <div class="modal-content">
+            <span class="close-modal" id="closeLogin">&times;</span>
+            <h2 class="form-title">Login to Your Account</h2>
+            <form method="post" action="{% url 'login' %}">
+                {% csrf_token %}
+                <div class="form-group">
+                    <label for="loginEmail">Email or Username</label>
+                    <input type="text" id="loginEmail" name="username" required>
+                </div>
+                <div class="form-group">
+                    <label for="loginPassword">Password</label>
+                    <input type="password" id="loginPassword" name="password" required>
+                </div>
+                <input type="hidden" name="next" value="{{ request.path }}">
+                <button type="submit" class="form-btn">Login</button>
+            </form>
+            <div class="form-footer">
+                <p>Don't have an account? <a href="#" id="switchToSignup">Sign up here</a></p>
+                <p><a href="{% url 'password_reset' %}">Forgot your password?</a></p>
+            </div>
+        </div>
+    </div>
+
+    <!-- Signup Modal -->
+    <div class="modal" id="signupModal">
+        <div class="modal-content">
+            <span class="close-modal" id="closeSignup">&times;</span>
+            <h2 class="form-title">Create Your Account</h2>
+            <form method="post" action="{% url 'signup' %}">
+                {% csrf_token %}
+                <div class="form-group">
+                    <label for="signupName">Full Name</label>
+                    <input type="text" id="signupName" name="full_name" required>
+                </div>
+                <div class="form-group">
+                    <label for="signupEmail">Email</label>
+                    <input type="email" id="signupEmail" name="email" required>
+                </div>
+                <div class="form-group">
+                    <label for="signupUsername">Username</label>
+                    <input type="text" id="signupUsername" name="username" required>
+                </div>
+                <div class="form-group">
+                    <label for="signupPassword1">Password</label>
+                    <input type="password" id="signupPassword1" name="password1" required>
+                </div>
+                <div class="form-group">
+                    <label for="signupPassword2">Confirm Password</label>
+                    <input type="password" id="signupPassword2" name="password2" required>
+                </div>
+                <input type="hidden" name="next" value="{{ request.path }}">
+                <button type="submit" class="form-btn">Create Account</button>
+            </form>
+            <div class="form-footer">
+                <p>Already have an account? <a href="#" id="switchToLogin">Login here</a></p>
+            </div>
+        </div>
+    </div>

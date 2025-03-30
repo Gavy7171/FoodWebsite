@@ -18,6 +18,7 @@ from django.contrib import admin
 from django.urls import path
 from django.urls import path, include
 from . import views
+from django.conf.urls.static import static
 
 urlpatterns = [
     path('admin/', admin.site.urls),
@@ -32,6 +33,8 @@ urlpatterns = [
     path('recipes8/', include('recipes8.urls')),
     path('recipes9/', include('recipes9.urls')),
     path('members/', include('members.urls')),
+    path('recipes10/', include('recipes10.urls')),
+    
 
     
 ]
